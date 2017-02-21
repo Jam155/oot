@@ -4,7 +4,7 @@
 
 		public function __construct() {
 
-			parent::__construct('venues');
+			parent::__construct('offers');
 
 		}
 

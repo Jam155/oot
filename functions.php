@@ -244,5 +244,5 @@ function oot_allow_post_types( $allowed_post_types ) {
     return $allowed_post_types;
 }
 add_filter( 'rest_api_allowed_post_types', 'oot_allow_post_types');
-require_once('includes/rest.php');
 require_once('includes/Venues_Controller.php');
+require_once('includes/Offers_Controller.php');
