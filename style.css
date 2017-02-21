@@ -6,6 +6,7 @@ body {
 	margin: 0;
 	padding: 50px;
 	font-family: 'Lato', sans-serif;
+	background-color: #eaeaea;
 }
 
 footer {
@@ -23,6 +24,7 @@ footer {
     display: inline-block;
 	margin: 10px;
 	float: left;
+	position: relative;
 }
 
 .venue-wrapper .col-title {
@@ -33,6 +35,7 @@ footer {
     text-transform: uppercase;
     letter-spacing: 1px;
 	padding: 15px;
+	margin: 0 auto;
 }
 
 .venue-details .col-title {
@@ -49,6 +52,7 @@ footer {
 
 .venue-img img {
 	border-radius: 100px;
+	border: 3px solid #e5e5e5;
 }
 
 .accordion-content {
@@ -70,9 +74,29 @@ footer {
 	border: 0px;
 }
 
+.text-info-wrapper {
+    border: 1px solid #ded9e3;
+    border-radius: 3px;
+	padding: 11px;
+}
+
+.text-info-wrapper p {
+    color: #9a98a7;
+    font-size: 13px;
+    text-align: justify;
+	margin-bottom: 10px !important;
+	width: 100%;
+    line-height: 18px;
+}
+
 .text-info {
 	display: inline-block;
     width: 90%;
+}
+
+.col-content {
+	background-color: #ffffff;
+	padding: 15px;
 }
 
 .col-content #edit {
@@ -85,4 +109,145 @@ footer {
 
 #attribute {
 	width: 90%;
+}
+
+#cat {
+	width: 100%;
+    background-color: #a378d5;
+    color: #ffffff;
+    border: 0;
+    border-radius: 15px;
+    outline: 0;
+    padding: 7px 15px;
+    text-align: right;
+    font-weight: normal;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+   -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+.cat-select {
+    overflow: hidden; 
+    position: relative;
+    display: block;
+}
+
+.cat-select:after {
+    content: '\f078';
+    font-family: FontAwesome;
+    color: #ffffff;
+    padding: 5px 10px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 1;
+    text-align: center;
+    pointer-events: none;
+    box-sizing: border-box;
+}
+
+#cat:focus {
+	border-bottom-left-radius: 0px;
+	border-bottom-right-radius: 0px;
+}
+
+#cat option {
+	background-color: #ffffff;
+	color: #55545c;
+}
+
+.fa-pencil {
+	color: #d5d5d5;
+}
+
+.venue-desc-title {
+    display: inline-block;
+    width: 90%;	
+}
+
+.save-venue-btn {
+	background: #6d508e;
+    border: 0px;
+    box-shadow: none;
+    text-shadow: none;
+    border-radius: 100px;
+    width: 100%;
+    text-transform: uppercase;
+    font-size: 16px;
+    letter-spacing: 3px;
+    height: 35px !important;
+    color: #fff;
+    outline: 0;
+}
+
+#calendar .ui-widget-header {
+	background: transparent;
+	border: 0px;
+}
+
+#calendar .ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight {
+    border: 2px solid #d5d5d5;
+    background: #f6f6f6;
+    font-weight: normal;
+    color: #454545;
+}
+
+table.ui-datepicker-calendar tbody td.highlight > a {
+    color: #ffffff !important;
+    border: 1px solid #FFDE2E;
+	background: #fa4b71 !important;
+}
+
+table.ui-datepicker-calendar tbody td.highlight > a.ui-state-highlight {
+	
+}
+
+#calendar .ui-state-highlight {
+    border: 2px solid #d5d5d5 !important;
+}
+
+#calendar .ui-datepicker-title {
+    font-family: 'Lato', sans-serif !important;
+    color: #55545c;
+    font-weight: 300;
+    font-size: 25px;
+}
+
+#calendar .ui-datepicker-title .ui-datepicker-year {
+	display: none;
+}
+
+#calendar .ui-datepicker th {
+    padding: .7em .3em;
+    text-align: center;
+    font-weight: normal;
+    border: 0;
+    color: #d5d5d5;
+    font-size: 12px;
+    font-family: 'Lato', sans-serif;
+}
+
+#calendar .ui-datepicker td {
+    border: 0;
+    padding: 1px;
+    color: #9a98a7;
+    font-size: 12px;
+}
+
+#calendar .ui-state-default,
+#calendar .ui-widget-content .ui-state-default,
+#calendar .ui-widget-header .ui-state-default,
+#calendar .ui-datepicker td a {
+	border: 0px;
+	background: transparent;
+	color: #9a98a7;
+	text-align: center;
+    padding: 5px;
+    border-radius: 50px;
+    max-width: 14px;
+    text-align: center;
+    margin: 0 auto;
 }

@@ -107,9 +107,17 @@
 				<?php endwhile;?>
 			<?php endif;?>
 			
-			<p><?php the_content(); ?></p>
-			<p><?php $category = get_the_category(); ?>
-			<?php wp_dropdown_categories(array('hide_empty' => 0, 'selected' => $category[0]->term_id )); ?></p>
+			<label for="venue-website" class="control-label venue-description">
+				<p class="venue-desc-title">Venue Description</p><a href="#" class="edit-textarea" class="btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+				<div class="text-info-wrapper">
+					<p class="text-info"><?php echo get_the_content(); ?></p>
+				</div>
+				<?php $settings = array( 'media_buttons' => false, 'quicktags' => false, 'textarea_name' => 'venue_content', ); ?>
+				<div class="venue-description-editor-wrapper"><?php wp_editor(get_the_content(), 'venuedescriptioneditor', $settings); ?></div>
+			</label>
+			
+			<p class="cat-select"><?php $category = get_the_category(); ?>
+			<?php wp_dropdown_categories(array('hide_empty' => 0, 'exclude' => '1', 'selected' => $category[0]->term_id )); ?></p>
 			<p>
 			<?php
 				$posttags = get_the_tags();
@@ -120,6 +128,7 @@
 				}
 			?>
 			</p>
+			<button class="save-venue-btn" type="button">Save Details</button>
 		</div>
 	</section>
 	<section class="current-offers">
@@ -197,6 +206,28 @@
 		<h3 class="col-title">Upcoming Events</h3>
 		<div class="col-content">
 			<div id="calendar"></div>
+			<?php
+			$currentoffers = get_posts( array(
+				'posts_per_page' => -1,
+				'post_type' => 'event',
+				'meta_key' => 'venue',
+				'meta_value' => get_the_ID()
+			) );
+			 
+			if ( $currentoffers ) {
+				foreach ( $currentoffers as $post ) :
+					setup_postdata( $post ); ?>
+					<?php echo get_the_post_thumbnail(get_the_ID(), 'thumbnail'); ?>
+					<h2><?php the_title(); ?></h2>
+					<?php echo get_field('date'); ?><br>
+					<?php echo get_field('start_time'); ?><br>
+					<?php echo get_field('end_time'); ?><br>
+					<?php echo get_field('ticket_price'); ?>
+				<?php
+				endforeach; 
+				wp_reset_postdata();
+			}
+			?>
 		</div>
 		<div class="col-accordion-wrapper">
 			<h3 class="col-title">Add New Event <i class="fa fa-plus" aria-hidden="true"></i></h3>
@@ -247,6 +278,40 @@
 </section>
 
 <script>
+        $.ajax({
+            method: "GET",
+            url: 'http://localhost/oot/wp-json/wp/v2/event',
+            success : function( response ) {
+                console.log( response );
+            },
+            fail : function( response ) {
+                console.log( response );
+            }
+        });
+
+$.getJSON( "http://localhost/oot/wp-json/wp/v2/event", function( json ) {
+	console.log( "JSON Data: " + json.id[ 3 ].name );
+});
+
+var events = [];
+var len = 3;
+for (var i = 0; i <= len; i++) {
+    events.push({
+        Title: "Event " + i,
+        Date: new Date("02/0" + i + "/2017")
+    });
+}
+
+/*
+var events = [
+	{ Title: "Event 1", Date: new Date("02/02/2017") }, 
+	{ Title: "Event 2", Date: new Date("02/20/2017") }, 
+	{ Title: "Event 3", Date: new Date("02/16/2017") }
+];
+*/
+
+$('.venue-description-editor-wrapper').hide();
+
 $('.edit').click(function() {
 	var text = $(this).siblings('.text-info').text();
 	var input = $('<input id="attribute" type="text" value="' + text + '" />')
@@ -257,6 +322,24 @@ $('.edit').click(function() {
 		var text = $('#attribute').val();
 		$('#attribute').parent().text(text);
 		$('#attribute').remove();
+	});
+});
+
+$('.edit-textarea').click(function() {
+	var text = $('.venue-description .text-info-wrapper').hide();
+	$('.venue-description-editor-wrapper').show();
+
+	$(document).mouseup(function (e) {
+		if($('.venue-description-editor-wrapper').is(':visible')) {		
+			var container = $('.venue-description-editor-wrapper');
+			if (!container.is(e.target) && container.has(e.target).length === 0)
+			{
+				container.hide();
+				console.log( tinyMCE.get('venuedescriptioneditor').getContent() );
+				$('.venue-description .text-info-wrapper').html( tinyMCE.get('venuedescriptioneditor').getContent() );
+				$('.venue-description .text-info-wrapper').toggle();
+			}
+		}
 	});
 });
 </script>

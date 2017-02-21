@@ -18,11 +18,41 @@
 				$('.datepicker').datepicker({ dateFormat: 'dd/mm/yy' });
 				var options = { now: "00:00",  };
 				$('.timepicker').wickedpicker(options);
+				
 				$('#calendar').datepicker({
+					beforeShowDay: function(date) {
+						var result = [true, '', null];
+						var matching = $.grep(events, function(event) {
+							return event.Date.valueOf() === date.valueOf();
+						});
+						
+						if (matching.length) {
+							result = [true, 'highlight', null];
+						}
+						return result;
+					},
+					onSelect: function(dateText) {
+						var date,
+							selectedDate = new Date(dateText),
+							i = 0,
+							event = null;
+						
+						while (i < events.length && !event) {
+							date = events[i].Date;
+
+							if (selectedDate.valueOf() === date.valueOf()) {
+								event = events[i];
+							}
+							i++;
+						}
+						if (event) {
+							alert(event.Title);
+						}
+					},
 					inline: true,
 					firstDay: 1,
 					showOtherMonths: true,
-					dayNamesMin: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+					dayNamesMin: ['S', 'M', 'T', 'W', 'T', 'F', 'S']
 				});
 			});
 			$( document ).ready(function() {
@@ -34,16 +64,8 @@
 		<?php wp_head(); ?>
 	</head>
 	<body <?php body_class(); ?>>
-		<input type="text" id="example" />
 		<div id="wrapper" class="hfeed">
-			<header id="header" role="banner">
-				<section id="branding">
-					<div id="site-title">
-						<?php if ( is_front_page() || is_home() || is_front_page() && is_home() ) { echo '<h1>'; } ?><a href="<?php echo esc_url( home_url( '/' ) ); ?>" title="<?php echo esc_html( get_bloginfo( 'name' ) ); ?>" rel="home"><?php echo esc_html( get_bloginfo( 'name' ) ); ?></a><?php if ( is_front_page() || is_home() || is_front_page() && is_home() ) { echo '</h1>'; } ?>
-					</div>
-				</section>
-				<nav id="menu" role="navigation">
-					<?php wp_nav_menu( array( 'theme_location' => 'main-menu' ) ); ?>
-				</nav>
+			<header id="header">
+				<h1>Oot</h1>
 			</header>
 			<div id="container">
