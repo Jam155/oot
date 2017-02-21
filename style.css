@@ -8,6 +8,10 @@ body {
 	font-family: 'Lato', sans-serif;
 }
 
+footer {
+	clear: both;
+}
+
 .venue-wrapper {
     width: 100%;
     max-width: 1180px;
@@ -36,13 +40,41 @@ body {
 }
 
 .current-offers .col-title {
-	background-color: #a1be3e;	
+	background-color: #a1be3e;
 }
 
 .upcoming-events .col-title {
-	background-color: #be1f41;	
+	background-color: #be1f41;
 }
 
 .venue-img img {
 	border-radius: 100px;
+}
+
+.accordion-content {
+	display: none;
+}
+
+.current-offers .col-accordion-wrapper .col-title {
+	background-color: #aec072;
+}
+
+.upcoming-events .col-accordion-wrapper .col-title {
+	background-color: #fa4b71;
+}
+
+.upcoming-events #calendar .ui-widget.ui-widget-content {
+	width: 100%;
+	padding: 0px;
+	margin: 0px;
+	border: 0px;
+}
+
+.text-info {
+	display: inline-block;
+    width: 90%;
+}
+
+.col-content #edit {
+	display: inline-block;	
 }

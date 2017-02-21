@@ -180,7 +180,7 @@ function create_post_type() {
 	  'menu_icon' => 'dashicons-location',
 	  'show_in_rest' => true,
 	  'rest_base' => 'venue',
-	  'rest_controller_class' => 'Venues_Controller',
+	  'rest_controller_class' => 'WP_REST_Posts_Controller',
 	  'taxonomies'  => array( 'category', 'post_tag' ),
 	  'has_archive' => false,
 	  'supports' => array( 'title', 'editor', 'thumbnail', 'custom-fields')
