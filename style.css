@@ -1,0 +1,48 @@
+/*
+Theme Name: Oot
+*/
+
+body {
+	margin: 0;
+	padding: 50px;
+	font-family: 'Lato', sans-serif;
+}
+
+.venue-wrapper {
+    width: 100%;
+    max-width: 1180px;
+    margin: 0 auto;
+}
+
+.venue-wrapper section {
+	width: calc(33.33% - 22px);
+    display: inline-block;
+	margin: 10px;
+	float: left;
+}
+
+.venue-wrapper .col-title {
+	color: #fff;
+	text-align: right;
+    font-weight: normal;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+	padding: 15px;
+}
+
+.venue-details .col-title {
+	background-color: #6d508e;
+}
+
+.current-offers .col-title {
+	background-color: #a1be3e;	
+}
+
+.upcoming-events .col-title {
+	background-color: #be1f41;	
+}
+
+.venue-img img {
+	border-radius: 100px;
+}
