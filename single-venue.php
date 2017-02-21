@@ -16,16 +16,43 @@
 				<p class="text-info"><?php echo get_field('website'); ?></p>
 				<a href="#" class="edit" class="btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
 			</label>
+			
+			<label for="venue-website" class="control-label">
+				<p class="text-info"><?php echo get_field('phone'); ?></p>
+				<a href="#" class="edit" class="btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+			</label>
+			
+			<label for="venue-website" class="control-label">
+				<p class="text-info"><?php echo get_field('address_1'); ?></p>
+				<a href="#" class="edit" class="btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+			</label>
+			
+			<?php if(get_field('address_2')) { ?>
+			<label for="venue-website" class="control-label">
+				<p class="text-info"><?php echo get_field('address_2'); ?></p>
+				<a href="#" class="edit" class="btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+			</label>
+			<?php } ?>
+			
+			<label for="venue-website" class="control-label">
+				<p class="text-info"><?php echo get_field('city'); ?></p>
+				<a href="#" class="edit" class="btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+			</label>
+			
+			<label for="venue-website" class="control-label">
+				<p class="text-info"><?php echo get_field('post_code'); ?></p>
+				<a href="#" class="edit" class="btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+			</label>
+			
+			<label for="venue-website" class="control-label">
+				<p class="text-info"><?php echo get_field('twitter'); ?></p>
+				<a href="#" class="edit" class="btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+			</label>
 
-			<p><?php echo get_field('phone'); ?></p>
-			<p>
-				<?php echo get_field('address_1'); ?><br>
-				<?php echo get_field('address_2'); ?><br>
-				<?php echo get_field('city'); ?><br>
-				<?php echo get_field('post_code'); ?>
-			</p>
-			<p>@<?php echo get_field('twitter'); ?></p>
-			<p><?php echo get_field('facebook'); ?></p>
+			<label for="venue-website" class="control-label">
+				<p class="text-info"><?php echo get_field('facebook'); ?></p>
+				<a href="#" class="edit" class="btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+			</label>
 
 			<?php
 			if( have_rows('opening_hours') ): ?>
@@ -222,16 +249,15 @@
 <script>
 $('.edit').click(function() {
 	var text = $(this).siblings('.text-info').text();
-	console.log(text);
 	var input = $('<input id="attribute" type="text" value="' + text + '" />')
 	$(this).siblings('.text-info').text('').append(input);
 	input.select();
-
- input.blur(function() {
-   var text = $('#attribute').val();
-   $('#attribute').parent().text(text);
-   $('#attribute').remove();
- });
+	
+	input.blur(function() {
+		var text = $('#attribute').val();
+		$('#attribute').parent().text(text);
+		$('#attribute').remove();
+	});
 });
 </script>
 <?php get_footer(); ?>
