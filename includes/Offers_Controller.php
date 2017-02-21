@@ -1,10 +1,10 @@
 <?php
 
-	class Venues_Controller extends WP_REST_Posts_Controller {
+	class Offers_Controller extends WP_REST_Posts_Controller {
 
 		public function __construct() {
 
-			parent::__construct('offers');
+			parent::__construct('offer');
 
 		}
 
@@ -12,7 +12,7 @@
 
 			parent::register_routes();
 
-			register_rest_route($this->namespace, '/' . $this->rest_base . '/(?P<id>[\d]+)/offers', array(
+			/*register_rest_route($this->namespace, '/' . $this->rest_base . '/(?P<id>[\d]+)/offers', array(
 
 				'args' => array(
 					'id' => array(
@@ -27,7 +27,19 @@
 					'args' 		=> $get_item_args,
 				)
 
-			));
+			));*/
+
+		}
+
+		public function get_offer_meta() {
+
+			$times_query = "SELECT wp_posts.ID AS post_id, start.start_time, end.end_time, date.date, redeem.redeemable FROM wp_posts
+					INNER JOIN (SELECT post_id, meta_value AS start_time FROM wp_postmeta WHERE meta_key = 'start_time') AS start ON (wp_posts.ID = start.post_id)
+					INNER JOIN (SELECT post_id, meta_value AS end_time FROM wp_postmeta WHERE meta_key = 'end_time') AS end ON (wp_posts.ID = end.post_id)
+					INNER JOIN (SELECT post_id, meta_value AS date FROM wp_postmeta WHERE meta_key = 'date') AS date ON (wp_posts.ID = date.post_id)
+					INNER JOIN (SELECT post_id, meta_value AS redeemable FROM wp_postmeta WHERE meta_key = 'maximum_redeemable') AS redeem ON (wp_posts.ID = redeem.post_id)";
+
+			return $times_query;
 
 		}
 
@@ -44,67 +56,20 @@
 
 		}
 
-		public function get_venue_address_query() {
-
-			$address_query = "SELECT wp_posts.ID, address_line_1, address_line_2, post_code, city FROM wp_posts 
-					  INNER JOIN (SELECT post_id, meta_value AS address_line_1 FROM wp_postmeta WHERE meta_key = 'address_1') AS address1 ON (wp_posts.ID = address1.post_id)
-					  INNER JOIN (SELECT post_id, meta_value AS address_line_2 FROM wp_postmeta WHERE meta_key = 'address_2') AS address2 ON (wp_posts.ID = address2.post_id)
-					  INNER JOIN (SELECT post_id, meta_value AS post_code FROM wp_postmeta WHERE meta_key = 'post_code') AS address3 ON (wp_posts.ID = address3.post_id)
-					  INNER JOIN (SELECT post_id, meta_value AS city FROM wp_postmeta WHERE meta_key = 'city') AS address4 ON (wp_posts.ID = address4.post_id)";
-
-			return $address_query;
-
-		}
-
-		public function get_venue_contact_query() {
-
-			$contact_query = "SELECT wp_posts.ID, phone, website, twitter, facebook FROM wp_posts
-					INNER JOIN (SELECT post_id, meta_value AS phone FROM wp_postmeta WHERE meta_key = 'phone') AS phone ON (wp_posts.ID = phone.post_id)
-					INNER JOIN (SELECT post_id, meta_value AS website FROM wp_postmeta WHERE meta_key = 'website') AS website ON (wp_posts.ID = website.post_id)
-					INNER JOIN (SELECT post_id, meta_value AS twitter FROM wp_postmeta WHERE meta_key = 'twitter') AS twitter ON (wp_posts.ID = twitter.post_id)
-					INNER JOIN (SELECT post_id, meta_value AS facebook FROM wp_postmeta WHERE meta_key = 'facebook') AS facebook ON (wp_posts.ID = facebook.post_id)";
-
-			return $contact_query;
-
-		}
-
-		public function get_venue_address($id) {
-
-			global $wpdb;
-			
-			$address = array();
-
-			$address_query = "SELECT meta_value, address_line_2 FROM wp_postmeta 
-					  INNER JOIN (SELECT meta_value AS address_line_2 FROM wp_postmeta WHERE meta_key = 'address_2') AS address2 ON (wp_postmeta.post_id = address2.post_id)
-					  WHERE post_id = " . $id . " AND meta_key = 'address_1'";
-
-			$address_query = "SELECT address_line_1, address_line_2, post_code, city FROM wp_posts 
-			INNER JOIN (SELECT post_id, meta_value AS address_line_1 FROM wp_postmeta WHERE meta_key = 'address_1') AS address1 ON (wp_posts.ID = address1.post_id)
-			INNER JOIN (SELECT post_id, meta_value AS address_line_2 FROM wp_postmeta WHERE meta_key = 'address_2') AS address2 ON (wp_posts.ID = address2.post_id)
-			INNER JOIN (SELECT post_id, meta_value AS post_code FROM wp_postmeta WHERE meta_key = 'post_code') AS address3 ON (wp_posts.ID = address3.post_id)
-			INNER JOIN (SELECT post_id, meta_value AS city FROM wp_postmeta WHERE meta_key = 'city') AS address4 ON (wp_posts.ID = address4.post_id)
-			WHERE wp_posts.ID = " . $id;
-
-			$address = $wpdb->get_row($address_query);
-
-			return $address;
-
-		}
-
-		public function get_venue_contact_details($id) {
+		public function get_item($request) {
 
 			global $wpdb;
 
-			$address_query = "SELECT phone, website, twitter, facebook FROM wp_posts
-INNER JOIN (SELECT post_id, meta_value AS phone FROM wp_postmeta WHERE meta_key = 'phone') AS phone ON (wp_posts.ID = phone.post_id)
-INNER JOIN (SELECT post_id, meta_value AS website FROM wp_postmeta WHERE meta_key = 'website') AS website ON (wp_posts.ID = website.post_id)
-INNER JOIN (SELECT post_id, meta_value AS twitter FROM wp_postmeta WHERE meta_key = 'twitter') AS twitter ON (wp_posts.ID = twitter.post_id)
-INNER JOIN (SELECT post_id, meta_value AS facebook FROM wp_postmeta WHERE meta_key = 'facebook') AS facebook ON (wp_posts.ID = facebook.post_id)
-WHERE wp_posts.ID = " . $id;
+			$id = $request['id'];
 
-			$contact = $wpdb->get_row($address_query);
+			$offer_query = "SELECT wp_posts.ID, post_title AS name, start_time, end_time, date, redeemable FROM wp_posts
+					INNER JOIN (" . $this->get_offer_meta() . ") AS times ON (wp_posts.ID = times.post_id)
+					WHERE post_type = 'offer' AND post_status = 'publish' AND ID = " . $id;
 
-			return $contact;
+			$offer = $wpdb->get_row($offer_query);
+
+			$response = rest_ensure_response($offer);
+			return $response;
 
 		}
 
@@ -112,16 +77,15 @@ WHERE wp_posts.ID = " . $id;
 
 			global $wpdb;
 
-			$venues_query = "SELECT wp_posts.ID, post_title AS name, contact.*, address.* FROM wp_posts 
-					INNER JOIN (" . $this->get_venue_address_query() . ") AS address ON (address.ID = wp_posts.ID)
-					INNER JOIN (" . $this->get_venue_contact_query() . ") AS contact ON (contact.ID = wp_posts.ID)
-					WHERE post_type = 'venue' AND post_status = 'publish'";
+			$offers_query = "SELECT wp_posts.ID, post_title AS name, start_time, end_time, date, redeemable FROM wp_posts
+					 INNER JOIN (" . $this->get_offer_meta() . ") AS times ON (wp_posts.ID = times.post_id)
+					 WHERE post_type = 'offer' AND post_status = 'publish'";
 
-			$venues = $wpdb->get_results($venues_query);
+			$offers = $wpdb->get_results($offers_query);
 
-			foreach ($venues as $venue) {
+			foreach ($offers as $offer) {
 
-				$venue->address["address_line_1"] = $venue->address_line_1;
+				/*$venue->address["address_line_1"] = $venue->address_line_1;
 				$venue->address["address_line_2"] = $venue->address_line_2;
 				$venue->address["post_code"] = $venue->post_code;
 				$venue->address["city"] = $venue->city;
@@ -142,13 +106,12 @@ WHERE wp_posts.ID = " . $id;
 				unset($venue->phone);
 				unset($venue->website);
 				unset($venue->twitter);
-				unset($venue->facebook);
+				unset($venue->facebook);*/
 
 
 			}
 
-			//$venues = array("Hello, World!");
-			$response  = rest_ensure_response( $venues );
+			$response  = rest_ensure_response( $offers );
 
 			return $response;
 
@@ -156,13 +119,13 @@ WHERE wp_posts.ID = " . $id;
 
 	}
 
-	function kino_register_venue_rest_routes() {
+	function kino_register_offers_rest_routes() {
 
-		$controller = new Venues_Controller();
+		$controller = new Offers_Controller();
 		$controller->register_routes();
 
 	}
 
-	add_action('rest_api_init', 'kino_register_venue_rest_routes');
+	add_action('rest_api_init', 'kino_register_offers_rest_routes');
 
 ?>
