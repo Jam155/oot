@@ -78,3 +78,11 @@ footer {
 .col-content #edit {
 	display: inline-block;	
 }
+
+.col-content p {
+	margin: 0;
+}
+
+#attribute {
+	width: 90%;
+}
