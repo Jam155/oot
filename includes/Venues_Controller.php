@@ -22,10 +22,17 @@
 				),
 				array(
 					'methods'	=> WP_REST_Server::READABLE,
-					'callback' 	=> array($this, 'get_offers'),
+					'callback' 	=> array( $this, 'get_offers'),
 					'permission_callback' => array($this, 'get_item_permissions_check'),
 					'args' 		=> $get_item_args,
-				)
+				),
+				array(
+					'methods' 	=> WP_REST_Server::CREATABLE,
+					'callback'	=> array( $this, 'create_item'),
+					'permission_callback' => array($this, 'get_item_permissions_check'),
+					'args'		=> $get_item_args,
+				),
+				'schema' => array( $this, 'get_public_item_schema'),
 
 			));
 
