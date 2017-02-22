@@ -12,7 +12,7 @@
 
 			parent::register_routes();
 
-			register_rest_route($this->namespace, '/' . $this->rest_base . '/(?P<id>[\d]+)/offers', array(
+			register_rest_route($this->namespace, '/' . $this->rest_base . '/(?P<id>[\d]+)/offer', array(
 
 				'args' => array(
 					'id' => array(
@@ -35,6 +35,33 @@
 				'schema' => array( $this, 'get_public_item_schema'),
 
 			));
+
+			register_rest_route($this->namespace, '/' . $this->rest_base . '/(?P<id>[\d]+)/event', array(
+
+				'args' => array(
+					'id' => array(
+						'description' => __('The Venues ID'),
+						'type' => 'integer',
+					),
+				),
+				array(
+					'methods'		=> WP_REST_Server::READABLE,
+					'callback'		=> array($this, 'get_events'),
+					'permission_callback'	=> array($this, 'get_item_permissions_check'),
+					'args'			=> $get_item_args,
+				),
+				'schema' => array($this, 'get_public_item_schema'),
+			));
+
+		}
+
+		public function get_events($request) {
+
+			$events = array("Event 1", "Event 2");
+
+			$response = rest_ensure_response( $events );
+
+			return $response;
 
 		}
 
