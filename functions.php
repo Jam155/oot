@@ -216,7 +216,7 @@ function create_post_type() {
 	  'menu_icon' => 'dashicons-megaphone',
 	  'show_in_rest' => true,
 	  'rest_base' => 'event',
-	  'rest_controller_class' => 'WP_REST_Posts_Controller',
+	  'rest_controller_class' => 'Events_Controller',
 	  'taxonomies'  => array( 'category', 'post_tag' ),
 	  'has_archive' => false,
 	  'supports' => array( 'title', 'editor', 'thumbnail', 'custom-fields')
@@ -246,3 +246,4 @@ function oot_allow_post_types( $allowed_post_types ) {
 add_filter( 'rest_api_allowed_post_types', 'oot_allow_post_types');
 require_once('includes/Venues_Controller.php');
 require_once('includes/Offers_Controller.php');
+require_once('includes/Events_Controller.php');
