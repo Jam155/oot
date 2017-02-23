@@ -13,47 +13,12 @@
 		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 		<script src="<?php echo get_template_directory_uri(); ?>/js/wickedpicker.min.js"></script>
 		<script src="<?php echo get_template_directory_uri(); ?>/js/glDatePicker.min.js"></script>
+		<script src="<?php echo get_template_directory_uri(); ?>/js/he.js"></script>
 		<script>
 			$( function() {
 				$('.datepicker').datepicker({ dateFormat: 'dd/mm/yy' });
 				var options = { now: "00:00",  };
 				$('.timepicker').wickedpicker(options);
-				
-				$('#calendar').datepicker({
-					beforeShowDay: function(date) {
-						var result = [true, '', null];
-						var matching = $.grep(events, function(event) {
-							return event.Date.valueOf() === date.valueOf();
-						});
-						
-						if (matching.length) {
-							result = [true, 'highlight', null];
-						}
-						return result;
-					},
-					onSelect: function(dateText) {
-						var date,
-							selectedDate = new Date(dateText),
-							i = 0,
-							event = null;
-						
-						while (i < events.length && !event) {
-							date = events[i].Date;
-
-							if (selectedDate.valueOf() === date.valueOf()) {
-								event = events[i];
-							}
-							i++;
-						}
-						if (event) {
-							alert(event.Title);
-						}
-					},
-					inline: true,
-					firstDay: 1,
-					showOtherMonths: true,
-					dayNamesMin: ['S', 'M', 'T', 'W', 'T', 'F', 'S']
-				});
 			});
 			$( document ).ready(function() {
 				$('.col-accordion-wrapper .col-title').click(function() {
