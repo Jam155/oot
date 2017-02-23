@@ -1,10 +1,14 @@
 <?php
 
-	class Venues_Controller extends WP_REST_Posts_Controller {
+	require_once('KCController.php');
+	require_once('models/EventModel.php');
+	require_once('models/OfferModel.php');
+
+	class Venues_Controller extends KCController {
 
 		public function __construct() {
 
-			parent::__construct('venue');
+			parent::__construct(new VenueModel(), 'venue');
 
 		}
 
@@ -12,7 +16,7 @@
 
 			parent::register_routes();
 
-			register_rest_route($this->namespace, '/' . $this->rest_base . '/(?P<id>[\d]+)/offers', array(
+			register_rest_route($this->namespace, '/' . $this->rest_base . '/(?P<id>[\d]+)/offer', array(
 
 				'args' => array(
 					'id' => array(
@@ -22,139 +26,102 @@
 				),
 				array(
 					'methods'	=> WP_REST_Server::READABLE,
-					'callback' 	=> array($this, 'get_offers'),
+					'callback' 	=> array( $this, 'get_offers'),
 					'permission_callback' => array($this, 'get_item_permissions_check'),
 					'args' 		=> $get_item_args,
-				)
+				),
+				array(
+					'methods' 	=> WP_REST_Server::CREATABLE,
+					'callback'	=> array( $this, 'create_item'),
+					'permission_callback' => array($this, 'get_item_permissions_check'),
+					'args'		=> $get_item_args,
+				),
+				'schema' => array( $this, 'get_public_item_schema'),
 
 			));
+
+			register_rest_route($this->namespace, '/' . $this->rest_base . '/(?P<id>[\d]+)/event', array(
+
+				'args' => array(
+					'id' => array(
+						'description' => __('The Venues ID'),
+						'type' => 'integer',
+					),
+				),
+				array(
+					'methods'		=> WP_REST_Server::READABLE,
+					'callback'		=> array($this, 'get_events'),
+					'permission_callback'	=> array($this, 'get_item_permissions_check'),
+					'args'			=> $get_item_args,
+				),
+				'schema' => array($this, 'get_public_item_schema'),
+			));
+
+		}
+
+		public function get_events($request) {
+
+			$eventModel = new EventModel();
+			$id = $request['id'];
+			$events = $this->model->getEvents($id);
+			$eventsArray = array();
+
+			foreach($events as $event) {
+				
+				$eventsArray[] = $eventModel->getItem($event->ID);
+
+			}
+			
+			$response = rest_ensure_response( $eventsArray );
+			return $response;
 
 		}
 
 		public function get_offers($request) {
 
-			//var_dump($request);
+			$offerModel = new OfferModel();
+			$id = $request['id'];
+			$offers = $this->model->getOffers($id);
+			$offersArray = array();
 
-			$offers = array("2 For 1", "50% Off");
-			
-			$response  = rest_ensure_response( $offers );
+			foreach($offers as $offer) {
 
-			return $response;
-
-
-		}
-
-		public function get_venue_address_query() {
-
-			$address_query = "SELECT wp_posts.ID, address_line_1, address_line_2, post_code, city FROM wp_posts 
-					  INNER JOIN (SELECT post_id, meta_value AS address_line_1 FROM wp_postmeta WHERE meta_key = 'address_1') AS address1 ON (wp_posts.ID = address1.post_id)
-					  INNER JOIN (SELECT post_id, meta_value AS address_line_2 FROM wp_postmeta WHERE meta_key = 'address_2') AS address2 ON (wp_posts.ID = address2.post_id)
-					  INNER JOIN (SELECT post_id, meta_value AS post_code FROM wp_postmeta WHERE meta_key = 'post_code') AS address3 ON (wp_posts.ID = address3.post_id)
-					  INNER JOIN (SELECT post_id, meta_value AS city FROM wp_postmeta WHERE meta_key = 'city') AS address4 ON (wp_posts.ID = address4.post_id)";
-
-			return $address_query;
-
-		}
-
-		public function get_venue_contact_query() {
-
-			$contact_query = "SELECT wp_posts.ID, phone, website, twitter, facebook FROM wp_posts
-					INNER JOIN (SELECT post_id, meta_value AS phone FROM wp_postmeta WHERE meta_key = 'phone') AS phone ON (wp_posts.ID = phone.post_id)
-					INNER JOIN (SELECT post_id, meta_value AS website FROM wp_postmeta WHERE meta_key = 'website') AS website ON (wp_posts.ID = website.post_id)
-					INNER JOIN (SELECT post_id, meta_value AS twitter FROM wp_postmeta WHERE meta_key = 'twitter') AS twitter ON (wp_posts.ID = twitter.post_id)
-					INNER JOIN (SELECT post_id, meta_value AS facebook FROM wp_postmeta WHERE meta_key = 'facebook') AS facebook ON (wp_posts.ID = facebook.post_id)";
-
-			return $contact_query;
-
-		}
-
-		public function get_venue_address($id) {
-
-			global $wpdb;
-			
-			$address = array();
-
-			$address_query = "SELECT meta_value, address_line_2 FROM wp_postmeta 
-					  INNER JOIN (SELECT meta_value AS address_line_2 FROM wp_postmeta WHERE meta_key = 'address_2') AS address2 ON (wp_postmeta.post_id = address2.post_id)
-					  WHERE post_id = " . $id . " AND meta_key = 'address_1'";
-
-			$address_query = "SELECT address_line_1, address_line_2, post_code, city FROM wp_posts 
-			INNER JOIN (SELECT post_id, meta_value AS address_line_1 FROM wp_postmeta WHERE meta_key = 'address_1') AS address1 ON (wp_posts.ID = address1.post_id)
-			INNER JOIN (SELECT post_id, meta_value AS address_line_2 FROM wp_postmeta WHERE meta_key = 'address_2') AS address2 ON (wp_posts.ID = address2.post_id)
-			INNER JOIN (SELECT post_id, meta_value AS post_code FROM wp_postmeta WHERE meta_key = 'post_code') AS address3 ON (wp_posts.ID = address3.post_id)
-			INNER JOIN (SELECT post_id, meta_value AS city FROM wp_postmeta WHERE meta_key = 'city') AS address4 ON (wp_posts.ID = address4.post_id)
-			WHERE wp_posts.ID = " . $id;
-
-			$address = $wpdb->get_row($address_query);
-
-			return $address;
-
-		}
-
-		public function get_venue_contact_details($id) {
-
-			global $wpdb;
-
-			$address_query = "SELECT phone, website, twitter, facebook FROM wp_posts
-INNER JOIN (SELECT post_id, meta_value AS phone FROM wp_postmeta WHERE meta_key = 'phone') AS phone ON (wp_posts.ID = phone.post_id)
-INNER JOIN (SELECT post_id, meta_value AS website FROM wp_postmeta WHERE meta_key = 'website') AS website ON (wp_posts.ID = website.post_id)
-INNER JOIN (SELECT post_id, meta_value AS twitter FROM wp_postmeta WHERE meta_key = 'twitter') AS twitter ON (wp_posts.ID = twitter.post_id)
-INNER JOIN (SELECT post_id, meta_value AS facebook FROM wp_postmeta WHERE meta_key = 'facebook') AS facebook ON (wp_posts.ID = facebook.post_id)
-WHERE wp_posts.ID = " . $id;
-
-			$contact = $wpdb->get_row($address_query);
-
-			return $contact;
-
-		}
-
-		public function get_items($request) {
-
-			global $wpdb;
-
-			$venues_query = "SELECT wp_posts.ID, post_title AS name, contact.*, address.* FROM wp_posts 
-					INNER JOIN (" . $this->get_venue_address_query() . ") AS address ON (address.ID = wp_posts.ID)
-					INNER JOIN (" . $this->get_venue_contact_query() . ") AS contact ON (contact.ID = wp_posts.ID)
-					WHERE post_type = 'venue' AND post_status = 'publish'";
-
-			$venues = $wpdb->get_results($venues_query);
-
-			foreach ($venues as $venue) {
-
-				$venue->address["address_line_1"] = $venue->address_line_1;
-				$venue->address["address_line_2"] = $venue->address_line_2;
-				$venue->address["post_code"] = $venue->post_code;
-				$venue->address["city"] = $venue->city;
-
-				$venue->contact['phone'] = $venue->phone;
-				$venue->contact['website'] = $venue->website;
-				$venue->contact['twitter'] = $venue->twitter;
-				$venue->contact['facebook'] = $venue->facebook;
-
-
-				//$venue->contact = $this->get_venue_contact_details($venue->ID);
-
-				unset($venue->address_line_1);
-				unset($venue->address_line_2);
-				unset($venue->post_code);
-				unset($venue->city);
-
-				unset($venue->phone);
-				unset($venue->website);
-				unset($venue->twitter);
-				unset($venue->facebook);
-
+				$offersArray[] = $offerModel->getItem($offer->ID);
 
 			}
-
-			//$venues = array("Hello, World!");
-			$response  = rest_ensure_response( $venues );
-
+			
+			$response  = rest_ensure_response( $offersArray );
 			return $response;
+
 
 		}
 
+		protected function restructure($item) {
+
+			$item->address["address_line_1"] = $item->address_line_1;
+			$item->address["address_line_2"] = $item->address_line_2;
+			$item->address["post_code"] = $item->post_code;
+			$item->address["city"] = $item->city;
+
+			$item->contact['phone'] = $item->phone;
+			$item->contact['website'] = $item->website;
+			$item->contact['twitter'] = $item->facebook;
+			$item->contact['facebook'] = $item->twitter;
+
+			unset($item->address_line_1);
+			unset($item->address_line_2);
+			unset($item->post_code);
+			unset($item->city);
+			unset($item->phone);
+			unset($item->website);
+			unset($item->facebook);
+			unset($item->twitter);
+
+		}
+		
 	}
+
+	require_once('models/VenueModel.php');
 
 	function kino_register_venue_rest_routes() {
 
