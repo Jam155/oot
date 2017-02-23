@@ -17,6 +17,8 @@ add_action( 'wp_enqueue_scripts', 'oot_load_scripts' );
 function oot_load_scripts()
 {
 	wp_enqueue_script( 'jquery' );
+	wp_enqueue_script('event-calender', get_template_directory_uri() . '/js/event-calander.js');
+	wp_localize_script('event-calender', 'site_url', get_site_url());
 }
 add_action( 'comment_form_before', 'oot_enqueue_comment_reply_script' );
 function oot_enqueue_comment_reply_script()
