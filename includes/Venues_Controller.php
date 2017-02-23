@@ -1,17 +1,14 @@
 <?php
 
+	require_once('KCController.php');
 	require_once('models/EventModel.php');
 	require_once('models/OfferModel.php');
 
-	class Venues_Controller extends WP_REST_Posts_Controller {
-
-		private $model;
+	class Venues_Controller extends KCController {
 
 		public function __construct() {
 
-			$this->model = new VenueModel();
-
-			parent::__construct('venue');
+			parent::__construct(new VenueModel(), 'venue');
 
 		}
 
@@ -99,71 +96,29 @@
 
 		}
 
-		public function get_item($request) {
+		protected function restructure($item) {
 
-			$id = $request['id'];
-			$venue = $this->model->getItem($id);
+			$item->address["address_line_1"] = $item->address_line_1;
+			$item->address["address_line_2"] = $item->address_line_2;
+			$item->address["post_code"] = $item->post_code;
+			$item->address["city"] = $item->city;
 
-			$venue->address["address_line_1"] = $venue->address_line_1;
-			$venue->address["address_line_2"] = $venue->address_line_2;
-			$venue->address["post_code"] = $venue->post_code;
-			$venue->address["city"] = $venue->city;
+			$item->contact['phone'] = $item->phone;
+			$item->contact['website'] = $item->website;
+			$item->contact['twitter'] = $item->facebook;
+			$item->contact['facebook'] = $item->twitter;
 
-			$venue->contact['phone'] = $venue->phone;
-			$venue->contact['website'] = $venue->website;
-			$venue->contact['twitter'] = $venue->twitter;
-			$venue->contact['facebook'] = $venue->facebook;
-
-			unset($venue->address_line_1);
-			unset($venue->address_line_2);
-			unset($venue->post_code);
-			unset($venue->city);
-
-			unset($venue->phone);
-			unset($venue->website);
-			unset($venue->twitter);
-			unset($venue->facebook);
-
-			$response = rest_ensure_response($venue);
-			return $response;
+			unset($item->address_line_1);
+			unset($item->address_line_2);
+			unset($item->post_code);
+			unset($item->city);
+			unset($item->phone);
+			unset($item->website);
+			unset($item->facebook);
+			unset($item->twitter);
 
 		}
-
-		public function get_items($request) {
-
-			$venues = $this->model->getItems();
-
-			foreach ($venues as $venue) {
-
-				$venue->address["address_line_1"] = $venue->address_line_1;
-				$venue->address["address_line_2"] = $venue->address_line_2;
-				$venue->address["post_code"] = $venue->post_code;
-				$venue->address["city"] = $venue->city;
-
-				$venue->contact['phone'] = $venue->phone;
-				$venue->contact['website'] = $venue->website;
-				$venue->contact['twitter'] = $venue->twitter;
-				$venue->contact['facebook'] = $venue->facebook;
-
-				unset($venue->address_line_1);
-				unset($venue->address_line_2);
-				unset($venue->post_code);
-				unset($venue->city);
-
-				unset($venue->phone);
-				unset($venue->website);
-				unset($venue->twitter);
-				unset($venue->facebook);
-
-
-			}
-
-			$response  = rest_ensure_response( $venues );
-
-			return $response;
-
-		}
-
+		
 	}
 
 	require_once('models/VenueModel.php');
