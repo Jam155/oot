@@ -70,7 +70,7 @@
 					" WHERE post_type = 'event' AND post_status = 'publish'";
 			
 			$items = $wpdb->get_results($items_query);
-			return $item;
+			return $items;
 
 
 		}
