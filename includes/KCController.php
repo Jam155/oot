@@ -32,7 +32,7 @@
 
 			$item = $this->restructure($item);
 
-			$response = rest_ensure_response($venue);
+			$response = rest_ensure_response($item);
 			return $response;
 
 		}
