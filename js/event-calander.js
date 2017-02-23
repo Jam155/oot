@@ -9,6 +9,9 @@ $(document).ready(function() {
 	    console.log(data);
 		//len = Object.keys(data).length;
 	    $.each(data, function(key, element) {
+	    		console.log(element.date);
+	    		element.date = element.date.slice(0,4) + '-' + element.date.slice(4,6) + '-' + element.date.slice(6,8);
+	    		console.log(element.date);
 			events.push({
 				Title: he.decode(element.name),
 				Date: new Date(element.date),
