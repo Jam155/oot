@@ -40,6 +40,34 @@
 
 		}
 
+		//Get any available events for this venue
+		public function getEvents($id) {
+
+			global $wpdb;
+
+			$events_query = "SELECT ID FROM wp_posts
+					 INNER JOIN wp_postmeta ON (wp_posts.ID = wp_postmeta.post_id)
+					 WHERE wp_postmeta.meta_key = 'venue' AND wp_postmeta.meta_value = " . $id . " AND wp_posts.post_type = 'event'";
+
+			$events = $wpdb->get_results($events_query);
+			return $events;
+
+		}
+
+		//Get any available offers for this venue
+		public function getOffers($id) {
+
+			global $wpdb;
+
+			$offers_query = "SELECT ID FROM wp_posts
+					 INNER JOIN wp_postmeta ON (wp_posts.ID = wp_postmeta.post_id)
+					 WHERE wp_postmeta.meta_key = 'venue' AND wp_postmeta.meta_value = " . $id . " AND wp_posts.post_type = 'offer'";
+			
+			$offers = $wpdb->get_results($offers_query);
+			return $offers;
+
+		}
+
 	}
 
 ?>
