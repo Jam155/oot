@@ -290,12 +290,13 @@ $.getJSON('http://localhost/oot/wp-json/wp/v2/event', function(data) {
 	//len = Object.keys(data).length;
     $.each(data, function(key, element) {
 		events.push({
-			Title: he.decode(element.title.rendered),
-			Date: new Date(element.acf.date),
-			Repeatable: element.acf.repeat_event
+			Title: he.decode(element.name),
+			Date: new Date(element.date),
+			Repeatable: element.repeatable
 		});
     });
 	
+	console.log(events);
 	var today = new Date();
 	var todayMonth = today.getMonth();
 	var todayYear = today.getYear();
