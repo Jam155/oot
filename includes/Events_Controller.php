@@ -21,7 +21,7 @@
 		public function get_item($request) {
 
 			$id = $request['id'];
-			$event = $this->model->get_item($id);
+			$event = $this->model->getItem($id);
 
 			$response = rest_ensure_response($event);
 			return $response;
@@ -30,7 +30,7 @@
 
 		public function get_items($request) {
 
-			$events = $this->model->get_items();
+			$events = $this->model->getItems();
 
 			foreach ($events as $event) {
 				
