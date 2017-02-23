@@ -1,6 +1,6 @@
 <?php
 
-	require_once('models/EventModel.php')
+	require_once('models/EventModel.php');
 	require_once('KCController.php');
 
 	class Events_Controller extends KCController {
