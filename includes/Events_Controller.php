@@ -1,51 +1,17 @@
 <?php
 
-	class Events_Controller extends WP_REST_Posts_Controller {
+	require_once('models/EventModel.php')
+	require_once('KCController.php');
 
-		private $model;
+	class Events_Controller extends KCController {
 
 		public function __construct() {
 
-			$this->model = new EventModel();
-
-			parent::__construct('event');
-
-		}
-
-		public function register_routes() {
-
-			parent::register_routes();
-
-		}
-
-		public function get_item($request) {
-
-			$id = $request['id'];
-			$event = $this->model->getItem($id);
-
-			$response = rest_ensure_response($event);
-			return $response;
-
-		}
-
-		public function get_items($request) {
-
-			$events = $this->model->getItems();
-
-			foreach ($events as $event) {
-				
-				/* In case of cleanup */
-			}
-
-			$response  = rest_ensure_response( $events );
-
-			return $response;
+			parent::__construct(new EventModel(), 'event');
 
 		}
 
 	}
-
-	require_once('models/EventModel.php');
 
 	function kino_register_events_rest_routes() {
 
