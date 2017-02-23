@@ -1,5 +1,8 @@
 <?php
 
+	require_once('models/EventModel.php');
+	require_once('models/OfferModel.php');
+
 	class Venues_Controller extends WP_REST_Posts_Controller {
 
 		private $model;
@@ -61,22 +64,36 @@
 
 		public function get_events($request) {
 
-			$events = array("Event 1", "Event 2");
+			$eventModel = new EventModel();
+			$id = $request['id'];
+			$events = $this->model->getEvents($id);
+			$eventsArray = array();
 
-			$response = rest_ensure_response( $events );
+			foreach($events as $event) {
+				
+				$eventsArray[] = $eventModel->getItem($event->ID);
 
+			}
+			
+			$response = rest_ensure_response( $eventsArray );
 			return $response;
 
 		}
 
 		public function get_offers($request) {
 
-			//var_dump($request);
+			$offerModel = new OfferModel();
+			$id = $request['id'];
+			$offers = $this->model->getOffers($id);
+			$offersArray = array();
 
-			$offers = array("2 For 1", "50% Off");
+			foreach($offers as $offer) {
+
+				$offersArray[] = $offerModel->getItem($offer->ID);
+
+			}
 			
-			$response  = rest_ensure_response( $offers );
-
+			$response  = rest_ensure_response( $offersArray );
 			return $response;
 
 
