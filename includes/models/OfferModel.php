@@ -30,4 +30,6 @@
 
 			parent::__construct($meta_columns, $columns, $post_type);
 
+		}
+
 	}
