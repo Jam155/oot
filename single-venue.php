@@ -5,23 +5,33 @@
 		<h3 class="col-title">Venue Details</h3>
 		<div class="col-content">
 			
-			<div class="venue-img"><?php echo get_the_post_thumbnail(get_the_ID(), 'thumbnail'); ?></div>
-			
-			<label for="venue-title" class="control-label">
-				<p class="text-info"><?php echo get_the_title(); ?></p>
-				<a href="#" class="edit" class="btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-			</label>
-			
-			<label for="venue-website" class="control-label">
-				<p class="text-info"><?php echo get_field('website'); ?></p>
-				<a href="#" class="edit" class="btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-			</label>
+			<div class="top-box">
+				<div class="left">
+					<div class="venue-img"><?php echo get_the_post_thumbnail(get_the_ID(), 'thumbnail'); ?></div>
+				</div>
+				<div class="right">					
+					<label for="venue-title" class="control-label">
+						<p class="text-info"><?php echo get_the_title(); ?></p>
+						<a href="#" class="edit btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+					</label>
+					
+					<label for="venue-website" class="control-label">
+						<?php
+							$website = parse_url(get_field('website')); 
+							$website = $website['host'];
+						?>
+						<p class="text-info"><?php echo $website; ?></p>
+						<a href="#" class="edit btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+					</label>
+				</div>
+			</div>
 			
 			<div class="venue-detail-columns">
 				<div class="left">
 					<?php if( have_rows('opening_hours') ): ?>
 						<?php while( have_rows('opening_hours') ): the_row(); ?>
 							<div class="opening-hours">
+								<p class="venue-desc-title">Opening Hours</p>
 								<table>
 									<tr>
 										<th>M</th>
@@ -72,46 +82,57 @@
 					<?php endif;?>
 				</div>
 				<div class="right">
-					<label for="venue-phone" class="control-label">
-						<p class="text-info"><?php echo get_field('phone'); ?></p>
-						<a href="#" class="edit" class="btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-					</label>
-					
-					<label for="venue-address-1" class="control-label">
-						<p class="text-info"><?php echo get_field('address_1'); ?></p>
-						<a href="#" class="edit" class="btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-					</label>
-
-					<?php if(get_field('address_2')) { ?>
-					<label for="venue-address-2" class="control-label no-icon">
-						<p class="text-info"><?php echo get_field('address_2'); ?></p>
-						<a href="#" class="edit" class="btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-					</label>
-					<?php } ?>
-
-					<label for="venue-city" class="control-label no-icon">
-						<p class="text-info"><?php echo get_field('city'); ?></p>
-						<a href="#" class="edit" class="btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-					</label>
-
-					<label for="venue-post-code" class="control-label no-icon">
-						<p class="text-info"><?php echo get_field('post_code'); ?></p>
-						<a href="#" class="edit" class="btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-					</label>
-
-					<label for="venue-twitter" class="control-label">
-						<p class="text-info"><?php echo get_field('twitter'); ?></p>
-						<a href="#" class="edit" class="btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-					</label>
-					
-					<label for="venue-facebook" class="control-label">
-						<p class="text-info"><?php echo get_field('facebook'); ?></p>
-						<a href="#" class="edit" class="btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-					</label>
+					<ul>
+						<li>
+							<label for="venue-phone" class="control-label">
+								<p class="text-info"><?php echo get_field('phone'); ?></p>
+								<a href="#" class="edit btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+							</label>
+						</li>
+						<li>
+							<label for="venue-address-1" class="control-label">
+								<p class="text-info"><?php echo get_field('address_1'); ?></p>
+								<a href="#" class="edit btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+							</label>
+						</li>
+						<?php if(get_field('address_2')) { ?>
+						<li>
+							<label for="venue-address-2" class="control-label no-icon">
+								<p class="text-info"><?php echo get_field('address_2'); ?></p>
+								<a href="#" class="edit btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+							</label>
+						</li>
+						<?php } ?>
+						<li>
+							<label for="venue-city" class="control-label no-icon">
+								<p class="text-info"><?php echo get_field('city'); ?></p>
+								<a href="#" class="edit btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+							</label>
+						</li>
+						<li>
+							<label for="venue-post-code" class="control-label no-icon">
+								<p class="text-info"><?php echo get_field('post_code'); ?></p>
+								<a href="#" class="edit btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+							</label>
+						</li>
+						<li>
+							<label for="venue-twitter" class="control-label">
+								<p class="text-info"><?php echo get_field('twitter'); ?></p>
+								<a href="#" class="edit btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+							</label>
+						</li>
+						<li>
+							<label for="venue-facebook" class="control-label">
+								<p class="text-info"><?php echo get_field('facebook'); ?></p>
+								<a href="#" class="edit btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+							</label>
+						</li>
+					</ul>
 				</div>
+				<div class="clearfix"></div>
 			</div>
 			
-			<label for="venue-website" class="control-label venue-description">
+			<label for="venue-description" class="control-label venue-description">
 				<p class="venue-desc-title">Venue Description</p><a href="#" class="edit-textarea" class="btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
 				<div class="text-info-wrapper">
 					<p class="text-info"><?php echo get_the_content(); ?></p>

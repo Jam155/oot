@@ -24,7 +24,6 @@ footer {
     display: inline-block;
 	margin: 10px;
 	float: left;
-	position: relative;
 }
 
 .venue-wrapper .col-title {
@@ -107,8 +106,12 @@ footer {
 	margin: 0;
 }
 
+.control-label .edit {
+	float: right;	
+}
+
 #attribute {
-	width: 90%;
+	width: 83%;
 }
 
 #cat {
@@ -277,6 +280,14 @@ ul.list-hours {
     background-color: #a378d5;	
 }
 
+.venue-detail-columns .clearfix {
+    display: block;
+    clear: both;
+    border-bottom: 1px solid #ded9e3;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+}
+
 .venue-detail-columns .left,
 .venue-detail-columns .right {
 	display: inline-block;
@@ -290,16 +301,28 @@ ul.list-hours {
 }
 
 .venue-detail-columns .right {
-    width: calc(48%);
+    width: calc(54%);
 	font-size: 14px;
+}
+
+.venue-detail-columns .right ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.venue-detail-columns .right ul li {
+	padding: 5px 0;
+	margin-bottom: 5px;
+	border-bottom: 1px solid #ded9e3;
+}
+
+.venue-detail-columns .right ul li:last-child {
+	border-bottom: 0;
 }
 
 .venue-detail-columns .right .fa {
     font-size: 16px;
-}
-
-.venue-detail-columns .right label.no-icon {
-	margin-left: 20px;
 }
 
 label .text-info {
@@ -307,6 +330,7 @@ label .text-info {
 	width: 83%;
 }
 
+label.no-icon .text-info:before,
 label .text-info:before {
     font-family: FontAwesome;
 	color: #6d508e;
@@ -315,7 +339,44 @@ label .text-info:before {
     display: inline-block;
 }
 
+label.no-icon .text-info:before { content: ''; } 
+
+.venue-description label .text-info:before { margin-right: 0px !important; }
+
+label[for="venue-website"] .text-info:before { content: '\f0ac'; }
 label[for="venue-phone"] .text-info:before { content: '\f095'; }
 label[for="venue-address-1"] .text-info:before { content: '\f041'; }
 label[for="venue-twitter"] .text-info:before { content: '\f099'; }
 label[for="venue-facebook"] .text-info:before { content: '\f09a'; }
+
+label[for="venue-title"] .text-info {
+	font-size: 25px;
+	font-weight: 100;
+	margin-bottom: 12px;
+}
+
+label[for="venue-website"] .text-info {
+	font-size: 14px;
+	color: #6d508e;
+}
+
+.text-info {
+    color: #55545c;
+}
+
+.col-content .top-box {
+    margin-top: -50px;
+	border-bottom: 1px solid #ded9e3;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+.col-content .top-box .left {
+    max-width: 35%;
+    display: inline-block;	
+}
+
+.col-content .top-box .right {
+    max-width: 65%;
+    display: inline-block;	
+}
