@@ -23,6 +23,13 @@ $(document).ready(function() {
 		var today = new Date();
 		var todayMonth = today.getMonth();
 		var todayYear = today.getYear();
+		var weekTimestamp = 	7 * 24 * 60 * 60 * 1000;
+		var fortnightTimestamp = 14 * 24 * 60 * 60 * 1000;
+		var margin = 1 * 60 * 60 * 1000;
+
+		console.log(weekTimestamp);
+		console.log(fortnightTimestamp);
+
 		$('#calendar').datepicker({
 			onChangeMonthYear: function(year, month, inst) {
 				todayMonth = month-1;
@@ -31,33 +38,48 @@ $(document).ready(function() {
 			beforeShowDay: function(date) {
 				var result = [true, '', null];
 				var matching = $.grep(events, function(event) {
-					//var evDate = new Date(event.Date);
-					var newDate = new Date(event.Date);
-					if (event.Repeatable == 'Weekly' && date.getDate()%7 == 0 ) {
-						//var timestmp = new Date().setFullYear(new Date().getFullYear(), 0, 1);
-						//var yearFirstDay = Math.floor(timestmp / 86400000);
-						//var today = Math.ceil((new Date().getTime()) / 86400000);
-						//var eventdate = Math.ceil((new Date(event.Date).getTime()) / 86400000);
-						//var eventDayOfYear = eventdate - yearFirstDay;
-						//var todayDayOfYear = today - yearFirstDay;
-						//console.log(eventDayOfYear);
-						//console.log(todayDayOfYear);
-					
-						console.log(date.getDate());
-						newDate.setDate(date.getDate());
-						newDate.setMonth(todayMonth);
-						newDate.setYear(todayYear);
-					} else if (event.Repeatable == 'Fortnightly' && date.getDate()%14 == 0 ) {
-						newDate.setDate(date.getDate());
-						newDate.setMonth(todayMonth);
-						newDate.setYear(todayYear);
-					} else if (event.Repeatable == 'Monthly') {				
-						newDate.setMonth(todayMonth);
-						newDate.setYear(todayYear);
+
+					var result = false;
+					var eventDate = new Date(event.Date);
+					var eventTimestamp = eventDate.getTime();
+					var curTimestamp = date.getTime();
+					var diffTime = curTimestamp - eventTimestamp;
+
+					if (diffTime == 0) {
+
+						result = true;
+
 					}
+
+					if (curTimestamp > eventTimestamp) {
+
+						var daysSince = Math.ceil(diffTime / (24 * 60 * 60 * 1000));	
+
+						if (event.Repeatable == 'Weekly' && (daysSince % 7) == 0) {
+
+							result = true;
+
+						} else if (event.Repeatable == 'Fortnightly' && (daysSince % 14) == 0) {
+							
+							result = true;
+
+						} else if (event.Repeatable == 'Monthly') {
+
+							eventDate.setMonth(date.getMonth());
+
+							if (eventDate.getTime() == date.getTime()) {
+
+								result = true;
+
+							}
+
+						}
+
+					}
+
+					return result;
+
 				
-					return newDate.valueOf() === date.valueOf();
-					//return event.Date.valueOf() === date.valueOf();
 				});
 				if (matching.length) {
 					result = [true, 'highlight', null];
