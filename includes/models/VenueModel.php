@@ -82,6 +82,30 @@
 
 		}
 
+		public function getItem($id) {
+
+			$item = parent::getItem($id);
+
+			$item->categories = $this->getCategories($item->post_id);
+
+			return $item;
+
+		}
+
+		public function getItems() {
+
+			$items = parent::getItems();
+
+			foreach($items as $item) {
+
+				$item->categories = $this->getCategories($item->post_id);
+
+			}
+
+			return $items;
+
+		}
+
 	}
 
 ?>
