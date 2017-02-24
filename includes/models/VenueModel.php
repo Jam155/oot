@@ -42,19 +42,14 @@
 
 		public function getCategories($id) {
 
-			$categories = wp_get_post_categories($id, array('fields' => 'all'));
+			global $wpdb;
 
-			/*foreach($categories as $category) {
+			$categories_query = "SELECT wp_terms.term_id, name, slug FROM wp_terms
+						INNER JOIN wp_term_taxonomy ON (wp_terms.term_id = wp_term_taxonomy.term_id)
+						INNER JOIN wp_term_relationships ON (wp_term_taxonomy.term_taxonomy_id = wp_term_relationships.term_taxonomy_id)
+						WHERE taxonomy = 'category' AND object_id = " . $id;
 
-				unset($category["slug"]);
-				unset($category["term_group"]);
-				unset($category["term_taxonomy_id"]);
-				unset($category["parent"]);
-				unset($category["count"]);
-				unset($category["filter"]);
-
-			}*/
-
+			$categories = $wpdb->get_results($categories_query);
 			return $categories;
 
 		}
