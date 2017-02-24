@@ -40,6 +40,25 @@
 
 		}
 
+		public function getCategories($id) {
+
+			$categories = wp_get_post_categories($id, array('fields' => 'all'));
+
+			/*foreach($categories as $category) {
+
+				unset($category["slug"]);
+				unset($category["term_group"]);
+				unset($category["term_taxonomy_id"]);
+				unset($category["parent"]);
+				unset($category["count"]);
+				unset($category["filter"]);
+
+			}*/
+
+			return $categories;
+
+		}
+
 		//Get any available events for this venue
 		public function getEvents($id) {
 

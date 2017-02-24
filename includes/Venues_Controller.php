@@ -40,6 +40,29 @@
 
 			));
 
+			register_rest_route($this->namespace, '/' . $this->rest_base . '/(?P<id>[\d]+)/categories', array(
+
+				'args' => array(
+
+					'id' => array(
+
+						'description' => __('The Venues ID'),
+						'type' => 'integer',
+
+					),
+
+				),
+				array(
+					'methods' => WP_REST_Server::READABLE,
+					'callback' => array($this, 'get_categories'),
+					'permission_callback' => array($this, 'get_item_permissions_check'),
+					'args' => $get_item_args,
+				),
+				'schema' => array($this, 'get_public_item_schema'),
+
+
+			));
+
 			register_rest_route($this->namespace, '/' . $this->rest_base . '/(?P<id>[\d]+)/event', array(
 
 				'args' => array(
@@ -56,6 +79,16 @@
 				),
 				'schema' => array($this, 'get_public_item_schema'),
 			));
+
+		}
+
+		public function get_categories($request) {
+
+			$id = $request['id'];
+			$categories = $this->model->getCategories($id);
+
+			$response = rest_ensure_response($categories);
+			return $response;
 
 		}
 
@@ -116,6 +149,8 @@
 			unset($item->website);
 			unset($item->facebook);
 			unset($item->twitter);
+
+			return $item;
 
 		}
 		
