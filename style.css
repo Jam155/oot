@@ -2,6 +2,8 @@
 Theme Name: Oot
 */
 
+* { font-family: 'Lato', sans-serif; }
+
 body {
 	margin: 0;
 	padding: 50px;
@@ -11,6 +13,11 @@ body {
 
 footer {
 	clear: both;
+}
+
+.dashboard-logo {
+    margin: 0 10px 40px 10px;
+    display: block;	
 }
 
 .venue-wrapper {
@@ -24,7 +31,6 @@ footer {
     display: inline-block;
 	margin: 10px;
 	float: left;
-	position: relative;
 }
 
 .venue-wrapper .col-title {
@@ -55,8 +61,173 @@ footer {
 	border: 3px solid #e5e5e5;
 }
 
+.upcoming-events .col-content,
+.current-offers .col-content {
+	padding: 0;
+}
+
+.upcoming-events .col-content #calendar .ui-datepicker table {
+	margin: 0 0 !important;
+}
+
+.upcoming-events .col-content #calendar {
+	padding-bottom: 28px;
+    border-bottom: 1px solid #ded9e3;
+}
+
+.event-item,
+.offer-item {
+    border-bottom: 1px solid #ded9e3;	
+}
+
+.event-description,
+.offer-description {
+	display: none;
+    margin: 14px;
+}
+
+.accordion-content .event-description,
+.accordion-content .offer-description {
+	display: block;
+}
+
+.event-description input[type="radio"] {
+    display:none;
+}
+
+.event-description input[type="radio"] + label {
+    color: #9a98a7;
+    text-transform: uppercase;
+    font-size: 12px;
+    margin-right: 10px;
+}
+
+.event-description input[type="radio"] + label span {
+    display:inline-block;
+    width: 12px;
+    height: 12px;
+    margin:-2px 5px 0 0;
+    vertical-align:middle;
+    background:url(images/check_radio_sheet.png) left top no-repeat;
+    cursor:pointer;
+}
+
+.event-description input[type="radio"]:checked + label span {
+    background:url(images/check_radio_sheet.png) -12px top no-repeat;
+}
+
+.visible {
+	display: block;
+}
+
+.event-item img,
+.offer-item img {
+	max-width: 140px;
+	vertical-align:top;
+}
+
+.event-item .left,
+.event-item .right,
+.offer-item .left,
+.offer-item .right {
+    display: inline-block;
+}
+
+.event-item .remove,
+.event-item .save,
+.offer-item .remove,
+.offer-item .save {
+    border: 0;
+    border-radius: 15px;
+    outline: 0;
+    padding: 7px 15px;
+    text-align: right;
+    font-weight: normal;
+    font-size: 12px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: inline-block;
+	margin-top: 12px;
+}
+
+.event-item .remove,
+.offer-item .remove {
+    background: #d5d5d5;
+    color: #55545c;
+}
+
+.event-item .save {
+    background: #be1f41;
+    color: #ffffff;
+	float: right;	
+}
+
+.offer-item .save {
+    background: #a1be3e;
+    color: #ffffff;
+	float: right;
+}
+
+.event-item .remove .fa,
+.event-item .save .fa,
+.offer-item .remove .fa,
+.offer-item .save .fa {
+    margin-left: 7px;
+}
+
+.event-item .remove .fa { color: #b7b6be; }
+.event-item .save .fa { color: #ffffff; }
+
+.offer-item .remove .fa { color: #b7b6be; }
+.offer-item .save .fa { color: #ffffff; }
+
+.event-item .right,
+.offer-item .right {
+    vertical-align: top;
+    padding: 13px 21px 0 21px;
+	color: #55545c;
+    width: 50%;
+}
+
+.event-item .right a.editevent,
+.offer-item .right a.editoffer {
+    float: right;
+}
+
+.event-item .right a.delevent,
+.offer-item .right a.deloffer {
+    float: right;
+}
+
+.event-item .right h2,
+.offer-item .right h2 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 400;
+    margin-bottom: 5px;
+}
+
+.event-details,
+.offer-details {
+	font-size: 12px;
+	font-weight: 400;
+	line-height: 24px;
+	text-transform: uppercase;
+}
+
+.event-details .fa {
+	margin-right: 7px;
+    color: #be1f41;
+}
+
+.col-content .offer-details .fa {
+	margin-right: 7px;
+    color: #a1be3e;
+}
+
 .accordion-content {
 	display: none;
+	background: #ffffff;
 }
 
 .current-offers .col-accordion-wrapper .col-title {
@@ -74,15 +245,17 @@ footer {
 	border: 0px;
 }
 
+.venue-text-info-wrapper,
 .text-info-wrapper {
     border: 1px solid #ded9e3;
-    border-radius: 3px;
+    border-radius: 5px;
 	padding: 11px;
 }
 
+.venue-text-info-wrapper p,
 .text-info-wrapper p {
     color: #9a98a7;
-    font-size: 13px;
+    font-size: 12px;
     text-align: justify;
 	margin-bottom: 10px !important;
 	width: 100%;
@@ -107,8 +280,13 @@ footer {
 	margin: 0;
 }
 
+.control-label .editdate,
+.control-label .edit {
+	float: right;	
+}
+
 #attribute {
-	width: 90%;
+	width: 83%;
 }
 
 #cat {
@@ -149,23 +327,23 @@ footer {
     box-sizing: border-box;
 }
 
-#cat:focus {
-	border-bottom-left-radius: 0px;
-	border-bottom-right-radius: 0px;
-}
-
 #cat option {
 	background-color: #ffffff;
 	color: #55545c;
+	text-transform: capitalize;
 }
 
+.fa-trash,
 .fa-pencil {
 	color: #d5d5d5;
+	font-size: 16px !important;
 }
 
 .venue-desc-title {
     display: inline-block;
-    width: 90%;	
+    width: 95%;
+	margin-bottom: 10px !important;
+	color: #55545c;
 }
 
 .save-venue-btn {
@@ -277,6 +455,14 @@ ul.list-hours {
     background-color: #a378d5;	
 }
 
+.venue-detail-columns .clearfix {
+    display: block;
+    clear: both;
+    border-bottom: 1px solid #ded9e3;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+}
+
 .venue-detail-columns .left,
 .venue-detail-columns .right {
 	display: inline-block;
@@ -290,16 +476,28 @@ ul.list-hours {
 }
 
 .venue-detail-columns .right {
-    width: calc(48%);
+    width: calc(54%);
 	font-size: 14px;
+}
+
+.venue-detail-columns .right ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.venue-detail-columns .right ul li {
+	padding: 5px 0;
+	margin-bottom: 5px;
+	border-bottom: 1px solid #ded9e3;
+}
+
+.venue-detail-columns .right ul li:last-child {
+	border-bottom: 0;
 }
 
 .venue-detail-columns .right .fa {
     font-size: 16px;
-}
-
-.venue-detail-columns .right label.no-icon {
-	margin-left: 20px;
 }
 
 label .text-info {
@@ -307,6 +505,15 @@ label .text-info {
 	width: 83%;
 }
 
+.offer-details label .text-info {
+    width: 91%;	
+}
+
+#offer-submission-date {
+	width: 80%;
+}
+
+label.no-icon .text-info:before,
 label .text-info:before {
     font-family: FontAwesome;
 	color: #6d508e;
@@ -315,7 +522,174 @@ label .text-info:before {
     display: inline-block;
 }
 
+label.no-icon .text-info:before { content: ''; } 
+
+.venue-description label .text-info:before { margin-right: 0px !important; }
+
+label[for="venue-website"] .text-info:before { content: '\f0ac'; }
 label[for="venue-phone"] .text-info:before { content: '\f095'; }
 label[for="venue-address-1"] .text-info:before { content: '\f041'; }
 label[for="venue-twitter"] .text-info:before { content: '\f099'; }
 label[for="venue-facebook"] .text-info:before { content: '\f09a'; }
+
+label[for="venue-title"] .text-info {
+	font-size: 25px;
+	font-weight: 100;
+	margin-bottom: 12px;
+}
+
+label[for="venue-website"] .text-info {
+	font-size: 14px;
+	color: #6d508e;
+}
+
+.text-info {
+    color: #55545c;
+}
+
+.col-content .top-box {
+    margin-top: -50px;
+	border-bottom: 1px solid #ded9e3;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+.col-content .top-box .left {
+    max-width: 35%;
+    display: inline-block;	
+}
+
+.col-content .top-box .right {
+    max-width: 65%;
+    display: inline-block;	
+}
+
+.venue-text-info-wrapper .text-info,
+.text-info-wrapper .text-info {
+    margin-left: 0;
+    width: 100%;
+	margin: 0px !important;
+}
+
+.text-info-wrapper textarea {
+    width: 100% !important;
+    box-sizing: border-box;
+	height: 200px !important;
+	resize: none;
+    padding: 5px;
+	outline: 0;
+	border: 0px;
+}
+
+.edit-textarea {
+	float: right;
+}
+
+.venue-cat-wrapper {
+    margin-top: 15px;
+    margin-bottom: 22px;
+}
+
+.venue-tag {
+	background: #d5d5d5;
+	color: #55545c;
+    border: 0;
+    border-radius: 15px;
+    outline: 0;
+    padding: 7px 15px;
+    text-align: right;
+    font-weight: normal;
+    font-size: 12px;
+    text-transform: uppercase;
+    margin-right: 10px;
+    margin-bottom: 10px;
+	display: inline-block;
+}
+
+.venue-tag .del {
+	color: #b7b6be;
+    margin-left: 7px;
+	cursor: pointer;
+}
+
+#copyright {
+    text-align: center;
+    font-size: 13px;
+    color: #b398af;	
+}
+
+.tag-search-field {
+    border: 2px solid #ded9e3;
+    border-radius: 15px;
+    outline: 0;
+    padding: 7px 0;
+    font-weight: normal;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    width: 100%;
+    text-indent: 12px;
+	font-family: 'Lato', sans-serif, FontAwesome !important;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+}
+
+.tag-result p {
+    background: #a378d5;
+    color: #ffffff;
+    border: 0;
+    border-radius: 15px;
+    outline: 0;
+    padding: 7px 15px;
+    text-align: right;
+    font-weight: normal;
+    font-size: 12px;
+    text-transform: uppercase;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    display: inline-block;
+	cursor: pointer;
+}
+
+.tag-result p:after {
+    content: '\f067';
+    font-family: FontAwesome;
+    color: #ffffff;
+    margin-left: 7px;
+}
+
+.no-match-tag {
+    background: #be1f41 !important;
+    color: #ffffff !important;
+}
+
+.accordion-content label[for="offer-title"] .text-info:before {
+	display: none !important;
+}
+
+.offer-details .text-info,
+.accordion-content label[for="offer-title"] .text-info {
+	margin: 0 !important;
+}
+
+.accordion-content label[for="offer-date"] .text-info:before {
+    content: '\f073';
+    color: #a1be3e;
+}
+
+.accordion-content label[for="offer-time"] .text-info:before {
+    content: '\f017';
+    color: #a1be3e;
+}
+
+.accordion-content label[for="offer-time"] .timepicker {
+    width: 34% !important;
+    font-size: 12px;
+    padding: 4px;
+    margin-right: 3px;
+}
+
+.accordion-content label[for="offer-quantity"] .text-info:before {
+    content: '\f292';
+    color: #a1be3e;
+}
