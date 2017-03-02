@@ -14,10 +14,24 @@
 		<script src="<?php echo get_template_directory_uri(); ?>/js/wickedpicker.min.js"></script>
 		<script src="<?php echo get_template_directory_uri(); ?>/js/glDatePicker.min.js"></script>
 		<script src="<?php echo get_template_directory_uri(); ?>/js/he.js"></script>
+		
 		<script>
+		
+			
+			function getActiveTags() {
+				var activeTags = new Array();
+				$('.venue-active-tags').children('.venue-tag').each(function () {
+					activeTags.push($(this).attr('data-tag'));
+				});
+				return activeTags;
+			};
+			
 			$( function() {
 				$('.datepicker').datepicker({ dateFormat: 'dd/mm/yy' });
-				var options = { now: "00:00",  };
+				var options = {
+					now: "00:00",
+					title: "Select a Time",
+				};
 				$('.timepicker').wickedpicker(options);
 			});
 			$( document ).ready(function() {
@@ -25,12 +39,29 @@
 					$(this).siblings('.accordion-content').toggle();
 				});
 			});
+						
+			$(document).ready(function(){
+				$('.tag-search-field').on("keyup input", function(){
+					var inputVal = $(this).val();
+					var resultDropdown = $(this).siblings(".tag-result");
+					var currentPostTags = getActiveTags();
+					if(inputVal.length){
+						$.get("<?php echo get_template_directory_uri(); ?>/ajax-search-tag.php", {term: inputVal, post_tags: currentPostTags }).done(function(data){
+							resultDropdown.html(data);
+						});
+					} else{
+						resultDropdown.empty();
+					}
+				});
+				$(document).on("click", ".tag-result p", function(){
+					$(this).parents(".search-box").find('input[type="text"]').val($(this).text());
+					$(this).parent(".tag-result").empty();
+				});
+			});
 		</script>
 		<?php wp_head(); ?>
 	</head>
 	<body <?php body_class(); ?>>
 		<div id="wrapper" class="hfeed">
-			<header id="header">
-				<h1>Oot</h1>
-			</header>
-			<div id="container">
+		
+		    <div class="search-box">
