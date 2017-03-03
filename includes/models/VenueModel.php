@@ -82,6 +82,14 @@
 
 		}
 
+		public function getTimes($id) {
+
+			$times = array();
+
+			return $times;
+
+		}
+
 		public function getItem($id) {
 
 			$item = parent::getItem($id);

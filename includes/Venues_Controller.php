@@ -80,6 +80,24 @@
 				'schema' => array($this, 'get_public_item_schema'),
 			));
 
+			register_rest_route($this->namespace, '/' . $this->rest_base . '/(?P<id>[\d]+)/times', array(
+
+				'args' => array(
+
+					'id' => array(
+						'description' => __('The Venues ID'),
+						'type' => 'integer',
+					)
+				),
+				array(
+					'methods'		=> WP_REST_Server::READABLE,
+					'callback'		=> array($this, 'get_times'),
+					'permission_callback' 	=> array($this, 'get_item_permissions_check'),
+					'args'			=> $get_item_args,
+				),
+				'schema' => array($this, 'get_public_item_schema'),
+			));
+
 		}
 
 		public function get_categories($request) {
@@ -88,6 +106,16 @@
 			$categories = $this->model->getCategories($id);
 
 			$response = rest_ensure_response($categories);
+			return $response;
+
+		}
+
+		public function get_times($request) {
+
+			$id = $request['id'];
+			$times = $this->model->getTimes($id);
+
+			$response = rest_ensure_response($times);
 			return $response;
 
 		}
