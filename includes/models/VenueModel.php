@@ -23,6 +23,7 @@
 
 				"wp_posts.ID" => "post_id",
 				"wp_posts.post_title" => "name",
+				"wp_posts.post_content" => "description",
 				"meta.address_line_1" => "address_line_1",
 				"meta.address_line_2" => "address_line_2",
 				"meta.post_code" => "post_code",
