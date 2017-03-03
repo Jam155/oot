@@ -95,6 +95,7 @@
 			$item = parent::getItem($id);
 
 			$item->categories = $this->getCategories($item->post_id);
+			$item->times = $this->getTimes($item->post_id);
 
 			return $item;
 
