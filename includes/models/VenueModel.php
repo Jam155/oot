@@ -84,7 +84,7 @@
 
 		public function getTimes($id) {
 
-			$times = array();
+			$times = get_field("opening_hours", $id);
 
 			return $times;
 
