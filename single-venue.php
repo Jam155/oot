@@ -29,11 +29,65 @@
 			</div>
 			
 			<div class="venue-detail-columns">
+				<div class="edit-hours-content">
+					<p class="venue-desc-title">Edit Opening Hours</p>
+						<?php if( have_rows('opening_hours') ): ?>
+							<?php while( have_rows('opening_hours') ): the_row(); ?>
+								<div class="opening-hours">
+									<table>
+										<tr class="mon">
+											<th>M</th>
+											<td>
+												<ul class="list-hours"><?php while( have_rows('monday') ): the_row(); ?><li class="opening-edit-row"><input name="acf_fields[start_time]" class="timepicker time1"><input name="acf_fields[start_time]" class="timepicker"></li><?php endwhile; ?></ul>
+											</td>
+										</tr>
+										<tr class="tue">
+											<th>T</th>
+											<td>
+												<ul class="list-hours"><?php while( have_rows('tuesday') ): the_row(); ?><li><?php the_sub_field('open'); ?> - <?php the_sub_field('close'); ?></li><?php endwhile; ?></ul>
+											</td>
+										</tr>
+										<tr class="wed">
+											<th>W</th>
+											<td>
+												<ul class="list-hours"><?php while( have_rows('wednesday') ): the_row(); ?><li><?php the_sub_field('open'); ?> - <?php the_sub_field('close'); ?></li><?php endwhile; ?></ul>
+											</td>
+										</tr>
+										<tr class="thu">
+											<th>T</th>
+											<td>
+												<ul class="list-hours"><?php while( have_rows('thursday') ): the_row(); ?><li><?php the_sub_field('open'); ?> - <?php the_sub_field('close'); ?></li><?php endwhile; ?></ul>
+											</td>
+										</tr>
+										<tr class="fri">
+											<th>F</th>
+											<td>
+												<ul class="list-hours"><?php while( have_rows('friday') ): the_row(); ?><li><?php the_sub_field('open'); ?> - <?php the_sub_field('close'); ?></li><?php endwhile; ?></ul>
+											</td>
+										</tr>
+										<tr class="sat">
+											<th>S</th>
+											<td>
+												<ul class="list-hours"><?php while( have_rows('saturday') ): the_row(); ?><li><?php the_sub_field('open'); ?> - <?php the_sub_field('close'); ?></li><?php endwhile; ?></ul>
+											</td>
+										</tr>
+										<tr class="sun">
+											<th>S</th>
+											<td>
+												<ul class="list-hours"><?php while( have_rows('sunday') ): the_row(); ?><li><?php the_sub_field('open'); ?> - <?php the_sub_field('close'); ?></li><?php endwhile; ?></ul>
+											</td>
+										</tr>
+										</tr>
+									</table>
+								</div>
+							<?php endwhile;?>
+						<?php endif;?>
+				</div>
 				<div class="left">
 					<?php if( have_rows('opening_hours') ): ?>
 						<?php while( have_rows('opening_hours') ): the_row(); ?>
 							<div class="opening-hours">
-								<p class="venue-desc-title">Opening Hours</p>
+								<p class="venue-desc-title">Opening Hours<a href="#" class="edithours btn"><i class="fa fa-pencil" aria-hidden="true"></i></a></p>
 								<table>
 									<tr>
 										<th>M</th>

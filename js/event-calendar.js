@@ -204,6 +204,22 @@ $(document).ready(function() {
 		}
 	});
 	
+	$('.venue-detail-columns').on('click', '.edithours', function() {
+		
+		//$('.time1').wickedpicker({now: '22:00'});
+		
+		$('.left .opening-hours tr').each(function() {
+			console.log($(this).children('th').text());
+		});
+		
+		if( $(this).parent().parent().parent().siblings('.edit-hours-content').hasClass('visible') ) {
+			$('.edit-hours-content').removeClass('visible');
+		} else {
+			$('.edit-hours-content').removeClass('visible');
+			$(this).parent().parent().parent().siblings('.edit-hours-content').addClass('visible');
+		}
+	});
+	
 	$('.event-item').on('click', '.editevent', function() {
 		if( $(this).parent().parent().siblings('.event-description').hasClass('visible') ) {
 			$('.event-description').removeClass('visible');
@@ -281,11 +297,33 @@ $(document).ready(function() {
 		var twitter = $("label[for='venue-twitter'] .text-info").text();
 		var facebook = $("label[for='venue-facebook'] .text-info").text();
 		var description = $(".venue-details .text-info-wrapper .text-info").text();
+		var term_id = $(".cat-select select").val();
+		var catname = $(".cat-select select").find(":selected").text();
+		console.log( website );
 		
-		var finalVenuData = [{
-            post_id: post_id,
-            name: name,
-			description: description,
+		function makeSlug(str) {
+			var makeSlug = '';
+			var trimmed = $.trim(str);
+			$makeSlug = trimmed.replace(/[^a-z0-9-]/gi, '-').
+			replace(/-+/g, '-').
+			replace(/^-|-$/g, '');
+			return $makeSlug.toLowerCase();
+		}
+		var slug = makeSlug(name);
+		
+		var finalVenuData = {
+			title: name,
+			content: description,
+			acf_fields: {
+				phone: phone,
+				website: website
+			}
+			/*
+			categories: {
+				term_id: term_id,
+				name: catname,
+				slug: slug
+			},
             address: {
 				address_line_1: address_line_1,
 				address_line_2: address_line_2,
@@ -298,15 +336,33 @@ $(document).ready(function() {
 				twitter: twitter,
 				facebook: facebook
 			}
-		}];
-				
-		console.log(finalVenuData);
+			*/
+		};
+
+		var valid = 'true';
 		
-		console.log( $(".cat-select select").val() );
-		
-		$( ".venue-active-tags .venue-tag" ).each(function() {
-			console.log( $(this).text() );
-		});
+		if(valid) {
+			$.ajax({
+				method: "PUT",
+				url: POST_SUBMITTER.root + 'wp/v2/venue/' + post_id,
+				data: finalVenuData,
+				beforeSend: function ( xhr ) {
+					xhr.setRequestHeader( 'X-WP-Nonce', POST_SUBMITTER.nonce );
+				},
+				success : function( response ) {
+					console.log( response );
+					alert( POST_SUBMITTER.success );
+				},
+				fail : function( response ) {
+					console.log( response );
+					alert( POST_SUBMITTER.failure );
+				}
+			});
+			
+			$( ".venue-active-tags .venue-tag" ).each(function() {
+				console.log( $(this).text() );
+			});
+		}
 	});
 	
 });

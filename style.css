@@ -56,6 +56,10 @@ footer {
 	background-color: #be1f41;
 }
 
+.venue-img {
+    display: inline-block;
+}
+
 .venue-img img {
 	border-radius: 100px;
 	border: 3px solid #e5e5e5;
@@ -114,6 +118,14 @@ footer {
 
 .event-description input[type="radio"]:checked + label span {
     background:url(images/check_radio_sheet.png) -12px top no-repeat;
+}
+
+.edit-hours-content {
+	display: none;
+}
+
+.edithours {
+	float: right;
 }
 
 .visible {
@@ -526,6 +538,16 @@ label.no-icon .text-info:before { content: ''; }
 
 .venue-description label .text-info:before { margin-right: 0px !important; }
 
+label[for="venue-title"] .edit {
+    margin-top: 6px;
+}
+
+label[for="venue-twitter"],
+label[for="venue-facebook"],
+label[for="venue-website"] {
+    word-break: break-all;
+}
+
 label[for="venue-website"] .text-info:before { content: '\f0ac'; }
 label[for="venue-phone"] .text-info:before { content: '\f095'; }
 label[for="venue-address-1"] .text-info:before { content: '\f041'; }
@@ -548,20 +570,23 @@ label[for="venue-website"] .text-info {
 }
 
 .col-content .top-box {
-    margin-top: -50px;
+    margin-top: -55px;
 	border-bottom: 1px solid #ded9e3;
     padding-bottom: 10px;
     margin-bottom: 10px;
+	position: relative;
 }
 
 .col-content .top-box .left {
     max-width: 35%;
-    display: inline-block;	
+    display: inline-block;
+	vertical-align: top;
 }
 
 .col-content .top-box .right {
+	margin-top: 50px;
     max-width: 65%;
-    display: inline-block;	
+    display: inline-block;
 }
 
 .venue-text-info-wrapper .text-info,
@@ -692,4 +717,16 @@ label[for="venue-website"] .text-info {
 .accordion-content label[for="offer-quantity"] .text-info:before {
     content: '\f292';
     color: #a1be3e;
+}
+
+@media (max-width: 1293px) {
+	.venue-wrapper section {
+		width: calc(50% - 22px) !important;
+	}
+}
+
+@media (max-width: 901px) {
+	.venue-wrapper section {
+		width: calc(100% - 22px) !important;
+	}
 }

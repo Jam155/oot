@@ -130,7 +130,7 @@
 		}
 
 		protected function restructure($item) {
-
+			
 			$item->address["address_line_1"] = $item->address_line_1;
 			$item->address["address_line_2"] = $item->address_line_2;
 			$item->address["post_code"] = $item->post_code;
