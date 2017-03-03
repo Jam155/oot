@@ -82,11 +82,20 @@
 
 		}
 
+		public function getTimes($id) {
+
+			$times = get_field("opening_hours", $id);
+
+			return $times;
+
+		}
+
 		public function getItem($id) {
 
 			$item = parent::getItem($id);
 
 			$item->categories = $this->getCategories($item->post_id);
+			$item->times = $this->getTimes($item->post_id);
 
 			return $item;
 
