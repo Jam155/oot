@@ -1,7 +1,7 @@
 <?php
 
 add_action( 'after_setup_theme', 'oot_setup' );
-function oot_setup()
+	function oot_setup()
 {
 load_theme_textdomain( 'oot', get_template_directory() . '/languages' );
 add_theme_support( 'title-tag' );
@@ -13,18 +13,43 @@ register_nav_menus(
 array( 'main-menu' => __( 'Main Menu', 'oot' ) )
 );
 }
-add_action( 'wp_enqueue_scripts', 'oot_load_scripts' );
-function oot_load_scripts()
-{
-	wp_enqueue_script( 'jquery' );
+
+function oot_load_scripts(){
+	wp_enqueue_script('oot-jquery', 'https://code.jquery.com/jquery-1.12.4.js');
 	wp_enqueue_script('event-calendar', get_template_directory_uri() . '/js/event-calendar.js');
 	wp_localize_script('event-calendar', 'site_url', get_site_url());
-}
-add_action( 'comment_form_before', 'oot_enqueue_comment_reply_script' );
-function oot_enqueue_comment_reply_script()
-{
-if ( get_option( 'thread_comments' ) ) { wp_enqueue_script( 'comment-reply' ); }
-}
+
+	//load script
+	wp_enqueue_script( 'offer-post-submitter', get_template_directory_uri() . '/js/offer-submitter.js', array() );	
+	wp_enqueue_script( 'jquery-ui-script', 'https://code.jquery.com/ui/1.12.1/jquery-ui.js', array());
+	wp_enqueue_script( 'wickedpicker-script', get_template_directory_uri() . '/js/wickedpicker.min.js', array());
+	wp_enqueue_script( 'glDatePicker-script', get_template_directory_uri() . '/js/glDatePicker.min.js', array());
+	wp_enqueue_script( 'he-script', get_template_directory_uri() . '/js/he.js', array());
+	wp_enqueue_script( 'moment-script', get_template_directory_uri() . '/js/moment.js', array());
+
+	//load styles
+	wp_enqueue_style('jquery-ui-style', 'https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css');
+	wp_enqueue_style('wickedpicker-style', get_template_directory_uri() . '/css/wickedpicker.min.css');
+	wp_enqueue_style('glDatePicker-style', get_template_directory_uri() . '/css/glDatePicker.flatwhite.css');
+
+	//Oot Scripts
+	wp_enqueue_script( 'oot-header-script', get_template_directory_uri() . '/js/header.js', array(), null, '');	
+	wp_localize_script('oot-header-script', 'template_url', get_template_directory_uri());
+
+	wp_enqueue_script( 'add-fontawesome', 'https://use.fontawesome.com/70c98e5b29.js', array(), null, true);	
+
+	//localize data for script
+	wp_localize_script( 'offer-post-submitter', 'POST_SUBMITTER', array(
+		'root' => esc_url_raw( rest_url() ),
+		'nonce' => wp_create_nonce( 'wp_rest' ),
+		'success' => __( 'Thanks for your submission!', 'oot' ),
+		'failure' => __( 'Your submission could not be processed.', 'oot' ),
+		'current_user_id' => get_current_user_id()
+	));
+};
+add_action( 'wp_enqueue_scripts', 'oot_load_scripts' );
+
+
 add_filter( 'the_title', 'oot_title' );
 function oot_title( $title ) {
 if ( $title == '' ) {
@@ -72,23 +97,6 @@ return $count;
 add_filter( 'acf/rest_api/key', function( $key, $request, $type ) {
     return 'acf_fields';
 }, 10, 3 );
-
-add_action( 'wp_enqueue_scripts', function() {
-
-	//load script
-	wp_enqueue_script( 'offer-post-submitter', get_template_directory_uri() . '/js/offer-submitter.js', array( 'jquery' ) );
-
-	//localize data for script
-	wp_localize_script( 'offer-post-submitter', 'POST_SUBMITTER', array(
-			'root' => esc_url_raw( rest_url() ),
-			'nonce' => wp_create_nonce( 'wp_rest' ),
-			'success' => __( 'Thanks for your submission!', 'oot' ),
-			'failure' => __( 'Your submission could not be processed.', 'oot' ),
-			'current_user_id' => get_current_user_id()
-		)
-	);
-
-});
 
 function oot_login_logo() { ?>
 	<style type="text/css">
