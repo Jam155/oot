@@ -1,0 +1,738 @@
+$oot-font: 'Lato', sans-serif;
+$page-bg: #ededed;
+$venue-primary: #6d508e;
+$venue-secondary: #a378d5;
+$offer-primary: #a1be3e;
+$offer-secondary: #aec072;
+$event-primary: #be1f41;
+$event-secondary: #fa4b71;
+$light-grey: #ded9e3;
+$mid-grey-light: #d5d5d5;
+$mid-grey-dark: #9a98a7;
+$dark-grey: #55545c;
+
+* { font-family: $oot-font; }
+
+body {
+	margin: 0;
+	padding: 50px;
+	font-family: $oot-font;
+	background-color: $page-bg;
+}
+
+footer {
+	clear: both;
+}
+
+.dashboard-logo {
+	margin: 0 10px 40px 10px;
+	display: block;	
+}
+
+.venue-wrapper {
+    width: 100%;
+    max-width: 1180px;
+    margin: 0 auto;
+		section {
+			width: calc(33.33% - 22px);
+			display: inline-block;
+			margin: 10px;
+			float: left;
+		}
+		.col-title {
+			color: #fff;
+			text-align: right;
+			font-weight: normal;
+			font-size: 12px;
+			text-transform: uppercase;
+			letter-spacing: 1px;
+			padding: 15px;
+			margin: 0 auto;
+		}
+}
+
+.venue-details .col-title {
+	background-color: $venue-primary;
+}
+
+.current-offers .col-title {
+	background-color: $offer-primary;
+}
+
+.upcoming-events .col-title {
+	background-color: $event-primary;
+}
+
+.venue-img {
+    display: inline-block;
+		img {
+			border-radius: 100px;
+			border: 3px solid #e5e5e5;
+		}
+}
+
+@mixin datepicker-calendar-day() {
+	border: 0px;
+	background: transparent;
+	color: $mid-grey-dark;
+	text-align: center;
+    padding: 5px;
+    border-radius: 50px;
+    max-width: 14px;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.upcoming-events {
+	.col-content {
+		padding: 0;
+		.col-accordion-wrapper .col-title {
+			background-color: $event-secondary;
+		}
+		
+		#calendar {
+			padding-bottom: 28px;
+			border-bottom: 1px solid $light-grey;
+			
+			.ui-state-default,
+			.ui-widget-content .ui-state-default,
+			.ui-widget-header .ui-state-default,
+			.ui-datepicker td a {
+				@include datepicker-calendar-day();
+			}
+
+			.ui-datepicker {
+				table {
+					margin: 0 0 !important;
+				}
+				th {
+					padding: .7em .3em;
+					text-align: center;
+					font-weight: normal;
+					border: 0;
+					color: $mid-grey-light;
+					font-size: 12px;
+					font-family: $oot-font;
+				}
+				td {
+					border: 0;
+					padding: 1px;
+					color: $mid-grey-dark;
+					font-size: 12px;
+				}
+			}
+			
+			.ui-widget.ui-widget-content {
+				width: 100%;
+				padding: 0px;
+				margin: 0px;
+				border: 0px;
+			}
+			
+			.ui-widget-header {
+				background: transparent;
+				border: 0px;
+			}
+
+			.ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight {
+				border: 2px solid $mid-grey-light;
+				background: #f6f6f6;
+				font-weight: normal;
+				color: #454545;
+			}
+			
+			
+			.ui-datepicker-title {
+				font-family: $oot-font !important;
+				color: $dark-grey;
+				font-weight: 300;
+				font-size: 25px;
+				
+				.ui-datepicker-year {
+					display: none;
+				}
+			}
+		}
+	}
+}
+
+.current-offers {
+	.col-content {
+		padding: 0;
+	}
+	.col-accordion-wrapper .col-title {
+		background-color: $offer-secondary;
+	}
+}
+
+.event-item,
+.offer-item {
+	border-bottom: 1px solid $light-grey;	
+}
+
+.event-description,
+.offer-description {
+	display: none;
+	margin: 14px;
+}
+
+.event-description input[type="radio"] {
+    display:none;
+}
+
+.event-description input[type="radio"] + label {
+    color: $mid-grey-dark;
+    text-transform: uppercase;
+    font-size: 12px;
+    margin-right: 10px;
+}
+
+.event-description input[type="radio"] + label span {
+    display:inline-block;
+    width: 12px;
+    height: 12px;
+    margin:-2px 5px 0 0;
+    vertical-align:middle;
+    background:url(../images/check_radio_sheet.png) left top no-repeat;
+    cursor:pointer;
+}
+
+.event-description input[type="radio"]:checked + label span {
+    background:url(../images/check_radio_sheet.png) -12px top no-repeat;
+}
+
+.accordion-content {
+	display: none;
+	background: #ffffff;
+	
+	.event-description,
+	.offer-description {
+		display: block;
+	}
+}
+
+.edithours {
+	float: right;
+}
+
+.edit-hours-content {
+	display: none;
+}
+
+@mixin save-remove-btn() {
+	    border: 0;
+		border-radius: 15px;
+		outline: 0;
+		padding: 7px 15px;
+		text-align: right;
+		font-weight: normal;
+		font-size: 12px;
+		text-transform: uppercase;
+		margin-bottom: 10px;
+		display: inline-block;
+		margin-top: 12px;
+}
+
+.offer-item,
+.event-item {
+	img {
+		max-width: 140px;
+		vertical-align:top;
+	}
+	.left,
+	.right {
+		display: inline-block;
+	}
+	.remove {
+		@include save-remove-btn();
+		background: $mid-grey-light;
+		color: $dark-grey;
+		
+		.fa {
+			margin-left: 7px;
+			color: #b7b6be;
+		}
+	}
+	.save {
+		@include save-remove-btn();
+		color: #ffffff;
+		float: right;
+		
+		.fa {
+			margin-left: 7px;
+			color: #ffffff;
+		}
+	}
+}
+
+.offer-item .save { background: $offer-primary; }
+.event-item .save {	background: $event-primary; }
+
+.event-item .right,
+.offer-item .right {
+    vertical-align: top;
+    padding: 13px 21px 0 21px;
+	color: $dark-grey;
+    width: 50%;	
+	
+	a.editevent,
+	a.editoffer {
+		float: right;
+	}
+	a.delevent,
+	a.deloffer {
+		float: right;
+	}
+	h2 {
+		margin: 0;
+		font-size: 14px;
+		font-weight: 400;
+		margin-bottom: 5px;	
+	}
+}
+
+.event-details,
+.offer-details {
+	font-size: 12px;
+	font-weight: 400;
+	line-height: 24px;
+	text-transform: uppercase;
+}
+
+.event-details .fa {
+	margin-right: 7px;
+    color: $event-primary;
+}
+
+.venue-text-info-wrapper,
+.text-info-wrapper {
+    border: 1px solid $light-grey;
+    border-radius: 5px;
+	padding: 11px;
+	
+	p {
+		color: $mid-grey-dark;
+		font-size: 12px;
+		text-align: justify;
+		margin-bottom: 10px !important;
+		width: 100%;
+		line-height: 18px;
+	}
+}
+
+.text-info {
+	display: inline-block;
+    width: 90%;
+}
+
+.col-content {
+	background-color: #ffffff;
+	padding: 15px;
+	
+	#edit {
+		display: inline-block;	
+	}
+
+	p {
+		margin: 0;
+	}
+	
+	.offer-details .fa {
+		margin-right: 7px;
+		color: $offer-primary;
+	}
+}
+
+.control-label .editdate,
+.control-label .edit {
+	float: right;	
+}
+
+#attribute {
+	width: 83%;
+}
+
+#cat {
+	width: 100%;
+    background-color: #a378d5;
+    color: #ffffff;
+    border: 0;
+    border-radius: 15px;
+    outline: 0;
+    padding: 7px 15px;
+    text-align: right;
+    font-weight: normal;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+   -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+	
+	option {
+		background-color: #ffffff;
+		color: $dark-grey;
+		text-transform: capitalize;
+	}
+}
+
+.cat-select {
+    overflow: hidden; 
+    position: relative;
+    display: block;
+}
+
+.cat-select:after {
+    content: '\f078';
+    font-family: FontAwesome;
+    color: #ffffff;
+    padding: 5px 10px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 1;
+    text-align: center;
+    pointer-events: none;
+    box-sizing: border-box;
+}
+
+.fa-trash,
+.fa-pencil {
+	color: $mid-grey-light;
+	font-size: 16px !important;
+}
+
+.venue-desc-title {
+    display: inline-block;
+    width: 95%;
+	margin-bottom: 10px !important;
+	color: $dark-grey;
+}
+
+.save-venue-btn {
+	background: $venue-primary;
+    border: 0px;
+    box-shadow: none;
+    text-shadow: none;
+    border-radius: 100px;
+    width: 100%;
+    text-transform: uppercase;
+    font-size: 16px;
+    letter-spacing: 3px;
+    height: 35px !important;
+    color: #fff;
+    outline: 0;
+}
+
+table.ui-datepicker-calendar tbody td.highlight > a {
+    color: #ffffff !important;
+    border: 1px solid #FFDE2E;
+	background: $event-secondary !important;
+}
+
+table.ui-datepicker-calendar tbody td.highlight > a.ui-state-highlight {
+	
+}
+
+#calendar .ui-state-highlight {
+    border: 2px solid $mid-grey-light !important;
+}
+
+ul.list-hours {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	color: $mid-grey-dark;
+	font-size: 12px;
+}
+
+.opening-hours th {
+    vertical-align: middle;
+    font-weight: normal;
+    font-size: 9px;
+    background-color: $venue-primary;
+    color: #fff;
+    display: inline-block;
+    width: 19px;
+    padding: 4px 0px;
+    border-radius: 13px;
+	margin-right: 13px;
+}
+
+.opening-hours tr:nth-last-child(-n+2) th {
+    background-color: #a378d5;	
+}
+
+.venue-detail-columns {
+	.clearfix {
+		display: block;
+		clear: both;
+		border-bottom: 1px solid $light-grey;
+		padding-bottom: 5px;
+		margin-bottom: 10px;
+	}
+	.left {
+		display: inline-block;
+		float: left;
+		width: calc(45%);
+		padding-right: 0px;
+		border-right: 1px solid $light-grey;
+	}
+	.right {
+		display: inline-block;
+		float: left;
+		width: calc(54%);
+		font-size: 14px;
+		
+		ul {
+			margin: 0;
+			padding: 0;
+			list-style: none;
+			
+			li {
+				padding: 5px 0;
+				margin-bottom: 5px;
+				border-bottom: 1px solid $light-grey;
+			}
+			li:last-child {
+				border-bottom: 0;
+			}
+		}
+		.fa {
+			font-size: 16px;
+		}
+	}
+}
+
+label .text-info {
+	margin-left: 10px;
+	width: 83%;
+}
+
+.offer-details label .text-info {
+    width: 91%;
+}
+
+#offer-submission-date {
+	width: 80%;
+}
+
+label.no-icon .text-info:before,
+label .text-info:before {
+    font-family: FontAwesome;
+	color: $venue-primary;
+	margin-right: 10px;
+    width: 10px !important;
+    display: inline-block;
+}
+
+label.no-icon .text-info:before { content: ''; } 
+
+.venue-description label .text-info:before { margin-right: 0px !important; }
+
+label[for="venue-title"] .edit {
+    margin-top: 6px;
+}
+
+label[for="venue-twitter"],
+label[for="venue-facebook"],
+label[for="venue-website"] {
+    word-break: break-all;
+}
+
+label[for="venue-website"] .text-info:before { content: '\f0ac'; }
+label[for="venue-phone"] .text-info:before { content: '\f095'; }
+label[for="venue-address-1"] .text-info:before { content: '\f041'; }
+label[for="venue-twitter"] .text-info:before { content: '\f099'; }
+label[for="venue-facebook"] .text-info:before { content: '\f09a'; }
+
+label[for="venue-title"] .text-info {
+	font-size: 25px;
+	font-weight: 100;
+	margin-bottom: 12px;
+}
+
+label[for="venue-website"] .text-info {
+	font-size: 14px;
+	color: $venue-primary;
+}
+
+.text-info {
+    color: $dark-grey;
+}
+
+.col-content .top-box {
+    margin-top: -55px;
+	border-bottom: 1px solid $light-grey;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+	position: relative;
+}
+
+.col-content .top-box .left {
+    max-width: 35%;
+    display: inline-block;
+	vertical-align: top;
+}
+
+.col-content .top-box .right {
+	margin-top: 50px;
+    max-width: 65%;
+    display: inline-block;
+}
+
+.venue-text-info-wrapper .text-info,
+.text-info-wrapper .text-info {
+    margin-left: 0;
+    width: 100%;
+	margin: 0px !important;
+}
+
+.text-info-wrapper textarea {
+    width: 100% !important;
+    box-sizing: border-box;
+	height: 200px !important;
+	resize: none;
+    padding: 5px;
+	outline: 0;
+	border: 0px;
+}
+
+.edit-textarea {
+	float: right;
+}
+
+.venue-cat-wrapper {
+    margin-top: 15px;
+    margin-bottom: 22px;
+}
+
+.venue-tag {
+	background: $mid-grey-light;
+	color: $dark-grey;
+    border: 0;
+    border-radius: 15px;
+    outline: 0;
+    padding: 7px 15px;
+    text-align: right;
+    font-weight: normal;
+    font-size: 12px;
+    text-transform: uppercase;
+    margin-right: 10px;
+    margin-bottom: 10px;
+	display: inline-block;
+
+	.del {
+		color: #b7b6be;
+		margin-left: 7px;
+		cursor: pointer;
+	}
+}
+
+#copyright {
+    text-align: center;
+    font-size: 13px;
+    color: #b398af;	
+}
+
+.tag-search-field {
+    border: 2px solid $light-grey;
+    border-radius: 15px;
+    outline: 0;
+    padding: 7px 0;
+    font-weight: normal;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    width: 100%;
+    text-indent: 12px;
+	font-family: 'Lato', sans-serif, FontAwesome !important;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+}
+
+.tag-result p {
+    background: #a378d5;
+    color: #ffffff;
+    border: 0;
+    border-radius: 15px;
+    outline: 0;
+    padding: 7px 15px;
+    text-align: right;
+    font-weight: normal;
+    font-size: 12px;
+    text-transform: uppercase;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    display: inline-block;
+	cursor: pointer;
+}
+
+.tag-result p:after {
+    content: '\f067';
+    font-family: FontAwesome;
+    color: #ffffff;
+    margin-left: 7px;
+}
+
+.list-hours input {
+    color: $mid-grey-dark;
+    font-size: 12px;
+    width: 40%;
+}
+
+.no-match-tag {
+    background: $event-primary !important;
+    color: #ffffff !important;
+}
+
+.accordion-content label[for="offer-title"] .text-info:before {
+	display: none !important;
+}
+
+.offer-details .text-info,
+.accordion-content label[for="offer-title"] .text-info {
+	margin: 0 !important;
+}
+
+.accordion-content label[for="offer-date"] .text-info:before {
+    content: '\f073';
+    color: $offer-primary;
+}
+
+.accordion-content label[for="offer-time"] .text-info:before {
+    content: '\f017';
+    color: $offer-primary;
+}
+
+.accordion-content label[for="offer-time"] .timepicker {
+    width: 34% !important;
+    font-size: 12px;
+    padding: 4px;
+    margin-right: 3px;
+}
+
+.accordion-content label[for="offer-quantity"] .text-info:before {
+    content: '\f292';
+    color: $offer-primary;
+}
+
+.savehours {
+	display: none;
+}
+
+.visible {
+	display: block;
+}
+
+@media (max-width: 1293px) {
+	.venue-wrapper section {
+		width: calc(50% - 22px) !important;
+	}
+}
+
+@media (max-width: 901px) {
+	.venue-wrapper section {
+		width: calc(100% - 22px) !important;
+	}
+}

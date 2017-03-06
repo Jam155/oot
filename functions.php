@@ -28,6 +28,7 @@ function oot_load_scripts(){
 	wp_enqueue_script( 'moment-script', get_template_directory_uri() . '/js/moment.js', array());
 
 	//load styles
+	wp_enqueue_style('oot-style', get_template_directory_uri() . '/css/oot-style.css');
 	wp_enqueue_style('jquery-ui-style', 'https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css');
 	wp_enqueue_style('wickedpicker-style', get_template_directory_uri() . '/css/wickedpicker.min.css');
 	wp_enqueue_style('glDatePicker-style', get_template_directory_uri() . '/css/glDatePicker.flatwhite.css');
