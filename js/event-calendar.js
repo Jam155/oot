@@ -141,7 +141,7 @@ $(document).ready(function() {
 	$('.edittime').click(function() {
 		var input = $('<input name="acf_fields[start_time]" id="offer-submission-start" class="timepicker"><input name="acf_fields[end_time]" id="offer-submission-end" class="timepicker"><script>var options = { now: "00:00", title: "Select a Time", }; $(".timepicker").wickedpicker(options);</script>')
 		$(this).siblings('.text-info').text('').append(input);
-		var timepickers = $('.timepicker').wickedpicker();
+		//var timepickers = $('.timepicker').wickedpicker();
 		$(document).click(function(e) {
 			if ( !$(e.target).hasClass('fa') && !$(e.target).parents('.wickedpicker').length > 0 && !$(e.target).is('#offer-submission-start') && !$(e.target).is('#offer-submission-end') ) {
 				$(e.target).closest('.text-info').text('Select offer time');
@@ -206,10 +206,14 @@ $(document).ready(function() {
 	
 	$('.venue-detail-columns').on('click', '.edithours', function() {
 		
-		//$('.time1').wickedpicker({now: '22:00'});
+		$('.savehours').show();
+				
+		$('.left .opening-hours li span.opentime').each(function() {
+			$(this).replaceWith( '<input name="acf_fields[start_time]" id="venu-open" class="timepickerstart"><script>var options = { now: "' + moment($(this).text(), ["h:mm A"]).format("HH:mm") + '", title: "Select a Time", }; $(".timepickerstart").wickedpicker(options);</script>' );
+		});
 		
-		$('.left .opening-hours tr').each(function() {
-			console.log($(this).children('th').text());
+		$('.left .opening-hours li span.closetime').each(function() {
+			$(this).replaceWith( '<input name="acf_fields[start_time]" id="venu-close" class="timepickerend"><script>var options = { now: "' + moment($(this).text(), ["h:mm A"]).format("HH:mm") + '", title: "Select a Time", }; $(".timepickerend").wickedpicker(options);</script>' );
 		});
 		
 		if( $(this).parent().parent().parent().siblings('.edit-hours-content').hasClass('visible') ) {
@@ -218,6 +222,32 @@ $(document).ready(function() {
 			$('.edit-hours-content').removeClass('visible');
 			$(this).parent().parent().parent().siblings('.edit-hours-content').addClass('visible');
 		}
+		
+		$('.timepickerstart, .timepickerend').focus(function() {
+			$('.wickedpicker').css({'display': 'none'});
+		});
+		
+	});
+	
+	$('.venue-detail-columns').on('click', '.savehours', function() {
+				
+		$('.left .opening-hours li input.timepickerstart').each(function() {
+			$(this).replaceWith( '<span class="opentime">' + moment($(this).val(), ["h : mm A"]).format("h:mm A") + '</span>' );
+		});
+		
+		$('.left .opening-hours li input.timepickerend').each(function() {
+			$(this).replaceWith( '<span class="closetime">' +  moment($(this).val(), ["h : mm A"]).format("h:mm A") + '</span>' );
+		});
+		
+		if( $(this).parent().parent().parent().siblings('.edit-hours-content').hasClass('visible') ) {
+			$('.edit-hours-content').removeClass('visible');
+		} else {
+			$('.edit-hours-content').removeClass('visible');
+			$(this).parent().parent().parent().siblings('.edit-hours-content').addClass('visible');
+		}
+		
+		$('.savehours').hide();
+		
 	});
 	
 	$('.event-item').on('click', '.editevent', function() {
