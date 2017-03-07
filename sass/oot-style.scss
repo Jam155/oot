@@ -299,11 +299,6 @@ footer {
 	text-transform: uppercase;
 }
 
-.event-details .fa {
-	margin-right: 7px;
-    color: $event-primary;
-}
-
 .venue-text-info-wrapper,
 .text-info-wrapper {
     border: 1px solid $light-grey;
@@ -340,6 +335,10 @@ footer {
 	.offer-details .fa {
 		margin-right: 7px;
 		color: $offer-primary;
+	}
+	.event-details .fa {
+		margin-right: 7px;
+		color: $event-primary;
 	}
 }
 
@@ -527,6 +526,7 @@ label .text-info {
 	width: 83%;
 }
 
+.event-details label .text-info,
 .offer-details label .text-info {
     width: 91%;
 }
@@ -710,35 +710,51 @@ label[for="venue-website"] .text-info {
     color: #ffffff !important;
 }
 
-.accordion-content label[for="offer-title"] .text-info:before {
-	display: none !important;
-}
-
-.offer-details .text-info,
-.accordion-content label[for="offer-title"] .text-info {
+.event-details .text-info,
+.offer-details .text-info {
 	margin: 0 !important;
 }
 
-.accordion-content label[for="offer-date"] .text-info:before {
-    content: '\f073';
-    color: $offer-primary;
-}
-
-.accordion-content label[for="offer-time"] .text-info:before {
-    content: '\f017';
-    color: $offer-primary;
-}
-
-.accordion-content label[for="offer-time"] .timepicker {
-    width: 34% !important;
-    font-size: 12px;
-    padding: 4px;
-    margin-right: 3px;
-}
-
-.accordion-content label[for="offer-quantity"] .text-info:before {
-    content: '\f292';
-    color: $offer-primary;
+.accordion-content {
+	label[for="event-title"] .text-info:before,
+	label[for="offer-title"] .text-info:before {
+		display: none !important;
+	}
+	label[for="event-title"] .text-info,
+	label[for="offer-title"] .text-info {
+		margin: 0 !important;
+	}
+	label[for="event-date"] .text-info:before {
+		content: '\f073';
+		color: $event-primary;	
+	}
+	label[for="offer-date"] .text-info:before {
+		content: '\f073';
+		color: $offer-primary;
+	}
+	label[for="event-time"] .text-info:before {
+		content: '\f017';
+		color: $event-primary;	
+	}
+	label[for="offer-time"] .text-info:before {
+		content: '\f017';
+		color: $offer-primary;
+	}
+	label[for="event-time"] .timepicker,
+	label[for="offer-time"] .timepicker {
+		width: 34% !important;
+		font-size: 12px;
+		padding: 4px;
+		margin-right: 3px;
+	}
+	label[for="event-quantity"] .text-info:before {
+		content: '\f145';
+		color: $event-primary;	
+	}
+	label[for="offer-quantity"] .text-info:before {
+		content: '\f292';
+		color: $offer-primary;
+	}
 }
 
 .savehours {

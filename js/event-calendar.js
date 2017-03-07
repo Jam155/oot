@@ -3,11 +3,8 @@ $(document).ready(function() {
 	var events = [];
 
 	$.getJSON(site_url + '/wp-json/wp/v2/event', function(data) {
-
 	    $.each(data, function(key, element) {
-	    		//console.log(element.date);
-	    		element.date = element.date.slice(0,4) + '-' + element.date.slice(4,6) + '-' + element.date.slice(6,8);
-	    		//console.log(element.date);
+	    	element.date = element.date.slice(0,4) + '-' + element.date.slice(4,6) + '-' + element.date.slice(6,8);
 			events.push({
 				Title: he.decode(element.name),
 				Date: new Date(element.date),
@@ -107,29 +104,38 @@ $(document).ready(function() {
 	});
 	
 	$('.edittime').click(function() {
-		var input = $('<input name="acf_fields[start_time]" id="offer-submission-start" class="timepicker"><input name="acf_fields[end_time]" id="offer-submission-end" class="timepicker"><script>var options = { now: "00:00", title: "Select a Time", }; $(".timepicker").wickedpicker(options);</script>')
+		var fieldStart, fieldEnd, origText;
+		if($(this).parents('label').parents('div').hasClass('offer-details')) {
+			fieldStart = 'offer-submission-start';
+			fieldEnd = 'offer-submission-end';
+			origText = 'Select offer time';
+		}
+		if($(this).parents('label').parents('div').hasClass('event-details')) {
+			fieldStart = 'event-submission-start';
+			fieldEnd = 'event-submission-end';
+			origText = 'Select event time';
+		}
+		var input = $('<input name="acf_fields[start_time]" id="' + fieldStart + '" class="timepicker"><input name="acf_fields[end_time]" id="' + fieldEnd + '" class="timepicker"><script>var options = { now: "00:00", title: "Select a Time", }; $(".timepicker").wickedpicker(options);</script>')
 		$(this).siblings('.text-info').text('').append(input);
-		//var timepickers = $('.timepicker').wickedpicker();
+		
 		$(document).click(function(e) {
-			if ( !$(e.target).hasClass('fa') && !$(e.target).parents('.wickedpicker').length > 0 && !$(e.target).is('#offer-submission-start') && !$(e.target).is('#offer-submission-end') ) {
-				$(e.target).closest('.text-info').text('Select offer time');
+			if ( !$(e.target).hasClass('fa') && !$(e.target).parents('.wickedpicker').length > 0 && !$(e.target).is('#event-submission-start') && !$(e.target).is('#event-submission-end') && !$(e.target).is('#offer-submission-start') && !$(e.target).is('#offer-submission-end') ) {
 				
-				if( $('#offer-submission-start').val() == '12 : 00 AM' && $('#offer-submission-end').val() == '12 : 00 AM' || $('#offer-submission-start').val() == $('#offer-submission-end').val() ) {
-					$('#offer-submission-start').closest('.text-info').text('Select offer time');
-					console.log('fields same');
+				if( $('#' + fieldStart).val() == '12 : 00 AM' && $('#' + fieldEnd).val() == '12 : 00 AM' || $('#' + fieldStart).val() == $('#' + fieldEnd).val() ) {
+					$('#' + fieldStart).closest('.text-info').text('Select event time');
 				} else {
-					var text = $('#offer-submission-start').val() + ' - ' + $('#offer-submission-end').val();
-					$('#offer-submission-start').closest('.text-info').text(text);
-					console.log('fields not same');
+					var text = $('#' + fieldStart).val() + ' - ' + $('#' + fieldEnd).val();
+					$('#' + fieldStart).closest('.text-info').text(text);
 				}
-				
-				$('#offer-submission-start').remove();
-				$('#offer-submission-end').remove();
+
+				$('#' + fieldStart).remove();
+				$('#' + fieldEnd).remove();
 			}
 		});
-		$('#offer-submission-start, #offer-submission-end').focus(function() {
-			$('.wickedpicker').css({'display': 'none'});
-		});
+	});
+	
+	$('#offer-submission-start, #offer-submission-end, #event-submission-start, #event-submission-end').focus(function() {
+		$('.wickedpicker').css({'display': 'none'});
 	});
 	
 	

@@ -393,6 +393,46 @@
 			</div>
 			<div class="col-accordion-wrapper">
 				<div class="accordion-content">
+					<div class="event-item">
+						<div class="left">
+							<img src="<?php echo get_template_directory_uri(); ?>/images/blank-img-event.png" class="blank-img"/>
+						</div>
+						<div class="right">
+							<h2>
+								<label for="event-title" class="control-label no-icon">
+									<p class="text-info">Event Title</p>
+									<a href="#" class="edit btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+								</label>
+							</h2>
+							<div class="event-details">
+								<label for="event-date" class="control-label">
+									<p class="text-info">Select event date</p>
+									<a href="#" class="editdate btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+								</label>
+								<label for="event-time" class="control-label">
+									<p class="text-info">Select event time</p>
+									<a href="#" class="edittime btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+								</label>
+								<label for="event-quantity" class="control-label">
+									<p class="text-info">Enter ticket price</p>
+									<a href="#" class="editquantity btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+								</label>
+							</div>
+						</div>
+						<div class="event-description">
+							<label for="venue-description" class="control-label venue-description">
+								<p class="venue-desc-title">Full Description</p><a href="#" class="edit-offertextarea" class="btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+								<div class="text-info-wrapper">
+									<p class="text-info">Full Description &plus; T&amp;C</p>
+								</div>
+								<?php $settings = array( 'media_buttons' => false, 'quicktags' => false, 'textarea_name' => 'venue_content', ); ?>
+								<div class="venue-description-editor-wrapper"><?php wp_editor(get_the_content(), 'venuedescriptioneditor', $settings); ?></div>
+							</label>
+							<a href="#"><span class="remove">Remove Event<i class="fa fa-trash" aria-hidden="true"></i></span></a>
+							<a href="#"><span class="save">Save Event<i class="fa fa-check" aria-hidden="true"></i></span></a>
+						</div>
+					</div>
+					<?php /*
 					<form id="offer-submission-form">
 						<div>
 							<label for="offer-submission-title">
@@ -432,6 +472,7 @@
 						</div>
 						<input type="submit" value="<?php esc_attr_e( 'Submit', 'oot'); ?>">
 					</form>
+					*/ ?>
 				</div>
 				<h3 class="col-title">Add New Event <i class="fa fa-plus" aria-hidden="true"></i></h3>
 			</div>
