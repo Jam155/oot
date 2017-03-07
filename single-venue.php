@@ -35,47 +35,68 @@
 										<tr>
 											<th>M</th>
 											<td>
-												<ul class="list-hours"><?php while( have_rows('monday') ): the_row(); ?><li><span class="opentime"><?php the_sub_field('open'); ?></span> - <span class="closetime"><?php the_sub_field('close'); ?></li><?php endwhile; ?></span></ul>
+												<ul class="list-hours">
+													<?php while( have_rows('monday') ): the_row(); ?><li><span class="opentime"><?php the_sub_field('open'); ?></span> - <span class="closetime"><?php the_sub_field('close'); ?></li><?php endwhile; ?></span>
+													<i class="fa fa-minus-circle" aria-hidden="true"></i></a><i class="fa fa-plus-circle" aria-hidden="true"></i>
+												</ul>
 											</td>
 										</tr>
 										<tr>
 											<th>T</th>
 											<td>
-												<ul class="list-hours"><?php while( have_rows('tuesday') ): the_row(); ?><li><span class="opentime"><?php the_sub_field('open'); ?></span> - <span class="closetime"><?php the_sub_field('close'); ?></li><?php endwhile; ?></span></ul>
+												<ul class="list-hours">
+													<?php while( have_rows('tuesday') ): the_row(); ?><li><span class="opentime"><?php the_sub_field('open'); ?></span> - <span class="closetime"><?php the_sub_field('close'); ?></li><?php endwhile; ?></span>
+													<i class="fa fa-minus-circle" aria-hidden="true"></i><i class="fa fa-plus-circle" aria-hidden="true"></i>
+												</ul>
 											</td>
 										</tr>
 										<tr>
 											<th>W</th>
 											<td>
-												<ul class="list-hours"><?php while( have_rows('wednesday') ): the_row(); ?><li><span class="opentime"><?php the_sub_field('open'); ?></span> - <span class="closetime"><?php the_sub_field('close'); ?></li><?php endwhile; ?></span></ul>
+												<ul class="list-hours">
+													<?php while( have_rows('wednesday') ): the_row(); ?><li><span class="opentime"><?php the_sub_field('open'); ?></span> - <span class="closetime"><?php the_sub_field('close'); ?></li><?php endwhile; ?></span>
+													<i class="fa fa-minus-circle" aria-hidden="true"></i><i class="fa fa-plus-circle" aria-hidden="true"></i>
+												</ul>
 											</td>
 										</tr>
 										<tr>
 											<th>T</th>
 											<td>
-												<ul class="list-hours"><?php while( have_rows('thursday') ): the_row(); ?><li><span class="opentime"><?php the_sub_field('open'); ?></span> - <span class="closetime"><?php the_sub_field('close'); ?></li><?php endwhile; ?></span></ul>
+												<ul class="list-hours">
+													<?php while( have_rows('thursday') ): the_row(); ?><li><span class="opentime"><?php the_sub_field('open'); ?></span> - <span class="closetime"><?php the_sub_field('close'); ?></li><?php endwhile; ?></span>
+													<i class="fa fa-minus-circle" aria-hidden="true"></i><i class="fa fa-plus-circle" aria-hidden="true"></i>
+												</ul>
 											</td>
 										</tr>
 										<tr>
 											<th>F</th>
 											<td>
-												<ul class="list-hours"><?php while( have_rows('friday') ): the_row(); ?><li><span class="opentime"><?php the_sub_field('open'); ?></span> - <span class="closetime"><?php the_sub_field('close'); ?></li><?php endwhile; ?></span></ul>
+												<ul class="list-hours">
+													<?php while( have_rows('friday') ): the_row(); ?><li><span class="opentime"><?php the_sub_field('open'); ?></span> - <span class="closetime"><?php the_sub_field('close'); ?></li><?php endwhile; ?></span>
+													<i class="fa fa-minus-circle" aria-hidden="true"></i><i class="fa fa-plus-circle" aria-hidden="true"></i>
+												</ul>
 											</td>
 										</tr>
 										<tr>
 											<th>S</th>
 											<td>
-												<ul class="list-hours"><?php while( have_rows('saturday') ): the_row(); ?><li><span class="opentime"><?php the_sub_field('open'); ?></span> - <span class="closetime"><?php the_sub_field('close'); ?></li><?php endwhile; ?></span></ul>
+												<ul class="list-hours">
+													<?php while( have_rows('saturday') ): the_row(); ?><li><span class="opentime"><?php the_sub_field('open'); ?></span> - <span class="closetime"><?php the_sub_field('close'); ?></li><?php endwhile; ?></span>
+													<i class="fa fa-minus-circle" aria-hidden="true"></i><i class="fa fa-plus-circle" aria-hidden="true"></i>
+												</ul>
 											</td>
 										</tr>
 										<tr>
 											<th>S</th>
 											<td>
-												<ul class="list-hours"><?php while( have_rows('sunday') ): the_row(); ?><li><span class="opentime"><?php the_sub_field('open'); ?></span> - <span class="closetime"><?php the_sub_field('close'); ?></li><?php endwhile; ?></span></ul>
+												<ul class="list-hours">
+													<?php while( have_rows('sunday') ): the_row(); ?><li><span class="opentime"><?php the_sub_field('open'); ?></span> - <span class="closetime"><?php the_sub_field('close'); ?></li><?php endwhile; ?></span>
+													<i class="fa fa-minus-circle" aria-hidden="true"></i><i class="fa fa-plus-circle" aria-hidden="true"></i>
+												</ul>
 											</td>
 										</tr>
-										<a href="#" class="savehours btn">Save Changes <i class="fa fa-save" aria-hidden="true"></i></a>
 									</table>
+									<a href="#" class="savehours btn">Save Hours <i class="fa fa-check" aria-hidden="true"></i></a>
 								</div>
 							<?php endwhile;?>
 						<?php endif;?>

@@ -1,12 +1,9 @@
 
 $(document).ready(function() {
 	var events = [];
-	//var len = 0;
 
 	$.getJSON(site_url + '/wp-json/wp/v2/event', function(data) {
 
-	    //console.log(data);
-		//len = Object.keys(data).length;
 	    $.each(data, function(key, element) {
 	    		//console.log(element.date);
 	    		element.date = element.date.slice(0,4) + '-' + element.date.slice(4,6) + '-' + element.date.slice(6,8);
@@ -18,16 +15,12 @@ $(document).ready(function() {
 			});
 	    });
 	
-		//console.log(events);
 		var today = new Date();
 		var todayMonth = today.getMonth();
 		var todayYear = today.getYear();
 		var weekTimestamp = 	7 * 24 * 60 * 60 * 1000;
 		var fortnightTimestamp = 14 * 24 * 60 * 60 * 1000;
 		var margin = 1 * 60 * 60 * 1000;
-
-		//console.log(weekTimestamp);
-		//console.log(fortnightTimestamp);
 
 		$('#calendar').datepicker({
 			onChangeMonthYear: function(year, month, inst) {
@@ -37,7 +30,6 @@ $(document).ready(function() {
 			beforeShowDay: function(date) {
 				var result = [true, '', null];
 				var matching = $.grep(events, function(event) {
-
 					var result = false;
 					var eventDate = new Date(event.Date);
 					var eventTimestamp = eventDate.getTime();
@@ -45,36 +37,23 @@ $(document).ready(function() {
 					var diffTime = curTimestamp - eventTimestamp;
 
 					if (diffTime == 0) {
-
 						result = true;
-
 					}
 
 					if (curTimestamp > eventTimestamp) {
-
 						var daysSince = Math.ceil(diffTime / (24 * 60 * 60 * 1000));	
-
 						if (event.Repeatable == 'Weekly' && (daysSince % 7) == 0) {
-
 							result = true;
-
 						} else if (event.Repeatable == 'Fortnightly' && (daysSince % 14) == 0) {
-							
 							result = true;
-
 						} else if (event.Repeatable == 'Monthly') {
-
 							eventDate.setMonth(date.getMonth());
 							if (eventDate.getTime() == date.getTime()) {
 								result = true;
 							}
 						}
-
 					}
-
-					return result;
-
-				
+					return result;				
 				});
 				if (matching.length) {
 					result = [true, 'highlight', null];
@@ -86,10 +65,8 @@ $(document).ready(function() {
 					selectedDate = new Date(dateText),
 					i = 0,
 					event = null;
-			
 				while (i < events.length && !event) {
 					date = events[i].Date;
-
 					if (selectedDate.valueOf() === date.valueOf()) {
 						event = events[i];
 					}
@@ -106,14 +83,6 @@ $(document).ready(function() {
 		});
 	});
 
-	/*
-	var events = [
-		{ Title: "Event 1", Date: new Date("02/02/2017") }, 
-		{ Title: "Event 2", Date: new Date("02/20/2017") }, 
-		{ Title: "Event 3", Date: new Date("02/16/2017") }
-	];
-	*/
-
 	$('.venue-description-editor-wrapper').hide();
 	
 	$('.editdate').click(function() {
@@ -129,13 +98,12 @@ $(document).ready(function() {
 				$('#offer-submission-date').remove();
 			}
 		});
-
+		
 		$('.ui-datepicker-calendar td').click(function() {
 			var text = $('#offer-submission-date').val();
 			$('#offer-submission-date').parent().text(text);
 			$('#offer-submission-date').remove();
 		});
-
 	});
 	
 	$('.edittime').click(function() {
@@ -145,6 +113,7 @@ $(document).ready(function() {
 		$(document).click(function(e) {
 			if ( !$(e.target).hasClass('fa') && !$(e.target).parents('.wickedpicker').length > 0 && !$(e.target).is('#offer-submission-start') && !$(e.target).is('#offer-submission-end') ) {
 				$(e.target).closest('.text-info').text('Select offer time');
+				
 				if( $('#offer-submission-start').val() == '12 : 00 AM' && $('#offer-submission-end').val() == '12 : 00 AM' || $('#offer-submission-start').val() == $('#offer-submission-end').val() ) {
 					$('#offer-submission-start').closest('.text-info').text('Select offer time');
 					console.log('fields same');
@@ -153,15 +122,14 @@ $(document).ready(function() {
 					$('#offer-submission-start').closest('.text-info').text(text);
 					console.log('fields not same');
 				}
+				
 				$('#offer-submission-start').remove();
 				$('#offer-submission-end').remove();
 			}
 		});
-
 		$('#offer-submission-start, #offer-submission-end').focus(function() {
 			$('.wickedpicker').css({'display': 'none'});
 		});
-
 	});
 	
 	
@@ -170,7 +138,6 @@ $(document).ready(function() {
 		var input = $('<input id="attribute" type="text" value="' + text + '" />')
 		$(this).siblings('.text-info').text('').append(input);
 		input.select();
-	
 		input.blur(function() {
 			var text = $('#attribute').val();
 			$('#attribute').parent().text(text);
@@ -183,7 +150,6 @@ $(document).ready(function() {
 		var input = $('<input id="attribute" type="number" />')
 		$(this).siblings('.text-info').text('').append(input);
 		input.select();
-	
 		input.blur(function() {
 			var text = $('#attribute').val();
 			if(text != '') {
@@ -204,12 +170,38 @@ $(document).ready(function() {
 		}
 	});
 	
-	$('.venue-detail-columns').on('click', '.edithours', function() {
+	
+	$('.left .opening-hours .list-hours').on('click', '.fa-minus-circle', function() {
+		$(this).parent().children('li').last().remove();
+		if( $(this).parent().children('li').length == 1 ) {
+			$(this).hide();
+		}
 		
-		$('.savehours').show();
-				
+		$('.timepickerstart, .timepickerend').focus(function() {
+			$('.wickedpicker').css({'display': 'none'});
+		});
+	});
+	
+	$('.left .opening-hours .list-hours').on('click', '.fa-plus-circle', function() {
+		$('<li><input name="acf_fields[start_time]" id="venu-open" class="timepickerstart"><script>var options = { now: "00:00", title: "Select a Time", }; $(".timepickerstart").wickedpicker(options);</script> - <input name="acf_fields[start_time]" id="venu-close" class="timepickerend"><script>var options = { now: "00:00", title: "Select a Time", }; $(".timepickerend").wickedpicker(options);</script></li>').insertAfter($(this).parent().children('li').last());
+		if( $(this).parent().children('li').length > 1 ) {
+			$(this).siblings('.fa-minus-circle').show();
+		}	
+		$('.timepickerstart, .timepickerend').focus(function() {
+			$('.wickedpicker').css({'display': 'none'});
+		});
+	});
+	
+	$('.venue-detail-columns').on('click', '.edithours', function() {
+		$('.savehours').show();	
 		$('.left .opening-hours li span.opentime').each(function() {
 			$(this).replaceWith( '<input name="acf_fields[start_time]" id="venu-open" class="timepickerstart"><script>var options = { now: "' + moment($(this).text(), ["h:mm A"]).format("HH:mm") + '", title: "Select a Time", }; $(".timepickerstart").wickedpicker(options);</script>' );
+		});
+		$('.left .opening-hours .list-hours').each(function() {
+			$(this).children('.fa-plus-circle').show();
+			if( $(this).children('li').length > 1 ) {
+				$(this).children('.fa-minus-circle').show();
+			}
 		});
 		
 		$('.left .opening-hours li span.closetime').each(function() {
@@ -247,6 +239,8 @@ $(document).ready(function() {
 		}
 		
 		$('.savehours').hide();
+		$('.left .opening-hours .list-hours .fa-minus-circle').hide();
+		$('.left .opening-hours .list-hours .fa-plus-circle').hide();
 		
 	});
 	
@@ -276,7 +270,7 @@ $(document).ready(function() {
 	});
 
 	$('.edit-textarea').click(function() {
-		var input = $('<textarea cass="new-offer-desc-textarea" id="attribute" />')
+		var input = $('<textarea class="new-offer-desc-textarea" id="attribute" />')
 		var origText = $(this).siblings('.text-info-wrapper').children('.text-info').text();
 		var text = $(this).siblings('.text-info-wrapper').children('.text-info').text();
 		$(this).siblings('.text-info-wrapper').children('.text-info').text('').append(input);
@@ -295,7 +289,7 @@ $(document).ready(function() {
 	});
 	
 	$('.edit-offertextarea').click(function() {
-		var input = $('<textarea cass="new-offer-desc-textarea" id="attribute" />')
+		var input = $('<textarea class="new-offer-desc-textarea" id="attribute" />')
 		var text = $(this).siblings('.text-info-wrapper').children('.text-info').text();
 		$(this).siblings('.text-info-wrapper').children('.text-info').text('').append(input);
 		input.text(text);
