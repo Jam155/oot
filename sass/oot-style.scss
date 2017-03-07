@@ -265,6 +265,10 @@ footer {
 	}
 }
 
+.savehours {
+	@include save-remove-btn();
+}
+
 .offer-item .save { background: $offer-primary; }
 .event-item .save {	background: $event-primary; }
 
