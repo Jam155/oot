@@ -122,7 +122,7 @@ $(document).ready(function() {
 			if ( !$(e.target).hasClass('fa') && !$(e.target).parents('.wickedpicker').length > 0 && !$(e.target).is('#event-submission-start') && !$(e.target).is('#event-submission-end') && !$(e.target).is('#offer-submission-start') && !$(e.target).is('#offer-submission-end') ) {
 				
 				if( $('#' + fieldStart).val() == '12 : 00 AM' && $('#' + fieldEnd).val() == '12 : 00 AM' || $('#' + fieldStart).val() == $('#' + fieldEnd).val() ) {
-					$('#' + fieldStart).closest('.text-info').text('Select event time');
+					$('#' + fieldStart).closest('.text-info').text(origText);
 				} else {
 					var text = $('#' + fieldStart).val() + ' - ' + $('#' + fieldEnd).val();
 					$('#' + fieldStart).closest('.text-info').text(text);
@@ -137,7 +137,6 @@ $(document).ready(function() {
 	$('#offer-submission-start, #offer-submission-end, #event-submission-start, #event-submission-end').focus(function() {
 		$('.wickedpicker').css({'display': 'none'});
 	});
-	
 	
 	$('.edit').click(function() {
 		var text = $(this).siblings('.text-info').text();
@@ -316,7 +315,9 @@ $(document).ready(function() {
 	$('.save-venue-btn').click(function() {
 		console.log('Saving...');
 		
-		var post_id = '57';
+		var post_id = $(this).attr('data-post-id');
+		var featured_media = '';
+		var venue_image = $(".venue-img img").attr('src');
 		var name = $("label[for='venue-title'] .text-info").text();
 		var address_line_1 = $("label[for='venue-address-1'] .text-info").text();
 		var address_line_2 = '';
@@ -329,7 +330,13 @@ $(document).ready(function() {
 		var description = $(".venue-details .text-info-wrapper .text-info").text();
 		var term_id = $(".cat-select select").val();
 		var catname = $(".cat-select select").find(":selected").text();
-		console.log( website );
+		
+		if(venue_image.indexOf("150x150") > -1) {
+		   console.log( "image hasn't changed" );
+		} else {
+			var featured_media = $(".venue-img img").attr('data-image-id');
+		}
+		console.log( featured_media );
 		
 		function makeSlug(str) {
 			var makeSlug = '';
@@ -344,6 +351,7 @@ $(document).ready(function() {
 		var finalVenuData = {
 			title: name,
 			content: description,
+			featured_media: featured_media,
 			acf_fields: {
 				phone: phone,
 				website: website

@@ -3,9 +3,6 @@
 <section id="content" class="venue-wrapper" role="main">
 	<a href="<?php echo site_url(); ?>" class="dashboard-logo"><img src="<?php echo get_template_directory_uri(); ?>/images/dashboard-logo.png" /></a>
 	<?php if(is_user_logged_in()) { ?>
-	<div class="uploader">
-		<img id="frontend-image" />
-	</div>
 		<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
 		<section class="venue-details">
 			<h3 class="col-title">Venue Details</h3>
@@ -15,7 +12,7 @@
 					<div class="left">
 						<div class="venue-img">
 							<button class="frontend-button"><i class="fa fa-camera-retro" aria-hidden="true"></i></button>
-							<?php echo get_the_post_thumbnail(get_the_ID(), 'thumbnail'); ?>
+							<?php echo get_the_post_thumbnail(get_the_ID(), 'thumbnail', array( 'data-image-id' => '' )); ?>
 						</div>
 					</div>
 					<div class="right">					
@@ -189,7 +186,7 @@
 					<div class="tag-result"></div>
 				</div>
 				
-				<button class="save-venue-btn" type="button">Save Details</button>
+				<button class="save-venue-btn" type="button" data-post-id="<?php echo get_the_ID(); ?>">Save Details</button>
 			</div>
 
 		</section>
@@ -251,7 +248,7 @@
 					<div class="offer-item">
 						<div class="left">
 							<button class="frontend-button"><i class="fa fa-camera-retro" aria-hidden="true"></i></button>
-							<img src="<?php echo get_template_directory_uri(); ?>/images/oot-placeholder-img.png" class="blank-img"/>
+							<img src="<?php echo get_template_directory_uri(); ?>/images/oot-placeholder-img.png" class="blank-img" data-image-id=""/>
 						</div>
 						<div class="right">
 							<h2>
@@ -403,7 +400,7 @@
 					<div class="event-item">
 						<div class="left">
 							<button class="frontend-button"><i class="fa fa-camera-retro" aria-hidden="true"></i></button>
-							<img src="<?php echo get_template_directory_uri(); ?>/images/oot-placeholder-img.png" class="blank-img"/>
+							<img src="<?php echo get_template_directory_uri(); ?>/images/oot-placeholder-img.png" class="blank-img" data-image-id=""/>
 						</div>
 						<div class="right">
 							<h2>

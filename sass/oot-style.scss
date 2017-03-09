@@ -87,6 +87,7 @@ footer {
 		img {
 			border-radius: 100px;
 			border: 3px solid #e5e5e5;
+			min-height: 104px;
 		}
 		.frontend-button {
 			@include frontend-button(#6f5190);
