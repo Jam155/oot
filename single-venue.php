@@ -3,6 +3,9 @@
 <section id="content" class="venue-wrapper" role="main">
 	<a href="<?php echo site_url(); ?>" class="dashboard-logo"><img src="<?php echo get_template_directory_uri(); ?>/images/dashboard-logo.png" /></a>
 	<?php if(is_user_logged_in()) { ?>
+	<div class="uploader">
+		<img id="frontend-image" />
+	</div>
 		<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
 		<section class="venue-details">
 			<h3 class="col-title">Venue Details</h3>
@@ -10,7 +13,10 @@
 				
 				<div class="top-box">
 					<div class="left">
-						<div class="venue-img"><?php echo get_the_post_thumbnail(get_the_ID(), 'thumbnail'); ?></div>
+						<div class="venue-img">
+							<button class="frontend-button"><i class="fa fa-camera-retro" aria-hidden="true"></i></button>
+							<?php echo get_the_post_thumbnail(get_the_ID(), 'thumbnail'); ?>
+						</div>
 					</div>
 					<div class="right">					
 						<label for="venue-title" class="control-label">
@@ -244,7 +250,8 @@
 				<div class="accordion-content">
 					<div class="offer-item">
 						<div class="left">
-							<img src="<?php echo get_template_directory_uri(); ?>/images/blank-img-offer.png" class="blank-img"/>
+							<button class="frontend-button"><i class="fa fa-camera-retro" aria-hidden="true"></i></button>
+							<img src="<?php echo get_template_directory_uri(); ?>/images/oot-placeholder-img.png" class="blank-img"/>
 						</div>
 						<div class="right">
 							<h2>
@@ -395,7 +402,8 @@
 				<div class="accordion-content">
 					<div class="event-item">
 						<div class="left">
-							<img src="<?php echo get_template_directory_uri(); ?>/images/blank-img-event.png" class="blank-img"/>
+							<button class="frontend-button"><i class="fa fa-camera-retro" aria-hidden="true"></i></button>
+							<img src="<?php echo get_template_directory_uri(); ?>/images/oot-placeholder-img.png" class="blank-img"/>
 						</div>
 						<div class="right">
 							<h2>

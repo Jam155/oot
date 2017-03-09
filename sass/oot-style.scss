@@ -63,11 +63,33 @@ footer {
 	background-color: $event-primary;
 }
 
+@mixin frontend-button($background) {
+	background: $background;
+	outline: 0;
+	top: 50%;
+	transform: translateY(-50%);
+	text-align: center;
+	font-size: 24px;
+	margin: 0 auto;
+	border-radius: 100px;
+	color: #fff;
+	height: 50px;
+	position: absolute;
+	width: 50px;
+	left: 50%;
+	margin-left: -25px;
+	border: 0;
+}
+
 .venue-img {
+	position: relative;
     display: inline-block;
 		img {
 			border-radius: 100px;
 			border: 3px solid #e5e5e5;
+		}
+		.frontend-button {
+			@include frontend-button(#6f5190);
 		}
 }
 
@@ -261,6 +283,26 @@ footer {
 		.fa {
 			margin-left: 7px;
 			color: #ffffff;
+		}
+	}
+}
+
+.offer-item {
+	.left {
+		position: relative;
+		
+		.frontend-button {
+			@include frontend-button(#a1be3e);
+		}	
+	}
+}
+
+.event-item {
+	.left {
+		position: relative;
+		
+		.frontend-button {
+			@include frontend-button(#be1f41);
 		}
 	}
 }
@@ -781,6 +823,16 @@ label[for="venue-website"] .text-info {
 
 .visible {
 	display: block;
+}
+
+.screen-reader-text {
+    clip: rect(1px, 1px, 1px, 1px);
+    clip-path: polygon(0px 0px, 0px 0px,0px 0px, 0px 0px);
+    position: absolute !important;
+    white-space: nowrap;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
 }
 
 @media (max-width: 1293px) {

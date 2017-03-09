@@ -258,3 +258,16 @@ add_filter( 'rest_api_allowed_post_types', 'oot_allow_post_types');
 require_once('includes/Venues_Controller.php');
 require_once('includes/Offers_Controller.php');
 require_once('includes/Events_Controller.php');
+
+function oot_mime_types($mime_types){
+    //Creating a new array will reset the allowed filetypes
+    $mime_types = array(
+        'jpg|jpeg|jpe' => 'image/jpeg',
+        'gif' => 'image/gif',
+        'png' => 'image/png',
+        'bmp' => 'image/bmp',
+        'tif|tiff' => 'image/tiff'
+    );
+    return $mime_types;
+}
+add_filter('upload_mimes', 'oot_mime_types', 1, 1);
