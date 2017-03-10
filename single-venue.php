@@ -18,12 +18,12 @@
 					<div class="right">					
 						<label for="venue-title" class="control-label">
 							<p class="text-info"><?php echo get_the_title(); ?></p>
-							<a href="#" class="edit btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+							<i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="text"></i>
+							
 						</label>
-						
 						<label for="venue-website" class="control-label">
 							<p class="text-info"><?php echo get_field('website'); ?></p>
-							<a href="#" class="edit btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+							<i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="url"></i>
 						</label>
 					</div>
 				</div>
@@ -33,7 +33,7 @@
 						<?php if( have_rows('opening_hours') ): ?>
 							<?php while( have_rows('opening_hours') ): the_row(); ?>
 								<div class="opening-hours">
-									<p class="venue-desc-title">Opening Hours<a href="#" class="edithours btn"><i class="fa fa-pencil" aria-hidden="true"></i></a></p>
+									<p class="venue-desc-title">Opening Hours<i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="hours"></i></p>
 									<table>
 										<tr>
 											<th>M</th>
@@ -156,7 +156,7 @@
 				</div>
 				
 				<label for="venue-description" class="control-label venue-description">
-					<p class="venue-desc-title">Venue Description</p><a href="#" class="edit-textarea" class="btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+					<p class="venue-desc-title">Venue Description</p><i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="textarea"></i></a>
 					<div class="text-info-wrapper">
 						<p class="text-info"><?php echo get_the_content(); ?></p>
 					</div>
@@ -185,10 +185,8 @@
 					<input class="tag-search-field" name="tag_search_field" type="text" autocomplete="off" placeholder="&#xf067; TYPE TO SEARCH FOR TAG" style="" />
 					<div class="tag-result"></div>
 				</div>
-				
 				<button class="save-venue-btn" type="button" data-post-id="<?php echo get_the_ID(); ?>">Save Details</button>
 			</div>
-
 		</section>
 		<section class="current-offers">
 			<h3 class="col-title">Current Offers</h3>
@@ -211,7 +209,7 @@
 							<div class="right">
 								<h2>
 									<?php the_title(); ?>
-									<a href="#" class="editoffer btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+									<i class="editoffer fa fa-pencil" aria-hidden="true" data-edit-type="expand"></i>
 								</h2>
 								<div class="offer-details">
 									<?php
@@ -226,7 +224,7 @@
 							</div>
 							<div class="offer-description">
 								<label for="venue-description" class="control-label venue-description">
-									<p class="venue-desc-title">Full Description</p><a href="#" class="edit-offertextarea" class="btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+									<p class="venue-desc-title">Full Description</p><i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="textarea"></i>
 									<div class="text-info-wrapper">
 										<p class="text-info"><?php echo get_the_content(); ?></p>
 									</div>
@@ -254,7 +252,7 @@
 							<h2>
 								<label for="offer-title" class="control-label no-icon">
 									<p class="text-info">Offer Title</p>
-									<a href="#" class="edit btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+									<i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="text"></i>
 								</label>
 							</h2>
 							<div class="offer-details">
@@ -268,13 +266,13 @@
 								</label>
 								<label for="offer-quantity" class="control-label">
 									<p class="text-info">Enter redeem amount</p>
-									<a href="#" class="editquantity btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+									<i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="number"></i>
 								</label>
 							</div>
 						</div>
 						<div class="offer-description">
 							<label for="venue-description" class="control-label venue-description">
-								<p class="venue-desc-title">Full Description</p><a href="#" class="edit-offertextarea" class="btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+								<p class="venue-desc-title">Full Description</p><i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="textarea"></i>
 								<div class="text-info-wrapper">
 									<p class="text-info">Full Description &plus; T&amp;C</p>
 								</div>
@@ -362,7 +360,7 @@
 							</div>
 							<div class="event-description">
 								<label for="venue-description" class="control-label venue-description">
-									<p class="venue-desc-title">Full Description</p><a href="#" class="edit-offertextarea" class="btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+									<p class="venue-desc-title">Full Description</p><i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="textarea"></i>
 									<div class="text-info-wrapper">
 										<p class="text-info"><?php echo get_the_content(); ?></p>
 									</div>
@@ -406,7 +404,7 @@
 							<h2>
 								<label for="event-title" class="control-label no-icon">
 									<p class="text-info">Event Title</p>
-									<a href="#" class="edit btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+									<i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="text"></i>
 								</label>
 							</h2>
 							<div class="event-details">
@@ -420,13 +418,13 @@
 								</label>
 								<label for="event-quantity" class="control-label">
 									<p class="text-info">Enter ticket price</p>
-									<a href="#" class="editquantity btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+									<i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="number"></i>
 								</label>
 							</div>
 						</div>
 						<div class="event-description">
 							<label for="venue-description" class="control-label venue-description">
-								<p class="venue-desc-title">Full Description</p><a href="#" class="edit-offertextarea" class="btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+								<p class="venue-desc-title">Full Description</p><i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="textarea"></i>
 								<div class="text-info-wrapper">
 									<p class="text-info">Full Description &plus; T&amp;C</p>
 								</div>

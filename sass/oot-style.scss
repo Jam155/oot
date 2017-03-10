@@ -385,6 +385,8 @@ footer {
 	}
 }
 
+.editoffer,
+.edit,
 .control-label .editdate,
 .control-label .edit {
 	float: right;	
@@ -587,7 +589,7 @@ label .text-info:before {
     display: inline-block;
 }
 
-label.no-icon .text-info:before { content: ''; } 
+label.no-icon .text-info:before { content: ''; }
 
 .venue-description label .text-info:before { margin-right: 0px !important; }
 

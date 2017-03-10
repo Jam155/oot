@@ -139,29 +139,74 @@ $(document).ready(function() {
 	});
 	
 	$('.edit').click(function() {
-		var text = $(this).siblings('.text-info').text();
-		var input = $('<input id="attribute" type="text" value="' + text + '" />')
-		$(this).siblings('.text-info').text('').append(input);
+		var input, origField;
+		var editType = $(this).attr('data-edit-type');
+		switch(editType) {
+			case 'text':
+				console.log('text');
+				origField = $(this).siblings('.text-info').text();
+				input = $('<input id="attribute" type="text" value="' + origField + '" />');
+				$(this).siblings('.text-info').text('').append(input);
+				break;
+			case 'url':
+				console.log('url');
+				origField = $(this).siblings('.text-info').text();
+				input = $('<input id="attribute" type="url" value="' + origField + '" />');
+				$(this).siblings('.text-info').text('').append(input);
+				break;
+			case 'number':
+				console.log('number');
+				origField = $(this).siblings('.text-info').text();
+				input = $('<input id="attribute" type="number" />')
+				$(this).siblings('.text-info').text('').append(input);
+				input.select();
+				break;
+			case 'tel':
+				console.log('tel');
+				break;
+			case 'textarea':
+				input = $('<textarea class="new-offer-desc-textarea" id="attribute" />')
+				origField = $(this).siblings('.text-info-wrapper').children('.text-info').text();
+				$(this).siblings('.text-info-wrapper').children('.text-info').text('').append(input);
+				input.text(origField);
+				input.select();
+				break;
+			case 'hours':
+				$('.savehours').show();	
+				$('.left .opening-hours li span.opentime').each(function() {
+					$(this).replaceWith( '<input name="acf_fields[start_time]" id="venu-open" class="timepickerstart"><script>var options = { now: "' + moment($(this).text(), ["h:mm A"]).format("HH:mm") + '", title: "Select a Time", }; $(".timepickerstart").wickedpicker(options);</script>' );
+				});
+				$('.left .opening-hours .list-hours').each(function() {
+					$(this).children('.fa-plus-circle').show();
+					if( $(this).children('li').length > 1 ) {
+						$(this).children('.fa-minus-circle').show();
+					}
+				});
+				$('.left .opening-hours li span.closetime').each(function() {
+					$(this).replaceWith( '<input name="acf_fields[start_time]" id="venu-close" class="timepickerend"><script>var options = { now: "' + moment($(this).text(), ["h:mm A"]).format("HH:mm") + '", title: "Select a Time", }; $(".timepickerend").wickedpicker(options);</script>' );
+				});
+				if( $(this).parent().parent().parent().siblings('.edit-hours-content').hasClass('visible') ) {
+					$('.edit-hours-content').removeClass('visible');
+				} else {
+					$('.edit-hours-content').removeClass('visible');
+					$(this).parent().parent().parent().siblings('.edit-hours-content').addClass('visible');
+				}
+				$('.timepickerstart, .timepickerend').focus(function() {
+					$('.wickedpicker').css({'display': 'none'});
+				});
+				break;
+			case 'expand':
+				break;
+			default:
+				break;
+		}
 		input.select();
-		input.blur(function() {
+		input.on('blur', function() {
 			var text = $('#attribute').val();
-			$('#attribute').parent().text(text);
-			$('#attribute').remove();
-		});
-	});
-	
-	$('.editquantity').click(function() {
-		var text = $(this).siblings('.text-info').text();
-		var input = $('<input id="attribute" type="number" />')
-		$(this).siblings('.text-info').text('').append(input);
-		input.select();
-		input.blur(function() {
-			var text = $('#attribute').val();
-			if(text != '') {
-				$('#attribute').parent().text(text);
-			} else {
-				$('#attribute').parent().text('Enter redeem amount');
+			if(text == '') {
+				text = origField;
 			}
+			$('#attribute').parent().text(text);
 			$('#attribute').remove();
 		});
 	});
@@ -174,7 +219,6 @@ $(document).ready(function() {
 			$(this).parent().parent().siblings('.offer-description').addClass('visible');
 		}
 	});
-	
 	
 	$('.left .opening-hours .list-hours').on('click', '.fa-minus-circle', function() {
 		$(this).parent().children('li').last().remove();
@@ -196,57 +240,23 @@ $(document).ready(function() {
 			$('.wickedpicker').css({'display': 'none'});
 		});
 	});
-	
-	$('.venue-detail-columns').on('click', '.edithours', function() {
-		$('.savehours').show();	
-		$('.left .opening-hours li span.opentime').each(function() {
-			$(this).replaceWith( '<input name="acf_fields[start_time]" id="venu-open" class="timepickerstart"><script>var options = { now: "' + moment($(this).text(), ["h:mm A"]).format("HH:mm") + '", title: "Select a Time", }; $(".timepickerstart").wickedpicker(options);</script>' );
-		});
-		$('.left .opening-hours .list-hours').each(function() {
-			$(this).children('.fa-plus-circle').show();
-			if( $(this).children('li').length > 1 ) {
-				$(this).children('.fa-minus-circle').show();
-			}
-		});
 		
-		$('.left .opening-hours li span.closetime').each(function() {
-			$(this).replaceWith( '<input name="acf_fields[start_time]" id="venu-close" class="timepickerend"><script>var options = { now: "' + moment($(this).text(), ["h:mm A"]).format("HH:mm") + '", title: "Select a Time", }; $(".timepickerend").wickedpicker(options);</script>' );
-		});
-		
-		if( $(this).parent().parent().parent().siblings('.edit-hours-content').hasClass('visible') ) {
-			$('.edit-hours-content').removeClass('visible');
-		} else {
-			$('.edit-hours-content').removeClass('visible');
-			$(this).parent().parent().parent().siblings('.edit-hours-content').addClass('visible');
-		}
-		
-		$('.timepickerstart, .timepickerend').focus(function() {
-			$('.wickedpicker').css({'display': 'none'});
-		});
-		
-	});
-	
-	$('.venue-detail-columns').on('click', '.savehours', function() {
-				
+	$('.venue-detail-columns').on('click', '.savehours', function() {		
 		$('.left .opening-hours li input.timepickerstart').each(function() {
 			$(this).replaceWith( '<span class="opentime">' + moment($(this).val(), ["h : mm A"]).format("h:mm A") + '</span>' );
 		});
-		
 		$('.left .opening-hours li input.timepickerend').each(function() {
 			$(this).replaceWith( '<span class="closetime">' +  moment($(this).val(), ["h : mm A"]).format("h:mm A") + '</span>' );
 		});
-		
 		if( $(this).parent().parent().parent().siblings('.edit-hours-content').hasClass('visible') ) {
 			$('.edit-hours-content').removeClass('visible');
 		} else {
 			$('.edit-hours-content').removeClass('visible');
 			$(this).parent().parent().parent().siblings('.edit-hours-content').addClass('visible');
 		}
-		
 		$('.savehours').hide();
 		$('.left .opening-hours .list-hours .fa-minus-circle').hide();
 		$('.left .opening-hours .list-hours .fa-plus-circle').hide();
-		
 	});
 	
 	$('.event-item').on('click', '.editevent', function() {
@@ -272,25 +282,6 @@ $(document).ready(function() {
 		$('.venue-active-tags').append( '<span class="venue-tag" data-tag="' + $('.tag-search-field').val() + '">' + $('.tag-search-field').val() + '<i class="fa fa-close del" aria-hidden="true"></i></span>' );
 		$('.tag-search-field').val("");
 		$(this).remove();
-	});
-
-	$('.edit-textarea').click(function() {
-		var input = $('<textarea class="new-offer-desc-textarea" id="attribute" />')
-		var origText = $(this).siblings('.text-info-wrapper').children('.text-info').text();
-		var text = $(this).siblings('.text-info-wrapper').children('.text-info').text();
-		$(this).siblings('.text-info-wrapper').children('.text-info').text('').append(input);
-		input.text(text);
-		input.select();
-
-		input.blur(function() {
-			var text = $(this).val();
-			if(text != '') {
-				$(this).parent().text(text);
-			} else {
-				$(this).parent().text(origText);
-			}
-			$(this).remove();
-		});
 	});
 	
 	$('.edit-offertextarea').click(function() {
