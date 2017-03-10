@@ -233,8 +233,8 @@
 									<?php $settings = array( 'media_buttons' => false, 'quicktags' => false, 'textarea_name' => 'venue_content', ); ?>
 									<div class="venue-description-editor-wrapper"><?php wp_editor(get_the_content(), 'venuedescriptioneditor', $settings); ?></div>
 								</label>
-								<a href="#"><span class="remove">Remove Offer<i class="fa fa-trash" aria-hidden="true"></i></span></a>
-								<a href="#"><span class="save">Save Offer<i class="fa fa-check" aria-hidden="true"></i></span></a>
+								<span class="remove">Remove Offer<i class="fa fa-trash" aria-hidden="true"></i></span>
+								<span class="save">Save Offer<i class="fa fa-check" aria-hidden="true"></i></span>
 							</div>
 						</div>
 					<?php
@@ -281,8 +281,8 @@
 								<?php $settings = array( 'media_buttons' => false, 'quicktags' => false, 'textarea_name' => 'venue_content', ); ?>
 								<div class="venue-description-editor-wrapper"><?php wp_editor(get_the_content(), 'venuedescriptioneditor', $settings); ?></div>
 							</label>
-							<a href="#"><span class="remove">Remove Offer<i class="fa fa-trash" aria-hidden="true"></i></span></a>
-							<a href="#"><span class="save">Save Offer<i class="fa fa-check" aria-hidden="true"></i></span></a>
+							<span class="remove">Remove Offer<i class="fa fa-trash" aria-hidden="true"></i></span>
+							<span class="save">Save Offer<i class="fa fa-check" aria-hidden="true"></i></span>
 						</div>
 					</div>
 					<?php /*
@@ -385,8 +385,8 @@
 									?>
 								</div>
 
-								<a href="#"><span class="remove">Remove Event<i class="fa fa-trash" aria-hidden="true"></i></span></a>
-								<a href="#"><span class="save">Save Event<i class="fa fa-check" aria-hidden="true"></i></span></a>
+								<span class="remove">Remove Event<i class="fa fa-trash" aria-hidden="true"></i></span>
+								<span class="save">Save Event<i class="fa fa-check" aria-hidden="true"></i></span>
 							</div>
 						</div>
 					<?php
@@ -433,8 +433,23 @@
 								<?php $settings = array( 'media_buttons' => false, 'quicktags' => false, 'textarea_name' => 'venue_content', ); ?>
 								<div class="venue-description-editor-wrapper"><?php wp_editor(get_the_content(), 'venuedescriptioneditor', $settings); ?></div>
 							</label>
-							<a href="#"><span class="remove">Remove Event<i class="fa fa-trash" aria-hidden="true"></i></span></a>
-							<a href="#"><span class="save">Save Event<i class="fa fa-check" aria-hidden="true"></i></span></a>
+							<div class="repeat-event-wrapper">
+									<p class="venue-desc-title">Repeat Event?</p>
+									<?php
+										$key = 'field_58ac60bee9d5c';
+										$field = get_field_object($key);
+										if ($field) {
+											foreach ($field['choices'] as $key => $value) {
+										?>
+												<input type="radio" id="<?php echo get_the_ID() . $value; ?>" name="event<?php echo get_the_ID(); ?>" <?php if( get_field('repeat_event') == $value ) { echo 'checked'; } ?>/>
+												<label for="<?php echo get_the_ID() . $value; ?>"><span></span><?php echo $value; ?></label>
+										<?php
+											}                             
+										}
+									?>
+								</div>
+							<span class="remove">Remove Event<i class="fa fa-trash" aria-hidden="true"></i></span>
+							<span class="save">Save Event<i class="fa fa-check" aria-hidden="true"></i></span>
 						</div>
 					</div>
 					<?php /*

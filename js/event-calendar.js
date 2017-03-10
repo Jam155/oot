@@ -319,8 +319,8 @@ $(document).ready(function() {
 		var featured_media = '';
 		var venue_image = $(".venue-img img").attr('src');
 		var name = $("label[for='venue-title'] .text-info").text();
-		var address_line_1 = $("label[for='venue-address-1'] .text-info").text();
-		var address_line_2 = '';
+		var address_1 = $("label[for='venue-address-1'] .text-info").text();
+		var address_2 = $("label[for='venue-address-2'] .text-info").text();
 		var post_code = $("label[for='venue-post-code'] .text-info").text();
 		var city = $("label[for='venue-city'] .text-info").text();
 		var phone = $("label[for='venue-phone'] .text-info").text();
@@ -330,13 +330,22 @@ $(document).ready(function() {
 		var description = $(".venue-details .text-info-wrapper .text-info").text();
 		var term_id = $(".cat-select select").val();
 		var catname = $(".cat-select select").find(":selected").text();
+		var openinghours = getOpeningHours();
+		var tags = getTags();
 		
 		if(venue_image.indexOf("150x150") > -1) {
-		   console.log( "image hasn't changed" );
+		   //console.log( "image hasn't changed" );
 		} else {
 			var featured_media = $(".venue-img img").attr('data-image-id');
 		}
-		console.log( featured_media );
+		
+		function getTags() {
+			var tagsArray = [];
+			$( ".venue-active-tags .venue-tag" ).each(function() {
+				tagsArray.push( $(this).text() );
+			});
+			return tagsArray;
+		}
 		
 		function makeSlug(str) {
 			var makeSlug = '';
@@ -348,25 +357,41 @@ $(document).ready(function() {
 		}
 		var slug = makeSlug(name);
 		
+		function getOpeningHours() {
+			var weekDays = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday'];
+			var dayObject = [];
+			var times = [];
+			var i = 0;
+			
+			$('.left .opening-hours tr').each(function(index) {
+					$(this).children('td').children('ul').children('li').each(function() {
+						var open_t = $(this).children('span.opentime').text();
+						var close_t = $(this).children('span.closetime').text();
+						times.push({ open: open_t, close: close_t });
+					});
+					dayObject[weekDays[index]] = times;
+					times = [];
+					i++;
+			});
+			return dayObject;
+		}
+		
 		var finalVenuData = {
-			title: name,
-			content: description,
-			featured_media: featured_media,
-			acf_fields: {
-				phone: phone,
-				website: website
-			}
-			/*
+			post_id: post_id,
+			name: name,
+			description: description,
 			categories: {
 				term_id: term_id,
 				name: catname,
-				slug: slug
+				slug: makeSlug(catname)
 			},
-            address: {
-				address_line_1: address_line_1,
-				address_line_2: address_line_2,
+			tags: tags,
+			times: openinghours,
+			address: {
+				address_line_1: address_1,
+				address_line_2: address_2,
 				post_code: post_code,
-				city: city
+				city: city	
 			},
 			contact: {
 				phone: phone,
@@ -374,12 +399,14 @@ $(document).ready(function() {
 				twitter: twitter,
 				facebook: facebook
 			}
-			*/
 		};
+		
+		console.log(finalVenuData);
 
 		var valid = 'true';
 		
 		if(valid) {
+			/*
 			$.ajax({
 				method: "PUT",
 				url: POST_SUBMITTER.root + 'wp/v2/venue/' + post_id,
@@ -397,9 +424,8 @@ $(document).ready(function() {
 				}
 			});
 			
-			$( ".venue-active-tags .venue-tag" ).each(function() {
-				console.log( $(this).text() );
-			});
+			*/
+			
 		}
 	});
 	
