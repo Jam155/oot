@@ -99,7 +99,7 @@
 											</td>
 										</tr>
 									</table>
-									<a href="#" class="savehours btn">Save Hours <i class="fa fa-check" aria-hidden="true"></i></a>
+									<a href="#" class="savehours btn">Update Hours <i class="fa fa-check" aria-hidden="true"></i></a>
 								</div>
 							<?php endwhile;?>
 						<?php endif;?>
@@ -109,45 +109,45 @@
 							<li>
 								<label for="venue-phone" class="control-label">
 									<p class="text-info"><?php echo get_field('phone'); ?></p>
-									<a href="#" class="edit btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+									<i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="tel"></i>
 								</label>
 							</li>
 							<li>
 								<label for="venue-address-1" class="control-label">
 									<p class="text-info"><?php echo get_field('address_1'); ?></p>
-									<a href="#" class="edit btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+									<i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="text"></i>
 								</label>
 							</li>
 							<?php if(get_field('address_2')) { ?>
 							<li>
 								<label for="venue-address-2" class="control-label no-icon">
 									<p class="text-info"><?php echo get_field('address_2'); ?></p>
-									<a href="#" class="edit btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+									<i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="text"></i>
 								</label>
 							</li>
 							<?php } ?>
 							<li>
 								<label for="venue-city" class="control-label no-icon">
 									<p class="text-info"><?php echo get_field('city'); ?></p>
-									<a href="#" class="edit btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+									<i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="text"></i>
 								</label>
 							</li>
 							<li>
 								<label for="venue-post-code" class="control-label no-icon">
 									<p class="text-info"><?php echo get_field('post_code'); ?></p>
-									<a href="#" class="edit btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+									<i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="text"></i>
 								</label>
 							</li>
 							<li>
 								<label for="venue-twitter" class="control-label">
 									<p class="text-info"><?php echo get_field('twitter'); ?></p>
-									<a href="#" class="edit btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+									<i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="text"></i>
 								</label>
 							</li>
 							<li>
 								<label for="venue-facebook" class="control-label">
 									<p class="text-info"><?php echo get_field('facebook'); ?></p>
-									<a href="#" class="edit btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+									<i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="text"></i>
 								</label>
 							</li>
 						</ul>
@@ -160,8 +160,6 @@
 					<div class="text-info-wrapper">
 						<p class="text-info"><?php echo get_the_content(); ?></p>
 					</div>
-					<?php $settings = array( 'media_buttons' => false, 'quicktags' => false, 'textarea_name' => 'venue_content', ); ?>
-					<div class="venue-description-editor-wrapper"><?php wp_editor(get_the_content(), 'venuedescriptioneditor', $settings); ?></div>
 				</label>
 				
 				<div class="venue-cat-wrapper">
@@ -228,8 +226,6 @@
 									<div class="text-info-wrapper">
 										<p class="text-info"><?php echo get_the_content(); ?></p>
 									</div>
-									<?php $settings = array( 'media_buttons' => false, 'quicktags' => false, 'textarea_name' => 'venue_content', ); ?>
-									<div class="venue-description-editor-wrapper"><?php wp_editor(get_the_content(), 'venuedescriptioneditor', $settings); ?></div>
 								</label>
 								<span class="remove">Remove Offer<i class="fa fa-trash" aria-hidden="true"></i></span>
 								<span class="save">Save Offer<i class="fa fa-check" aria-hidden="true"></i></span>
@@ -258,11 +254,11 @@
 							<div class="offer-details">
 								<label for="offer-date" class="control-label">
 									<p class="text-info">Select offer date</p>
-									<a href="#" class="editdate btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+									<i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="date"></i>
 								</label>
 								<label for="offer-time" class="control-label">
 									<p class="text-info">Select offer time</p>
-									<a href="#" class="edittime btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+									<i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="time"></i>
 								</label>
 								<label for="offer-quantity" class="control-label">
 									<p class="text-info">Enter redeem amount</p>
@@ -276,8 +272,6 @@
 								<div class="text-info-wrapper">
 									<p class="text-info">Full Description &plus; T&amp;C</p>
 								</div>
-								<?php $settings = array( 'media_buttons' => false, 'quicktags' => false, 'textarea_name' => 'venue_content', ); ?>
-								<div class="venue-description-editor-wrapper"><?php wp_editor(get_the_content(), 'venuedescriptioneditor', $settings); ?></div>
 							</label>
 							<span class="remove">Remove Offer<i class="fa fa-trash" aria-hidden="true"></i></span>
 							<span class="save">Save Offer<i class="fa fa-check" aria-hidden="true"></i></span>
@@ -364,8 +358,6 @@
 									<div class="text-info-wrapper">
 										<p class="text-info"><?php echo get_the_content(); ?></p>
 									</div>
-									<?php $settings = array( 'media_buttons' => false, 'quicktags' => false, 'textarea_name' => 'venue_content', ); ?>
-									<div class="venue-description-editor-wrapper"><?php wp_editor(get_the_content(), 'venuedescriptioneditor', $settings); ?></div>
 								</label>
 								<div class="repeat-event-wrapper">
 									<p class="venue-desc-title">Repeat Event?</p>
@@ -410,11 +402,11 @@
 							<div class="event-details">
 								<label for="event-date" class="control-label">
 									<p class="text-info">Select event date</p>
-									<a href="#" class="editdate btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+									<i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="date"></i>
 								</label>
 								<label for="event-time" class="control-label">
 									<p class="text-info">Select event time</p>
-									<a href="#" class="edittime btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+									<i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="time"></i>
 								</label>
 								<label for="event-quantity" class="control-label">
 									<p class="text-info">Enter ticket price</p>
@@ -428,8 +420,6 @@
 								<div class="text-info-wrapper">
 									<p class="text-info">Full Description &plus; T&amp;C</p>
 								</div>
-								<?php $settings = array( 'media_buttons' => false, 'quicktags' => false, 'textarea_name' => 'venue_content', ); ?>
-								<div class="venue-description-editor-wrapper"><?php wp_editor(get_the_content(), 'venuedescriptioneditor', $settings); ?></div>
 							</label>
 							<div class="repeat-event-wrapper">
 									<p class="venue-desc-title">Repeat Event?</p>

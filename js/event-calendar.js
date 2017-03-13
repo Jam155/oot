@@ -83,24 +83,7 @@ $(document).ready(function() {
 	$('.venue-description-editor-wrapper').hide();
 	
 	$('.editdate').click(function() {
-		var text = $(this).siblings('.text-info').text();
-		var input = $('<input name="acf_fields[date]" id="offer-submission-date" class="datepicker"><script>$(".datepicker").datepicker({ dateFormat: "dd/mm/yy" });</script>')
-		$(this).siblings('.text-info').text('').append(input);
-		input.select();
-		
-		$(document).click(function(e) {
-			if ( !$(e.target).hasClass('fa') && !$(e.target).parents('.ui-datepicker').length > 0 ) {
-				var text = $('#offer-submission-date').val();
-				$('#offer-submission-date').parent().text('Select offer date');
-				$('#offer-submission-date').remove();
-			}
-		});
-		
-		$('.ui-datepicker-calendar td').click(function() {
-			var text = $('#offer-submission-date').val();
-			$('#offer-submission-date').parent().text(text);
-			$('#offer-submission-date').remove();
-		});
+
 	});
 	
 	$('.edittime').click(function() {
@@ -143,15 +126,11 @@ $(document).ready(function() {
 		var editType = $(this).attr('data-edit-type');
 		switch(editType) {
 			case 'text':
+			case 'url':
+			case 'tel':
 				console.log('text');
 				origField = $(this).siblings('.text-info').text();
 				input = $('<input id="attribute" type="text" value="' + origField + '" />');
-				$(this).siblings('.text-info').text('').append(input);
-				break;
-			case 'url':
-				console.log('url');
-				origField = $(this).siblings('.text-info').text();
-				input = $('<input id="attribute" type="url" value="' + origField + '" />');
 				$(this).siblings('.text-info').text('').append(input);
 				break;
 			case 'number':
@@ -161,8 +140,31 @@ $(document).ready(function() {
 				$(this).siblings('.text-info').text('').append(input);
 				input.select();
 				break;
-			case 'tel':
-				console.log('tel');
+			case 'date':
+				console.log('date');
+				var text = $(this).siblings('.text-info').text();
+				var $this = $(this).siblings('.text-info');
+				console.log($this);
+				
+				var input = $('<input name="acf_fields[date]" id="offer-submission-date" class="datepicker"><script>$(".datepicker").datepicker({ dateFormat: "dd/mm/yy" });</script>')
+				$this.text('').append(input);
+				input.select();
+				
+				$(document).click(function(e) {
+					if ( !$(e.target).hasClass('fa') && !$(e.target).parents('.ui-datepicker').length > 0 ) {
+						$this.text(text);
+						$this.children('input').remove();
+					}
+				});
+				
+				$('.ui-datepicker-calendar td').click(function() {
+					var text = $('#offer-submission-date').val();
+					$('#offer-submission-date').parent().text(text);
+					$('#offer-submission-date').remove();
+				});
+				break;
+			case 'time':
+				console.log('time');
 				break;
 			case 'textarea':
 				input = $('<textarea class="new-offer-desc-textarea" id="attribute" />')
