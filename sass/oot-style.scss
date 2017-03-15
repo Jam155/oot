@@ -318,8 +318,8 @@ footer {
 	color: $dark-grey;
     width: 50%;	
 	
-	a.editevent,
-	a.editoffer {
+	.editevent,
+	.editoffer {
 		float: right;
 	}
 	a.delevent,
@@ -392,6 +392,7 @@ footer {
 	float: right;	
 }
 
+#currency-field,
 #attribute {
 	width: 83%;
 }
@@ -576,6 +577,7 @@ label .text-info {
     width: 91%;
 }
 
+#event-submission-date,
 #offer-submission-date {
 	width: 80%;
 }

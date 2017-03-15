@@ -15,6 +15,7 @@ array( 'main-menu' => __( 'Main Menu', 'oot' ) )
 }
 
 function oot_load_scripts(){
+	wp_enqueue_script( 'wp-util' );
 	wp_enqueue_script('oot-jquery', 'https://code.jquery.com/jquery-1.12.4.js');
 	wp_enqueue_script('event-calendar', get_template_directory_uri() . '/js/event-calendar.js');
 	wp_localize_script('event-calendar', 'site_url', get_site_url());
@@ -271,3 +272,83 @@ function oot_mime_types($mime_types){
     return $mime_types;
 }
 add_filter('upload_mimes', 'oot_mime_types', 1, 1);
+
+add_action( 'wp_footer', 'oot_underscore_offer', 25 );
+function oot_underscore_offer() { ?>
+    <script type="text/html" id="tmpl-oot-offer">
+		<div class="offer-item">
+			<div class="left">
+				<img width="140" height="110" src="{{{ data.offer_thumbnail }}}" class="attachment-full size-full wp-post-image" alt="">
+			</div>
+			<div class="right">
+				<h2>
+					{{{ data.offer_title }}}
+					<i class="editoffer fa fa-pencil" aria-hidden="true" data-edit-type="expand"></i>
+				</h2>
+				<div class="offer-details">
+					<i class="fa fa-calendar" aria-hidden="true"></i>{{{ data.offer_date }}}<br>
+					<i class="fa fa-clock-o" aria-hidden="true"></i>{{{ data.offer_starttime }}} - {{{ data.offer_endtime }}}<br>
+					<i class="fa fa-hashtag" aria-hidden="true"></i>{{{ data.offer_quantity }}}
+				</div>
+			</div>
+			<div class="offer-description">
+				<label for="venue-description" class="control-label venue-description">
+					<p class="venue-desc-title">Full Description</p><i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="textarea"></i>
+					<div class="text-info-wrapper">
+						<p class="text-info">{{{ data.offer_description }}}</p>
+					</div>
+				</label>
+				<span class="remove">Remove Offer<i class="fa fa-trash" aria-hidden="true"></i></span>
+				<span class="save">Save Offer<i class="fa fa-check" aria-hidden="true"></i></span>
+			</div>
+		</div>
+    </script>
+<?php }
+
+add_action( 'wp_footer', 'oot_underscore_event', 25 );
+function oot_underscore_event() { ?>
+    <script type="text/html" id="tmpl-oot-event">
+		<div class="event-item">
+			<div class="left">
+				<img width="140" height="110" src="{{{ data.event_thumbnail }}}" class="attachment-full size-full wp-post-image" alt="">
+			</div>
+			<div class="right">
+				<h2>
+					{{{ data.event_title }}}
+					<i class="editevent fa fa-pencil" aria-hidden="true" data-edit-type="expand"></i>
+				</h2>
+				<div class="event-details">
+					<i class="fa fa-calendar" aria-hidden="true"></i>{{{ data.event_date }}}<br>
+					<i class="fa fa-clock-o" aria-hidden="true"></i>{{{ data.event_starttime }}} - {{{ data.event_endtime }}}<br>
+					<i class="fa fa-ticket" aria-hidden="true"></i>{{{ data.event_quantity }}}
+				</div>
+			</div>
+			<div class="event-description">
+				<label for="venue-description" class="control-label venue-description">
+					<p class="venue-desc-title">Full Description</p><i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="textarea"></i>
+					<div class="text-info-wrapper">
+						<p class="text-info">{{{ data.event_description }}}</p>
+					</div>
+				</label>
+				<div class="repeat-event-wrapper">
+						<p class="venue-desc-title">Repeat Event?</p>
+						<?php
+							//$test = {{{ data.event_quantity }}};
+							$key = 'field_58ac60bee9d5c';
+							$field = get_field_object($key);
+							if ($field) {
+								foreach ($field['choices'] as $key => $value) {
+							?>
+									<input type="radio" data-value="<?php echo $value; ?>" id="<?php echo uniqid() . $value; ?>" name="event<?php echo uniqid(); ?>" />
+									<label for="<?php echo uniqid() . $value; ?>"><span></span><?php echo $value; ?></label>
+							<?php
+								}                             
+							}
+						?>
+					</div>
+				<span class="remove">Remove Event<i class="fa fa-trash" aria-hidden="true"></i></span>
+				<span class="save">Save Event<i class="fa fa-check" aria-hidden="true"></i></span>
+			</div>
+		</div>
+    </script>
+<?php }

@@ -1,5 +1,6 @@
 
 $(document).ready(function() {
+	
 	var events = [];
 
 	$.getJSON(site_url + '/wp-json/wp/v2/event', function(data) {
@@ -15,7 +16,7 @@ $(document).ready(function() {
 		var today = new Date();
 		var todayMonth = today.getMonth();
 		var todayYear = today.getYear();
-		var weekTimestamp = 	7 * 24 * 60 * 60 * 1000;
+		var weekTimestamp = 7 * 24 * 60 * 60 * 1000;
 		var fortnightTimestamp = 14 * 24 * 60 * 60 * 1000;
 		var margin = 1 * 60 * 60 * 1000;
 
@@ -82,44 +83,9 @@ $(document).ready(function() {
 
 	$('.venue-description-editor-wrapper').hide();
 	
-	$('.editdate').click(function() {
-
-	});
-	
-	$('.edittime').click(function() {
-		var fieldStart, fieldEnd, origText;
-		if($(this).parents('label').parents('div').hasClass('offer-details')) {
-			fieldStart = 'offer-submission-start';
-			fieldEnd = 'offer-submission-end';
-			origText = 'Select offer time';
-		}
-		if($(this).parents('label').parents('div').hasClass('event-details')) {
-			fieldStart = 'event-submission-start';
-			fieldEnd = 'event-submission-end';
-			origText = 'Select event time';
-		}
-		var input = $('<input name="acf_fields[start_time]" id="' + fieldStart + '" class="timepicker"><input name="acf_fields[end_time]" id="' + fieldEnd + '" class="timepicker"><script>var options = { now: "00:00", title: "Select a Time", }; $(".timepicker").wickedpicker(options);</script>')
-		$(this).siblings('.text-info').text('').append(input);
-		
-		$(document).click(function(e) {
-			if ( !$(e.target).hasClass('fa') && !$(e.target).parents('.wickedpicker').length > 0 && !$(e.target).is('#event-submission-start') && !$(e.target).is('#event-submission-end') && !$(e.target).is('#offer-submission-start') && !$(e.target).is('#offer-submission-end') ) {
-				
-				if( $('#' + fieldStart).val() == '12 : 00 AM' && $('#' + fieldEnd).val() == '12 : 00 AM' || $('#' + fieldStart).val() == $('#' + fieldEnd).val() ) {
-					$('#' + fieldStart).closest('.text-info').text(origText);
-				} else {
-					var text = $('#' + fieldStart).val() + ' - ' + $('#' + fieldEnd).val();
-					$('#' + fieldStart).closest('.text-info').text(text);
-				}
-
-				$('#' + fieldStart).remove();
-				$('#' + fieldEnd).remove();
-			}
-		});
-	});
-	
-	$('#offer-submission-start, #offer-submission-end, #event-submission-start, #event-submission-end').focus(function() {
-		$('.wickedpicker').css({'display': 'none'});
-	});
+	function startDatePicker() {
+		console.log('started a date picker');
+	}
 	
 	$('.edit').click(function() {
 		var input, origField;
@@ -136,35 +102,83 @@ $(document).ready(function() {
 			case 'number':
 				console.log('number');
 				origField = $(this).siblings('.text-info').text();
-				input = $('<input id="attribute" type="number" />')
+				input = $('<input id="attribute" type="number" min="0" />')
 				$(this).siblings('.text-info').text('').append(input);
 				input.select();
+				break;
+			case 'currency':
+				console.log('currency');
+				input = $('<input id="currency-field" type="number" min="0" />')
+				$(this).siblings('.text-info').text('').append(input);
+				input.select();
+				
+				input.on('blur', function() {
+				var amount = $('#currency-field').val();
+					if(amount == '' || amount < 0.01) {
+						$('#currency-field').parent().html('Enter ticket price');
+					} else {
+						var round = parseFloat(amount).toFixed(2);
+						console.log('amount:' + round);
+						$('#currency-field').parent().html('&pound;' + round);
+					}
+					$('#currency-field').remove();
+				});
 				break;
 			case 'date':
 				console.log('date');
 				var text = $(this).siblings('.text-info').text();
-				var $this = $(this).siblings('.text-info');
-				console.log($this);
-				
-				var input = $('<input name="acf_fields[date]" id="offer-submission-date" class="datepicker"><script>$(".datepicker").datepicker({ dateFormat: "dd/mm/yy" });</script>')
-				$this.text('').append(input);
+				var thisFieldWrapper = $(this).closest('.control-label');
+				var fieldMod;
+				if( thisFieldWrapper.parents('div').hasClass('offer-details') ) {
+					fieldMod = 'offer';
+				} else if( thisFieldWrapper.parents('div').hasClass('event-details')) {
+					fieldMod = 'event';
+				}				
+				var input = $('<input name="acf_fields[date]" id="' + fieldMod +'-submission-date" class="datepicker"><script>$(".datepicker").datepicker({ dateFormat: "dd/mm/yy" });</script>');
+				thisFieldWrapper.children('.text-info').text('').append(input);
 				input.select();
 				
 				$(document).click(function(e) {
-					if ( !$(e.target).hasClass('fa') && !$(e.target).parents('.ui-datepicker').length > 0 ) {
-						$this.text(text);
-						$this.children('input').remove();
+					if ( !$(e.target).is(thisFieldWrapper.children('.fa')) && !$(e.target).parents('.wickedpicker').length > 0 && !$(e.target).is('.timepicker') ) {
+						startDatePicker();
+						if( $('#' + fieldMod + '-submission-date').val() == '' ) {
+							$('#' + fieldMod + '-submission-date').closest('.text-info').text('Select ' + fieldMod + ' date');
+						}
 					}
 				});
 				
 				$('.ui-datepicker-calendar td').click(function() {
-					var text = $('#offer-submission-date').val();
-					$('#offer-submission-date').parent().text(text);
-					$('#offer-submission-date').remove();
+					var text = $('#' + fieldMod + '-submission-date').val();
+					$('#' + fieldMod + '-submission-date').parent().text(text);
+					$('#' + fieldMod + '-submission-date').remove();
 				});
 				break;
 			case 'time':
 				console.log('time');
+				var thisFieldWrapper = $(this).closest('.control-label');
+				var fieldMod;
+				if( thisFieldWrapper.parents('div').hasClass('offer-details') ) {
+					fieldMod = 'offer';
+				} else if( thisFieldWrapper.parents('div').hasClass('event-details')) {
+					fieldMod = 'event';
+				}
+				var input = $('<input name="acf_fields[start_time]" id="' + fieldMod + '-submission-start" class="timepicker"><input name="acf_fields[end_time]" id="' + fieldMod + '-submission-end" class="timepicker"><script>var options = { now: "00:00", title: "Select a Time", }; $(".timepicker").wickedpicker(options);</script>')
+				$(this).siblings('.text-info').text('').append(input);
+				
+				$('.timepicker').focus(function() {
+					$('.wickedpicker').css({'display': 'none'});
+				});
+				
+				$(document).click(function(e) {
+					if ( !$(e.target).is(thisFieldWrapper.children('.fa')) && !$(e.target).parents('.wickedpicker').length > 0 && !$(e.target).is('.timepicker') ) {
+						if( $('#' + fieldMod + '-submission-start').val() == '12 : 00 AM' && $('#' + fieldMod + '-submission-end').val() == '12 : 00 AM' || $('#' + fieldMod + '-submission-start').val() == $('#' + fieldMod + '-submission-end').val() ) {
+							$('#' + fieldMod + '-submission-start').closest('.text-info').text('Select ' + fieldMod + ' time');
+						} else {
+							var text = '<span class="starttime">' + $('#' + fieldMod + '-submission-start').val() + '</span> - <span class="endtime">' + $('#' + fieldMod + '-submission-end').val() + '</span>';
+							$('#' + fieldMod + '-submission-start').closest('.text-info').html(text);
+						}
+					}
+				});
 				break;
 			case 'textarea':
 				input = $('<textarea class="new-offer-desc-textarea" id="attribute" />')
@@ -213,7 +227,74 @@ $(document).ready(function() {
 		});
 	});
 	
-	$('.offer-item').on('click', '.editoffer', function() {
+	$('.new-offer-save').on('click', function() {
+		var newOffer = $(this).closest('.offer-item');
+		var offer_title = newOffer.find('label[for="offer-title"]').text();
+		var offer_thumbnail = newOffer.find('img').attr('src');
+		var offer_date = newOffer.find('label[for="offer-date"]').text();
+		var offer_starttime = newOffer.find('label[for="offer-time"] .starttime').text();
+		var offer_endtime = newOffer.find('label[for="offer-time"] .endtime').text();
+		var offer_quantity = newOffer.find('label[for="offer-quantity"]').text();
+		var offer_description = newOffer.find('.offer-description .text-info').text();
+		
+		var data = {
+			offer_title: offer_title,
+			offer_thumbnail: offer_thumbnail,
+			offer_date: offer_date,
+			offer_starttime: offer_starttime,
+			offer_endtime: offer_endtime,
+			offer_quantity: offer_quantity,
+			offer_description: offer_description
+		}
+		
+		newOffer.find('label[for="offer-title"] .text-info').text('Offer Title');
+		newOffer.find('label[for="offer-date"] .text-info').text('Select offer date');
+		newOffer.find('label[for="offer-time"] .text-info').text('Select offer time');
+		newOffer.find('label[for="offer-quantity"] .text-info').text('Enter redeem amount');
+		newOffer.find('.offer-description .text-info').text('Full Description + T&C');
+		
+		newOffer.closest('.accordion-content').toggle();
+		
+		var post_template = wp.template( 'oot-offer' );
+		$( '.current-offers .col-content' ).append( post_template( data ) );
+	});
+	
+	$('.new-event-save').on('click', function() {
+		var newEvent = $(this).closest('.event-item');
+		var event_title = newEvent.find('label[for="event-title"]').text();
+		var event_thumbnail = newEvent.find('img').attr('src');
+		var event_date = newEvent.find('label[for="event-date"]').text();
+		var event_starttime = newEvent.find('label[for="event-time"] .starttime').text();
+		var event_endtime = newEvent.find('label[for="event-time"] .endtime').text();
+		var event_quantity = newEvent.find('label[for="event-quantity"]').text();
+		var event_description = newEvent.find('.event-description .text-info').text();
+		var event_repeat = newEvent.find('.event-description input[type="radio"]:checked').attr('data-value');
+		console.log(event_repeat);
+		
+		var data = {
+			event_title: event_title,
+			event_thumbnail: event_thumbnail,
+			event_date: event_date,
+			event_starttime: event_starttime,
+			event_endtime: event_endtime,
+			event_quantity: event_quantity,
+			event_description: event_description
+		}
+		
+		newEvent.find('label[for="event-title"] .text-info').text('Event Title');
+		newEvent.find('label[for="event-date"] .text-info').text('Select event date');
+		newEvent.find('label[for="event-time"] .text-info').text('Select event time');
+		newEvent.find('label[for="event-quantity"] .text-info').text('Enter ticket price');
+		newEvent.find('.event-description .text-info').text('Full Description + T&C');
+		
+		newEvent.closest('.accordion-content').toggle();
+		
+		var post_template = wp.template( 'oot-event' );
+		$( '.upcoming-events .col-content' ).append( post_template( data ) );
+		$( '.upcoming-events .col-content .event-item' ).find('#' + event_repeat).prop('checked', true);
+	});
+	
+	$('.current-offers').on('click', '.offer-item .editoffer', function() {
 		if( $(this).parent().parent().siblings('.offer-description').hasClass('visible') ) {
 			$('.offer-description').removeClass('visible');
 		} else {
@@ -261,7 +342,7 @@ $(document).ready(function() {
 		$('.left .opening-hours .list-hours .fa-plus-circle').hide();
 	});
 	
-	$('.event-item').on('click', '.editevent', function() {
+	$('.upcoming-events').on('click', '.event-item .editevent', function() {
 		if( $(this).parent().parent().siblings('.event-description').hasClass('visible') ) {
 			$('.event-description').removeClass('visible');
 		} else {
@@ -421,5 +502,4 @@ $(document).ready(function() {
 			
 		}
 	});
-	
 });

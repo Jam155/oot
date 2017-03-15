@@ -7,7 +7,6 @@
 		<section class="venue-details">
 			<h3 class="col-title">Venue Details</h3>
 			<div class="col-content">
-				
 				<div class="top-box">
 					<div class="left">
 						<div class="venue-img">
@@ -19,7 +18,6 @@
 						<label for="venue-title" class="control-label">
 							<p class="text-info"><?php echo get_the_title(); ?></p>
 							<i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="text"></i>
-							
 						</label>
 						<label for="venue-website" class="control-label">
 							<p class="text-info"><?php echo get_field('website'); ?></p>
@@ -216,7 +214,7 @@
 									?>
 									
 									<i class="fa fa-calendar" aria-hidden="true"></i><?php echo $date->format('d/m/Y'); ?><br>
-									<i class="fa fa-clock-o" aria-hidden="true"></i><?php echo get_field('start_time'); ?> - <?php echo get_field('end_time'); ?><br>
+									<i class="fa fa-clock-o" aria-hidden="true"></i><span class="starttime"><?php echo get_field('start_time'); ?></span> - <span class="endtime"><?php echo get_field('end_time'); ?></span><br>
 									<i class="fa fa-hashtag" aria-hidden="true"></i><?php echo get_field('maximum_redeemable'); ?>
 								</div>
 							</div>
@@ -274,7 +272,7 @@
 								</div>
 							</label>
 							<span class="remove">Remove Offer<i class="fa fa-trash" aria-hidden="true"></i></span>
-							<span class="save">Save Offer<i class="fa fa-check" aria-hidden="true"></i></span>
+							<span class="save new-offer-save">Save Offer<i class="fa fa-check" aria-hidden="true"></i></span>
 						</div>
 					</div>
 					<?php /*
@@ -344,11 +342,11 @@
 							<div class="right">
 								<h2>
 									<?php the_title(); ?>
-									<a href="#" class="editevent btn"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+									<i class="editevent fa fa-pencil" aria-hidden="true"></i>
 								</h2>
 								<div class="event-details">
 									<i class="fa fa-calendar" aria-hidden="true"></i><?php echo get_field('date'); ?><br>
-									<i class="fa fa-clock-o" aria-hidden="true"></i><?php echo get_field('start_time'); ?> - <?php echo get_field('end_time'); ?><br>
+									<i class="fa fa-clock-o" aria-hidden="true"></i><span class="starttime"><?php echo get_field('start_time'); ?></span> - <span class="endtime"><?php echo get_field('end_time'); ?></span><br>
 									<i class="fa fa-ticket" aria-hidden="true"></i><?php echo '&pound;' . get_field('ticket_price'); ?>
 								</div>
 							</div>
@@ -410,7 +408,7 @@
 								</label>
 								<label for="event-quantity" class="control-label">
 									<p class="text-info">Enter ticket price</p>
-									<i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="number"></i>
+									<i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="currency"></i>
 								</label>
 							</div>
 						</div>
@@ -422,22 +420,22 @@
 								</div>
 							</label>
 							<div class="repeat-event-wrapper">
-									<p class="venue-desc-title">Repeat Event?</p>
-									<?php
-										$key = 'field_58ac60bee9d5c';
-										$field = get_field_object($key);
-										if ($field) {
-											foreach ($field['choices'] as $key => $value) {
-										?>
-												<input type="radio" id="<?php echo get_the_ID() . $value; ?>" name="event<?php echo get_the_ID(); ?>" <?php if( get_field('repeat_event') == $value ) { echo 'checked'; } ?>/>
-												<label for="<?php echo get_the_ID() . $value; ?>"><span></span><?php echo $value; ?></label>
-										<?php
-											}                             
-										}
+								<p class="venue-desc-title">Repeat Event?</p>
+								<?php
+									$key = 'field_58ac60bee9d5c';
+									$field = get_field_object($key);
+									if ($field) {
+										foreach ($field['choices'] as $key => $value) {
 									?>
-								</div>
+											<input type="radio" data-value="<?php echo $value; ?>" id="<?php echo get_the_ID() . $value; ?>" name="event<?php echo get_the_ID(); ?>" <?php if( get_field('repeat_event') == $value ) { echo 'checked'; } ?>/>
+											<label for="<?php echo get_the_ID() . $value; ?>"><span></span><?php echo $value; ?></label>
+									<?php
+										}                             
+									}
+								?>
+							</div>
 							<span class="remove">Remove Event<i class="fa fa-trash" aria-hidden="true"></i></span>
-							<span class="save">Save Event<i class="fa fa-check" aria-hidden="true"></i></span>
+							<span class="save new-event-save">Save Event<i class="fa fa-check" aria-hidden="true"></i></span>
 						</div>
 					</div>
 					<?php /*
