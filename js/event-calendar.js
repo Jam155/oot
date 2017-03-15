@@ -1,4 +1,3 @@
-
 $(document).ready(function() {
 	
 	var events = [];
@@ -83,8 +82,9 @@ $(document).ready(function() {
 
 	$('.venue-description-editor-wrapper').hide();
 	
-	function startDatePicker() {
-		console.log('started a date picker');
+	function startDatePicker(pickerClass) {
+		var pickerClass = pickerClass;
+		$('.' + pickerClass).datepicker({ dateFormat: "dd/mm/yy" });
 	}
 	
 	$('.edit').click(function() {
@@ -94,20 +94,31 @@ $(document).ready(function() {
 			case 'text':
 			case 'url':
 			case 'tel':
-				console.log('text');
 				origField = $(this).siblings('.text-info').text();
 				input = $('<input id="attribute" type="text" value="' + origField + '" />');
 				$(this).siblings('.text-info').text('').append(input);
 				break;
 			case 'number':
-				console.log('number');
 				origField = $(this).siblings('.text-info').text();
 				input = $('<input id="attribute" type="number" min="0" />')
 				$(this).siblings('.text-info').text('').append(input);
 				input.select();
+				
+				input.on('blur', function() {
+				var amount = $('#attribute').val();
+				amount = amount.toString();
+					if(amount == '' || amount < 1 || amount.indexOf("E") > 0 || amount.indexOf("e") > 0) {
+						$('#attribute').parent().html('Enter redeem amount');
+					} else {
+						if(round.indexOf(".") > 0) {
+							round = round.slice(0, (round.indexOf(".")));
+						};						
+						$('#attribute').parent().html(round);
+					}
+					$('#currency-field').remove();
+				});
 				break;
 			case 'currency':
-				console.log('currency');
 				input = $('<input id="currency-field" type="number" min="0" />')
 				$(this).siblings('.text-info').text('').append(input);
 				input.select();
@@ -118,14 +129,12 @@ $(document).ready(function() {
 						$('#currency-field').parent().html('Enter ticket price');
 					} else {
 						var round = parseFloat(amount).toFixed(2);
-						console.log('amount:' + round);
 						$('#currency-field').parent().html('&pound;' + round);
 					}
 					$('#currency-field').remove();
 				});
 				break;
 			case 'date':
-				console.log('date');
 				var text = $(this).siblings('.text-info').text();
 				var thisFieldWrapper = $(this).closest('.control-label');
 				var fieldMod;
@@ -134,13 +143,13 @@ $(document).ready(function() {
 				} else if( thisFieldWrapper.parents('div').hasClass('event-details')) {
 					fieldMod = 'event';
 				}				
-				var input = $('<input name="acf_fields[date]" id="' + fieldMod +'-submission-date" class="datepicker"><script>$(".datepicker").datepicker({ dateFormat: "dd/mm/yy" });</script>');
+				var input = $('<input name="acf_fields[date]" id="' + fieldMod +'-submission-date" class="datepicker">');
 				thisFieldWrapper.children('.text-info').text('').append(input);
+				startDatePicker('datepicker');
 				input.select();
 				
 				$(document).click(function(e) {
-					if ( !$(e.target).is(thisFieldWrapper.children('.fa')) && !$(e.target).parents('.wickedpicker').length > 0 && !$(e.target).is('.timepicker') ) {
-						startDatePicker();
+					if ( !$(e.target).is(thisFieldWrapper.children('.fa')) && !$(e.target).parents('.ui-datepicker').length > 0 && !$(e.target).is('.datepicker') ) {
 						if( $('#' + fieldMod + '-submission-date').val() == '' ) {
 							$('#' + fieldMod + '-submission-date').closest('.text-info').text('Select ' + fieldMod + ' date');
 						}
@@ -154,7 +163,6 @@ $(document).ready(function() {
 				});
 				break;
 			case 'time':
-				console.log('time');
 				var thisFieldWrapper = $(this).closest('.control-label');
 				var fieldMod;
 				if( thisFieldWrapper.parents('div').hasClass('offer-details') ) {
@@ -258,7 +266,7 @@ $(document).ready(function() {
 		var post_template = wp.template( 'oot-offer' );
 		$( '.current-offers .col-content' ).append( post_template( data ) );
 	});
-	
+		
 	$('.new-event-save').on('click', function() {
 		var newEvent = $(this).closest('.event-item');
 		var event_title = newEvent.find('label[for="event-title"]').text();
@@ -269,7 +277,7 @@ $(document).ready(function() {
 		var event_quantity = newEvent.find('label[for="event-quantity"]').text();
 		var event_description = newEvent.find('.event-description .text-info').text();
 		var event_repeat = newEvent.find('.event-description input[type="radio"]:checked').attr('data-value');
-		console.log(event_repeat);
+		var event_random_id = Date.now();
 		
 		var data = {
 			event_title: event_title,
@@ -278,7 +286,8 @@ $(document).ready(function() {
 			event_starttime: event_starttime,
 			event_endtime: event_endtime,
 			event_quantity: event_quantity,
-			event_description: event_description
+			event_description: event_description,
+			event_random_id: event_random_id
 		}
 		
 		newEvent.find('label[for="event-title"] .text-info').text('Event Title');
@@ -291,7 +300,7 @@ $(document).ready(function() {
 		
 		var post_template = wp.template( 'oot-event' );
 		$( '.upcoming-events .col-content' ).append( post_template( data ) );
-		$( '.upcoming-events .col-content .event-item' ).find('#' + event_repeat).prop('checked', true);
+		$( '#event-' + event_random_id ).find('#' + event_random_id + event_repeat).prop('checked', true);
 	});
 	
 	$('.current-offers').on('click', '.offer-item .editoffer', function() {

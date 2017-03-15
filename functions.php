@@ -308,7 +308,7 @@ function oot_underscore_offer() { ?>
 add_action( 'wp_footer', 'oot_underscore_event', 25 );
 function oot_underscore_event() { ?>
     <script type="text/html" id="tmpl-oot-event">
-		<div class="event-item">
+		<div class="event-item" id="event-{{{ data.event_random_id }}}">
 			<div class="left">
 				<img width="140" height="110" src="{{{ data.event_thumbnail }}}" class="attachment-full size-full wp-post-image" alt="">
 			</div>
@@ -339,10 +339,10 @@ function oot_underscore_event() { ?>
 							if ($field) {
 								foreach ($field['choices'] as $key => $value) {
 							?>
-									<input type="radio" data-value="<?php echo $value; ?>" id="<?php echo uniqid() . $value; ?>" name="event<?php echo uniqid(); ?>" />
-									<label for="<?php echo uniqid() . $value; ?>"><span></span><?php echo $value; ?></label>
+									<input type="radio" data-value="<?php echo $value; ?>" id="{{{ data.event_random_id }}}<?php echo $value; ?>" name="event" />
+									<label for="{{{ data.event_random_id }}}<?php echo $value; ?>"><span></span><?php echo $value; ?></label>
 							<?php
-								}                             
+								}   
 							}
 						?>
 					</div>

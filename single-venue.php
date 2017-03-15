@@ -347,7 +347,7 @@
 								<div class="event-details">
 									<i class="fa fa-calendar" aria-hidden="true"></i><?php echo get_field('date'); ?><br>
 									<i class="fa fa-clock-o" aria-hidden="true"></i><span class="starttime"><?php echo get_field('start_time'); ?></span> - <span class="endtime"><?php echo get_field('end_time'); ?></span><br>
-									<i class="fa fa-ticket" aria-hidden="true"></i><?php echo '&pound;' . get_field('ticket_price'); ?>
+									<i class="fa fa-ticket" aria-hidden="true"></i><?php echo '&pound;' . bcdiv(get_field('ticket_price'), '1', 2); ?>
 								</div>
 							</div>
 							<div class="event-description">
