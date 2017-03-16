@@ -87,6 +87,11 @@ $(document).ready(function() {
 		$('.' + pickerClass).datepicker({ dateFormat: "dd/mm/yy" });
 	}
 	
+	function startTimePicker(pickerClass, now) {
+		var pickerClass = pickerClass;
+		$('.' + pickerClass).wickedpicker({ now: now, title: "Select a Time", });
+	}
+	
 	$('.edit').click(function() {
 		var input, origField;
 		var editType = $(this).attr('data-edit-type');
@@ -109,9 +114,13 @@ $(document).ready(function() {
 				});
 				break;
 			case 'text':
-			case 'tel':
 				origField = $(this).siblings('.text-info').text();
 				input = $('<input id="attribute" type="text" value="' + origField + '" />');
+				$(this).siblings('.text-info').text('').append(input);
+				break;
+			case 'tel':
+				origField = $(this).siblings('.text-info').text();
+				input = $('<input id="attribute" type="tel" value="' + origField + '" />');
 				$(this).siblings('.text-info').text('').append(input);
 				break;
 			case 'number':
@@ -186,8 +195,10 @@ $(document).ready(function() {
 				} else if( thisFieldWrapper.parents('div').hasClass('event-details')) {
 					fieldMod = 'event';
 				}
-				var input = $('<input name="acf_fields[start_time]" id="' + fieldMod + '-submission-start" class="timepicker"><input name="acf_fields[end_time]" id="' + fieldMod + '-submission-end" class="timepicker"><script>var options = { now: "00:00", title: "Select a Time", }; $(".timepicker").wickedpicker(options);</script>')
+				var input = $('<input name="acf_fields[start_time]" id="' + fieldMod + '-submission-start" class="timepicker"><input name="acf_fields[end_time]" id="' + fieldMod + '-submission-end" class="timepicker">')
 				$(this).siblings('.text-info').text('').append(input);
+				
+				startTimePicker('timepicker', '00:00');
 				
 				$('.timepicker').focus(function() {
 					$('.wickedpicker').css({'display': 'none'});
@@ -214,7 +225,8 @@ $(document).ready(function() {
 			case 'hours':
 				$('.savehours').show();	
 				$('.left .opening-hours li span.opentime').each(function() {
-					$(this).replaceWith( '<input name="acf_fields[start_time]" id="venu-open" class="timepickerstart"><script>var options = { now: "' + moment($(this).text(), ["h:mm A"]).format("HH:mm") + '", title: "Select a Time", }; $(".timepickerstart").wickedpicker(options);</script>' );
+					$(this).replaceWith( '<input name="acf_fields[start_time]" id="venu-open" class="timepickerstart">' );
+					startTimePicker('timepickerstart', moment($(this).text(), ["h:mm A"]).format("HH:mm") );
 				});
 				$('.left .opening-hours .list-hours').each(function() {
 					$(this).children('.fa-plus-circle').show();
@@ -223,7 +235,8 @@ $(document).ready(function() {
 					}
 				});
 				$('.left .opening-hours li span.closetime').each(function() {
-					$(this).replaceWith( '<input name="acf_fields[start_time]" id="venu-close" class="timepickerend"><script>var options = { now: "' + moment($(this).text(), ["h:mm A"]).format("HH:mm") + '", title: "Select a Time", }; $(".timepickerend").wickedpicker(options);</script>' );
+					$(this).replaceWith( '<input name="acf_fields[start_time]" id="venu-close" class="timepickerend">' );
+					startTimePicker('timepickerend', moment($(this).text(), ["h:mm A"]).format("HH:mm") );
 				});
 				if( $(this).parent().parent().parent().siblings('.edit-hours-content').hasClass('visible') ) {
 					$('.edit-hours-content').removeClass('visible');
@@ -340,7 +353,9 @@ $(document).ready(function() {
 	});
 	
 	$('.left .opening-hours .list-hours').on('click', '.fa-plus-circle', function() {
-		$('<li><input name="acf_fields[start_time]" id="venu-open" class="timepickerstart"><script>var options = { now: "00:00", title: "Select a Time", }; $(".timepickerstart").wickedpicker(options);</script> - <input name="acf_fields[start_time]" id="venu-close" class="timepickerend"><script>var options = { now: "00:00", title: "Select a Time", }; $(".timepickerend").wickedpicker(options);</script></li>').insertAfter($(this).parent().children('li').last());
+		$('<li><input name="acf_fields[start_time]" id="venu-open" class="timepickerstart"> - <input name="acf_fields[start_time]" id="venu-close" class="timepickerend"></li>').insertAfter($(this).parent().children('li').last());
+		startTimePicker('timepickerstart', '00:00' );
+		startTimePicker('timepickerend', '00:00' );
 		if( $(this).parent().children('li').length > 1 ) {
 			$(this).siblings('.fa-minus-circle').show();
 		}	

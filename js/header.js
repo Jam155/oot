@@ -14,13 +14,8 @@ function getActiveTags() {
 
 $( function() {
 	$('.datepicker').datepicker({ dateFormat: 'dd/mm/yy' });
-	var options = {
-		now: "00:00",
-		title: "Select a Time",
-	};
-	$('.timepicker').wickedpicker(options);
 });
-			
+
 $(document).ready(function(){
 	$('.col-accordion-wrapper .col-title').click(function() {
 		$(this).siblings('.accordion-content').toggle();
