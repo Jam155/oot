@@ -91,8 +91,24 @@ $(document).ready(function() {
 		var input, origField;
 		var editType = $(this).attr('data-edit-type');
 		switch(editType) {
-			case 'text':
 			case 'url':
+				origField = $(this).siblings('.text-info').attr('data-orig-url');
+				input = $('<input id="url-field" type="text" value="' + origField + '"/>');
+				var textElem = $(this).siblings('.text-info');
+				$(this).siblings('.text-info').text('').append(input);
+				
+				input.on('blur', function() {
+					var fieldText = $('#url-field').val();
+					var trimField = fieldText.replace(/((^\w+:|^)\/\/)?(www\.)?/, '');
+					if(trimField == '') {
+						trimField = origField.replace(/((^\w+:|^)\/\/)?(www\.)?/, '');
+					}
+					$('#url-field').parent().text(trimField);
+					textElem.attr("data-orig-url", fieldText);
+					$('#url-field').remove();
+				});
+				break;
+			case 'text':
 			case 'tel':
 				origField = $(this).siblings('.text-info').text();
 				input = $('<input id="attribute" type="text" value="' + origField + '" />');

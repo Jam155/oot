@@ -20,7 +20,10 @@
 							<i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="text"></i>
 						</label>
 						<label for="venue-website" class="control-label">
-							<p class="text-info"><?php echo get_field('website'); ?></p>
+							<?php $url = parse_url(get_field('website'));  
+							$url = preg_replace('#^www\.(.+\.)#i', '$1', $url['host']) . $url['path'];
+							?>
+							<p class="text-info" data-orig-url="<?php echo get_field('website'); ?>"><?php echo $url; ?></p>
 							<i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="url"></i>
 						</label>
 					</div>

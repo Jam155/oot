@@ -659,13 +659,17 @@ label[for="venue-website"] .text-info {
 }
 
 .text-info-wrapper textarea {
-    width: 100% !important;
+	width: 100% !important;
     box-sizing: border-box;
 	height: 200px !important;
 	resize: none;
     padding: 5px;
 	outline: 0;
 	border: 0px;
+	color: #9a98a7;
+    font-size: 12px;
+    text-align: justify;
+    line-height: 18px;
 }
 
 .edit-textarea {
