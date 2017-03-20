@@ -13,6 +13,11 @@ $dark-grey: #55545c;
 
 * { font-family: $oot-font; }
 
+.clearfix {
+    display: block;
+    clear: both;
+}
+
 body {
 	margin: 0;
 	padding: 50px;
@@ -182,6 +187,11 @@ footer {
 .current-offers {
 	.col-content {
 		padding: 0;
+		
+		label[for="offer-title"] .edit,
+		.offer-details .edit  {
+			display: none;
+		}
 	}
 	.col-accordion-wrapper .col-title {
 		background-color: $offer-secondary;
@@ -261,6 +271,7 @@ footer {
 	img {
 		max-width: 140px;
 		vertical-align:top;
+		height: auto;
 	}
 	.left,
 	.right {
@@ -373,15 +384,6 @@ footer {
 
 	p {
 		margin: 0;
-	}
-	
-	.offer-details .fa {
-		margin-right: 7px;
-		color: $offer-primary;
-	}
-	.event-details .fa {
-		margin-right: 7px;
-		color: $event-primary;
 	}
 }
 
@@ -808,6 +810,35 @@ label[for="venue-website"] .text-info {
 	}
 }
 
+.current-offers .col-content {
+	label[for="offer-title"] .text-info:before {
+		display: none !important;
+		width: 0px !important;
+	}
+	label[for="offer-title"] .text-info {
+		margin: 0 !important;
+	}
+	label[for="offer-date"] .text-info:before {
+		content: '\f073';
+		color: $offer-primary;
+	}
+	label[for="offer-time"] .text-info:before {
+		content: '\f017';
+		color: $offer-primary;
+	}
+	label[for="event-time"] .timepicker,
+	label[for="offer-time"] .timepicker {
+		width: 34% !important;
+		font-size: 12px;
+		padding: 4px;
+		margin-right: 3px;
+	}
+	label[for="offer-quantity"] .text-info:before {
+		content: '\f292';
+		color: $offer-primary;
+	}
+}
+
 .savehours {
 	display: none;
 	text-decoration: none;
@@ -842,6 +873,52 @@ label[for="venue-website"] .text-info {
     height: 1px;
     width: 1px;
     overflow: hidden;
+}
+
+.ui-widget.ui-widget-content {
+    border: 0px !important;
+    padding: 0px !important;
+    border-radius: 0px !important;
+}
+
+.ui-dialog .ui-dialog-content {
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 20px;
+    color: #55545c;
+}
+
+.ui-widget-overlay {
+    background: rgb(0, 0, 0) !important;
+    opacity: .5 !important;
+    filter: Alpha(Opacity=50) !important;
+}
+
+.ui-dialog .ui-widget-header {
+    border: 0px !important;
+    background: #a1be3e !important;
+    border-radius: 0px !important;
+    color: #ffffff !important;
+}
+
+.ui-dialog .ui-dialog-buttonpane .ui-button {
+    border: 0 !important;
+    border-radius: 15px !important;
+    outline: 0 !important;
+    padding: 7px 15px !important;
+    text-align: right !important;
+    font-weight: normal !important;
+    font-size: 12px !important;
+    text-transform: uppercase !important;
+    margin-bottom: 10px !important;
+    display: inline-block !important;
+    margin-top: 12px !important;
+    color: #ffffff !important;
+    background: #a1be3e !important;
+}
+
+.ui-dialog .ui-dialog-titlebar-close {
+
 }
 
 @media (max-width: 1293px) {

@@ -203,11 +203,18 @@
 						setup_postdata( $post ); ?>
 						<div class="offer-item">
 							<div class="left">
-								<?php echo get_the_post_thumbnail(get_the_ID(), 'full'); ?>
+								<?php if (has_post_thumbnail( $post->ID ) ) {
+									echo get_the_post_thumbnail(get_the_ID(), 'full');
+								} else { ?>
+									<img src="http://localhost/oot/wp-content/themes/oot/images/oot-placeholder-img.png" class="blank-img" data-image-id="">
+								<?php } ?>
 							</div>
 							<div class="right">
 								<h2>
-									<?php the_title(); ?>
+									<label for="offer-title" class="control-label no-icon">
+										<p class="text-info"><?php the_title(); ?></p>
+										<i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="text"></i>
+									</label>
 									<i class="editoffer fa fa-pencil" aria-hidden="true" data-edit-type="expand"></i>
 								</h2>
 								<div class="offer-details">
@@ -215,10 +222,18 @@
 										$date = get_field('date', false, false);
 										$date = new DateTime($date);
 									?>
-									
-									<i class="fa fa-calendar" aria-hidden="true"></i><?php echo $date->format('d/m/Y'); ?><br>
-									<i class="fa fa-clock-o" aria-hidden="true"></i><span class="starttime"><?php echo get_field('start_time'); ?></span> - <span class="endtime"><?php echo get_field('end_time'); ?></span><br>
-									<i class="fa fa-hashtag" aria-hidden="true"></i><?php echo get_field('maximum_redeemable'); ?>
+									<label for="offer-date" class="control-label">
+										<p class="text-info"><?php echo $date->format('d/m/Y'); ?></p>
+										<i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="date"></i>
+									</label>
+									<label for="offer-time" class="control-label">
+										<p class="text-info"><span class="starttime"><?php echo get_field('start_time'); ?></span> - <span class="endtime"><?php echo get_field('end_time'); ?></span></p>
+										<i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="time"></i>
+									</label>
+									<label for="offer-quantity" class="control-label">
+										<p class="text-info"><?php echo get_field('maximum_redeemable'); ?></p>
+										<i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="number"></i>
+									</label>
 								</div>
 							</div>
 							<div class="offer-description">
@@ -228,7 +243,7 @@
 										<p class="text-info"><?php echo get_the_content(); ?></p>
 									</div>
 								</label>
-								<span class="remove">Remove Offer<i class="fa fa-trash" aria-hidden="true"></i></span>
+								<span class="remove" data-offer-id="<?php echo get_the_ID(); ?>">Remove Offer<i class="fa fa-trash" aria-hidden="true"></i></span>
 								<span class="save">Save Offer<i class="fa fa-check" aria-hidden="true"></i></span>
 							</div>
 						</div>
@@ -274,8 +289,9 @@
 									<p class="text-info">Full Description &plus; T&amp;C</p>
 								</div>
 							</label>
-							<span class="remove">Remove Offer<i class="fa fa-trash" aria-hidden="true"></i></span>
 							<span class="save new-offer-save">Save Offer<i class="fa fa-check" aria-hidden="true"></i></span>
+							
+							<div class="clearfix"></div>
 						</div>
 					</div>
 					<?php /*
@@ -323,6 +339,12 @@
 				<h3 class="col-title">Add New Offer <i class="fa fa-plus" aria-hidden="true"></i></h3>
 			</div>
 		</section>
+		
+		<div class="dialog" id="dialog" title="dialog">
+			<p>Unable to save offer. The following information is still missing:</p>
+			<ul></ul>
+		</div>
+							
 		<section class="upcoming-events">
 			<h3 class="col-title">Upcoming Events</h3>
 			<div class="col-content">
@@ -340,7 +362,11 @@
 						setup_postdata( $post ); ?>
 						<div class="event-item">
 							<div class="left">
-								<?php echo get_the_post_thumbnail(get_the_ID(), 'full'); ?>
+								<?php if (has_post_thumbnail( $post->ID ) ) {
+									echo get_the_post_thumbnail(get_the_ID(), 'full');
+								} else { ?>
+									<img src="http://localhost/oot/wp-content/themes/oot/images/oot-placeholder-img.png" class="blank-img" data-image-id="">
+								<?php } ?>
 							</div>
 							<div class="right">
 								<h2>
@@ -376,7 +402,7 @@
 									?>
 								</div>
 
-								<span class="remove">Remove Event<i class="fa fa-trash" aria-hidden="true"></i></span>
+								<span class="remove" data-event-id="<?php echo get_the_ID(); ?>">Remove Event<i class="fa fa-trash" aria-hidden="true"></i></span>
 								<span class="save">Save Event<i class="fa fa-check" aria-hidden="true"></i></span>
 							</div>
 						</div>
@@ -437,8 +463,8 @@
 									}
 								?>
 							</div>
-							<span class="remove">Remove Event<i class="fa fa-trash" aria-hidden="true"></i></span>
 							<span class="save new-event-save">Save Event<i class="fa fa-check" aria-hidden="true"></i></span>
+							<div class="clearfix"></div> 
 						</div>
 					</div>
 					<?php /*
