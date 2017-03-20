@@ -189,12 +189,26 @@ footer {
 		padding: 0;
 		
 		label[for="offer-title"] .edit,
-		.offer-details .edit  {
+		.offer-details .edit {
 			display: none;
 		}
 	}
 	.col-accordion-wrapper .col-title {
 		background-color: $offer-secondary;
+	}
+}
+
+.upcoming-events {
+	.col-content {
+		padding: 0;
+		
+		label[for="event-title"] .edit,
+		.event-details .edit {
+			display: none;
+		}
+	}
+	.col-accordion-wrapper .col-title {
+		background-color: $event-secondary;
 	}
 }
 
@@ -579,6 +593,7 @@ label .text-info {
     width: 91%;
 }
 
+.datepicker,
 #event-submission-date,
 #offer-submission-date {
 	width: 80%;
@@ -807,6 +822,35 @@ label[for="venue-website"] .text-info {
 	label[for="offer-quantity"] .text-info:before {
 		content: '\f292';
 		color: $offer-primary;
+	}
+}
+
+.upcoming-events .col-content {
+	label[for="event-title"] .text-info:before {
+		display: none !important;
+		width: 0px !important;
+	}
+	label[for="event-title"] .text-info {
+		margin: 0 !important;
+	}
+	label[for="event-date"] .text-info:before {
+		content: '\f073';
+		color: $event-primary;
+	}
+	label[for="event-time"] .text-info:before {
+		content: '\f017';
+		color: $event-primary;
+	}
+	label[for="event-time"] .timepicker,
+	label[for="offer-time"] .timepicker {
+		width: 34% !important;
+		font-size: 12px;
+		padding: 4px;
+		margin-right: 3px;
+	}
+	label[for="event-quantity"] .text-info:before {
+		content: '\f145';
+		color: $event-primary;
 	}
 }
 

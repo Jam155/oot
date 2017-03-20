@@ -282,14 +282,27 @@ function oot_underscore_offer() { ?>
 			</div>
 			<div class="right">
 				<h2>
-					{{{ data.offer_title }}}
+					<label for="offer-title" class="control-label no-icon">
+						<p class="text-info">{{{ data.offer_title }}}</p>
+						<i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="text"></i>
+					</label>
 					<i class="editoffer fa fa-pencil" aria-hidden="true" data-edit-type="expand"></i>
 				</h2>
 				<div class="offer-details">
-					<i class="fa fa-calendar" aria-hidden="true"></i>{{{ data.offer_date }}}<br>
-					<i class="fa fa-clock-o" aria-hidden="true"></i>{{{ data.offer_starttime }}} - {{{ data.offer_endtime }}}<br>
-					<i class="fa fa-hashtag" aria-hidden="true"></i>{{{ data.offer_quantity }}}
+					<label for="offer-date" class="control-label">
+						<p class="text-info">{{{ data.offer_date }}}</p>
+						<i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="date"></i>
+					</label>
+					<label for="offer-time" class="control-label">
+						<p class="text-info"><span class="starttime">{{{ data.offer_starttime }}}</span> - <span class="endtime">{{{ data.offer_endtime }}}</span></p>
+						<i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="time"></i>
+					</label>
+					<label for="offer-quantity" class="control-label">
+						<p class="text-info">{{{ data.offer_quantity }}}</p>
+						<i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="number"></i>
+					</label>
 				</div>
+				
 			</div>
 			<div class="offer-description">
 				<label for="venue-description" class="control-label venue-description">
@@ -314,13 +327,25 @@ function oot_underscore_event() { ?>
 			</div>
 			<div class="right">
 				<h2>
-					{{{ data.event_title }}}
+					<label for="event-title" class="control-label no-icon">
+						<p class="text-info">{{{ data.event_title }}}</p>
+						<i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="text"></i>
+					</label>
 					<i class="editevent fa fa-pencil" aria-hidden="true" data-edit-type="expand"></i>
 				</h2>
 				<div class="event-details">
-					<i class="fa fa-calendar" aria-hidden="true"></i>{{{ data.event_date }}}<br>
-					<i class="fa fa-clock-o" aria-hidden="true"></i>{{{ data.event_starttime }}} - {{{ data.event_endtime }}}<br>
-					<i class="fa fa-ticket" aria-hidden="true"></i>{{{ data.event_quantity }}}
+					<label for="event-date" class="control-label">
+						<p class="text-info">{{{ data.event_date }}}</p>
+						<i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="date"></i>
+					</label>
+					<label for="event-time" class="control-label">
+						<p class="text-info"><span class="starttime">{{{ data.event_starttime }}}</span> - <span class="endtime">{{{ data.event_endtime }}}</span></p>
+						<i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="time"></i>
+					</label>
+					<label for="event-quantity" class="control-label">
+						<p class="text-info">{{{ data.event_quantity }}}</p>
+						<i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="currency"></i>
+					</label>	
 				</div>
 			</div>
 			<div class="event-description">

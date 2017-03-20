@@ -103,7 +103,7 @@ $(document).ready(function() {
 	}
 	
 	$('.edit').click(function() {
-		var input, origField;
+		var input, origField, origFieldNum;
 		var editType = $(this).attr('data-edit-type');
 		switch(editType) {
 			case 'url':
@@ -138,14 +138,12 @@ $(document).ready(function() {
 				break;
 			case 'number':
 				origField = $(this).siblings('.text-info').text();
-				console.log(origField);
 				input = $('<input id="attribute" type="number" min="0" />')
 				$(this).siblings('.text-info').text('').append(input);
 				input.select();
 				
 				input.on('blur', function() {
 				var amount = $('#attribute').val();
-				console.log(amount)
 				amount = amount.toString();
 					if( amount == '' || amount < 1 || amount.indexOf("E") > 0 || amount.indexOf("e") > 0) {
 						if( $(this).closest('.offer-item').parent('.col-content').length > 0 ) {
@@ -163,14 +161,21 @@ $(document).ready(function() {
 				});
 				break;
 			case 'currency':
+				origField = $(this).siblings('.text-info').text();
+				origFieldNum = origField.replace(/[^\d\.]/g, '');
 				input = $('<input id="currency-field" type="number" min="0" />')
 				$(this).siblings('.text-info').text('').append(input);
+				input.val(origFieldNum)
 				input.select();
 				
 				input.on('blur', function() {
 				var amount = $('#currency-field').val();
-					if(amount == '' || amount < 0.01) {
-						$('#currency-field').parent().html('Enter ticket price');
+					if(amount == '' || amount < 0.00) {
+						if( $(this).closest('.event-item').parent('.col-content').length > 0 ) {
+							$('#currency-field').parent().html(origField);
+						} else {
+							$('#currency-field').parent().html('Enter ticket price');
+						}
 					} else {
 						var round = parseFloat(amount).toFixed(2);
 						$('#currency-field').parent().html('&pound;' + round);
@@ -186,41 +191,48 @@ $(document).ready(function() {
 					fieldMod = 'offer';
 				} else if( thisFieldWrapper.parents('div').hasClass('event-details')) {
 					fieldMod = 'event';
-				}				
-				var input = $('<input name="acf_fields[date]" id="' + fieldMod +'-submission-date" class="datepicker">');
-				thisFieldWrapper.children('.text-info').text('').append(input);
+				}
+				var randID = Date.now();
+				var input = $('<input name="acf_fields[date]" id="' + fieldMod + '-submission-date' + randID + '" class="datepicker">');
+				thisFieldWrapper.find('.text-info').text('').append(input);
 				startDatePicker('datepicker');
 				input.select();
 				
 				$(document).click(function(e) {
-					console.log(e.target);
-					if ( !$(e.target).is(thisFieldWrapper.find('.fa')) && !$(e.target).parents('.ui-datepicker') && !$(e.target).parents('.ui-datepicker').find('*') ) {
-						$('#' + fieldMod + '-submission-date').remove();
-						if( $('#' + fieldMod + '-submission-date').val() == '' ) {
-							$('#' + fieldMod + '-submission-date').closest('.text-info').text('Select ' + fieldMod + ' date');
+					if ( !$(e.target).is(thisFieldWrapper.children('.fa')) && !$(e.target).parents('.ui-datepicker').length > 0 && !$(e.target).is('.datepicker') && !$(e.target).is('.ui-corner-all') && !$(e.target).is('.ui-icon') ) {
+						if( $('#' + fieldMod + '-submission-date').text() == '' ) {
+							if(thisFieldWrapper.closest('.' + fieldMod + '-item').parent('.col-content').length > 0 ) {
+								$('#' + fieldMod + '-submission-date' + randID ).closest('.text-info').text(text);
+								$('#' + fieldMod + '-submission-date' + randID ).remove();
+							} else {
+								$('#' + fieldMod + '-submission-date' + randID ).closest('.text-info').text('Select ' + fieldMod + ' date');
+								$('#' + fieldMod + '-submission-date' + randID ).remove();
+							}
 						}
 					} else {
 						$('.ui-datepicker-calendar td').click( function() {
-							var text = $('#' + fieldMod + '-submission-date').val();
-							$('#' + fieldMod + '-submission-date').parent().text(text);
-							$('#' + fieldMod + '-submission-date').remove();
+							text = $('#' + fieldMod + '-submission-date' + randID ).val();
+							$('#' + fieldMod + '-submission-date' + randID ).closest('.text-info').text(text);
+							$('#' + fieldMod + '-submission-date' + randID ).remove();
 						});
 					}
 				});
-				
 				break;
 			case 'time':
+				var startTime = $(this).siblings('.text-info').find('.starttime').text();
+				var endTime = $(this).siblings('.text-info').find('.endtime').text();
+				console.log(startTime);
+				console.log(endTime);
 				var thisFieldWrapper = $(this).closest('.control-label');
 				var fieldMod;
+				var randID = Date.now();
 				if( thisFieldWrapper.parents('div').hasClass('offer-details') ) {
 					fieldMod = 'offer';
 				} else if( thisFieldWrapper.parents('div').hasClass('event-details')) {
 					fieldMod = 'event';
 				}
-				console.log('test');
-				var input = $('<input name="acf_fields[start_time]" id="' + fieldMod + '-submission-start" class="timepicker"><input name="acf_fields[end_time]" id="' + fieldMod + '-submission-end" class="timepicker">')
+				var input = $('<input name="acf_fields[start_time]" id="' + fieldMod + '-submission-start' + randID + '" class="timepicker"><input name="acf_fields[end_time]" id="' + fieldMod + '-submission-end' + randID + '" class="timepicker">')
 				$(this).siblings('.text-info').text('').append(input);
-				
 				startTimePicker('timepicker', '00:00');
 				input.select();
 				
@@ -230,11 +242,17 @@ $(document).ready(function() {
 				
 				$(document).click(function(e) {
 					if ( !$(e.target).is(thisFieldWrapper.children('.fa')) && !$(e.target).parents('.wickedpicker').length > 0 && !$(e.target).is('.timepicker') ) {
-						if( $('#' + fieldMod + '-submission-start').val() == '12 : 00 AM' && $('#' + fieldMod + '-submission-end').val() == '12 : 00 AM' || $('#' + fieldMod + '-submission-start').val() == $('#' + fieldMod + '-submission-end').val() ) {
-							$('#' + fieldMod + '-submission-start').closest('.text-info').text('Select ' + fieldMod + ' time');
+						if( $('#' + fieldMod + '-submission-start' + randID).val() == $('#' + fieldMod + '-submission-end' + randID).val() ) {
+							if( thisFieldWrapper.closest('.' + fieldMod + '-item').parent('.col-content').length > 0 ) {
+								text = '<span class="starttime">' + startTime + '</span> - <span class="endtime">' + endTime + '</span>';
+								$('#' + fieldMod + '-submission-start' + randID).closest('.text-info').html(text);
+							} else {
+								console.log('time new');
+								$('#' + fieldMod + '-submission-start' + randID).closest('.text-info').text('Select ' + fieldMod + ' time');
+							}
 						} else {
-							var text = '<span class="starttime">' + $('#' + fieldMod + '-submission-start').val() + '</span> - <span class="endtime">' + $('#' + fieldMod + '-submission-end').val() + '</span>';
-							$('#' + fieldMod + '-submission-start').closest('.text-info').html(text);
+							text = '<span class="starttime">' + $('#' + fieldMod + '-submission-start' + randID).val() + '</span> - <span class="endtime">' + $('#' + fieldMod + '-submission-end' + randID).val() + '</span>';
+							$('#' + fieldMod + '-submission-start' + randID).closest('.text-info').html(text);
 						}
 					}
 				});
@@ -474,25 +492,116 @@ $(document).ready(function() {
 	
 	$('.current-offers').on('click', '.offer-item .editoffer', function() {
 		$(this).hide();
-		$('.current-offers .col-content .offer-details .edit').show();
-		$('.current-offers .col-content label[for="offer-title"] .edit').show();
-		if( $(this).parent().parent().siblings('.offer-description').hasClass('visible') ) {
-			$('.offer-description').removeClass('visible');
+		var thisOffer = $(this).closest('.offer-item');
+		thisOffer.find('.offer-details .edit').show();
+		thisOffer.find('label[for="offer-title"] .edit').show();
+		if( thisOffer.find('.offer-description').hasClass('visible') ) {
+			thisOffer.find('.offer-description').removeClass('visible');
 		} else {
-			$('.offer-description').removeClass('visible');
-			$(this).parent().parent().siblings('.offer-description').addClass('visible');
+			thisOffer.find('.offer-description').removeClass('visible');
+			thisOffer.find('.offer-description').addClass('visible');
 		}
 	});
 	
+	// UPDATE Existing offer Post
 	$('.current-offers').on('click', '.offer-item .offer-description .save', function() {
-		$('.current-offers .offer-item .editoffer').show();
-		$('.current-offers .col-content .offer-details .edit').hide();
-		$('.current-offers .col-content label[for="offer-title"] .edit').hide();
-		if( $(this).parent().parent().siblings('.offer-description').hasClass('visible') ) {
-			$('.offer-description').removeClass('visible');
+		var thisOffer = $(this).closest('.offer-item');
+		var newOffer = $(this).closest('.offer-item');
+		var offerID = $(this).closest('.offer-item').attr('data-offer-id');
+		var offer_title = thisOffer.find('label[for="offer-title"]').text();
+		var offer_thumbnail = thisOffer.find('img').attr('src');
+		var offer_date = thisOffer.find('label[for="offer-date"]').text();
+		var offer_starttime = thisOffer.find('label[for="offer-time"] .starttime').text();
+		var offer_endtime = thisOffer.find('label[for="offer-time"] .endtime').text();
+		var offer_quantity = thisOffer.find('label[for="offer-quantity"]').text();
+		var offer_description = thisOffer.find('.offer-description .text-info').text();
+		var featured_media = thisOffer.find('.left img').attr('data-image-id');
+		
+		if(offer_title != 'Offer Title' && offer_date != 'Select offer date' && offer_starttime != null && offer_endtime != null && offer_quantity != 'Enter redeem amount' && offer_description != 'Full Description + T&C' && featured_media ) {				
+			var cleanDate = offer_date.replace(/\s+/g, '');
+			cleanDate = cleanDate.split('/');
+			cleanDate = cleanDate[2] + '-' + cleanDate[1] + '-' + cleanDate[0];
+
+			var start = ConvertTimeformat("24", offer_starttime);
+			var end = ConvertTimeformat("24", offer_endtime);
+			
+			var data = {
+				offer_title: offer_title,
+				offer_thumbnail: offer_thumbnail,
+				offer_date: offer_date,
+				offer_starttime: offer_starttime,
+				offer_endtime: offer_endtime,
+				offer_quantity: offer_quantity,
+				offer_description: offer_description
+			}
+			
+			thisOffer.find('label[for="offer-title"] .text-info').text('Offer Title');
+			thisOffer.find('label[for="offer-date"] .text-info').text('Select offer date');
+			thisOffer.find('label[for="offer-time"] .text-info').text('Select offer time');
+			thisOffer.find('label[for="offer-quantity"] .text-info').text('Enter redeem amount');
+			thisOffer.find('.offer-description .text-info').text('Full Description + T&C');
+			
+			thisOffer.closest('.accordion-content').toggle();
+			
+			var post_template = wp.template( 'oot-offer' );
+			$('.current-offers .col-content').append( post_template( data ) );
+			
+			var offerData = {
+				status: 'publish',
+				featured_media: featured_media,
+				title: offer_title,
+				content: offer_description,
+				acf_fields: {
+					date: cleanDate,
+					start_time: start,
+					end_time: end,
+					maximum_redeemable: offer_quantity,
+					venue: '57'
+				}
+			};
+			
+			$.ajax({
+				method: "PUT",
+				url: POST_SUBMITTER.root + 'wp/v2/offer/',
+				data: offerData,
+				beforeSend: function ( xhr ) {
+					xhr.setRequestHeader( 'X-WP-Nonce', POST_SUBMITTER.nonce );
+				}
+			});
 		} else {
-			$('.offer-description').removeClass('visible');
-			$(this).parent().parent().siblings('.offer-description').addClass('visible');
+			var errors = [];
+			if( offer_title && offer_title.indexOf('Offer Title') > -1) { errors.push('Title') }
+			if( offer_date && offer_date.indexOf('Select offer date') > -1) { errors.push('Date') }
+			if( !offer_starttime && !offer_endtime) { errors.push('Start & End Time') }
+			if( offer_quantity && offer_quantity.indexOf('Enter redeem amount') > -1) { errors.push('Quantity Redeemable') }
+			if( offer_description && offer_description.indexOf('Full Description + T&C') > -1) { errors.push('An Offer Description') }
+			if( !featured_media ) { errors.push('An Image') }
+			
+			$('#dialog').dialog({
+				title: 'Error',
+				buttons: {
+					Ok: function() {
+						$( this ).dialog( "close" );
+					}
+				}
+			});
+			$('.new-offer-error').dialog('open');
+			$('#dialog').find('p').text('Unable to save offer. The following information is still missing:');
+			$('#dialog').find('ul').empty();
+			$.each(errors, function( index, value ) {
+				$('#dialog ul').append('<li>' + value + '</li>');
+			});
+			$('.new-offer-error').find('p ul').append('Errors lol?');
+		}		
+		
+		thisOffer.find('.editoffer').show();
+		thisOffer.find('.offer-details .edit').hide();
+		$('.current-offers .col-content label[for="offer-title"] .edit').hide();
+		if( thisOffer.find('.offer-description').hasClass('visible') ) {
+			thisOffer.find('.offer-description').removeClass('visible');
+		} else {
+			thisOffer.find('.offer-description').removeClass('visible');
+			thisOffer.find('.offer-description').addClass('visible');
 		}
 	});
 	
@@ -538,13 +647,30 @@ $(document).ready(function() {
 	});
 	
 	$('.upcoming-events').on('click', '.event-item .editevent', function() {
-		if( $(this).parent().parent().siblings('.event-description').hasClass('visible') ) {
-			$('.event-description').removeClass('visible');
+		$(this).hide();
+		var thisEvent = $(this).closest('.event-item');
+		thisEvent.find('.event-details .edit').show();
+		thisEvent.find('label[for="event-title"] .edit').show();
+		if( thisEvent.find('.event-description').hasClass('visible') ) {
+			thisEvent.find('.event-description').removeClass('visible');
 		} else {
-			$('.event-description').removeClass('visible');
-			$(this).parent().parent().siblings('.event-description').addClass('visible');
+			thisEvent.find('.event-description').removeClass('visible');
+			thisEvent.find('.event-description').addClass('visible');
 		}
 	});
+	
+	$('.upcoming-events').on('click', '.event-item .event-description .save', function() {
+		var thisEvent = $(this).closest('.event-item');
+		thisEvent.find('.editevent').show();
+		thisEvent.find('.event-details .edit').hide();
+		thisEvent.find('label[for="event-title"] .edit').hide();
+		if( thisEvent.find('.event-description').hasClass('visible') ) {
+			thisEvent.find('.event-description').removeClass('visible');
+		} else {
+			thisEvent.find('.event-description').removeClass('visible');
+			thisEvent.find('.event-description').addClass('visible');
+		}
+	});	
 	
 	$('.venue-active-tags').on('click', '.del', function() {
 		$(this).parent().remove();

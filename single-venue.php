@@ -370,13 +370,29 @@
 							</div>
 							<div class="right">
 								<h2>
-									<?php the_title(); ?>
-									<i class="editevent fa fa-pencil" aria-hidden="true"></i>
+									<label for="event-title" class="control-label no-icon">
+										<p class="text-info"><?php the_title(); ?></p>
+										<i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="text"></i>
+									</label>
+									<i class="editevent fa fa-pencil" aria-hidden="true" data-edit-type="expand"></i>
 								</h2>
 								<div class="event-details">
-									<i class="fa fa-calendar" aria-hidden="true"></i><?php echo get_field('date'); ?><br>
-									<i class="fa fa-clock-o" aria-hidden="true"></i><span class="starttime"><?php echo get_field('start_time'); ?></span> - <span class="endtime"><?php echo get_field('end_time'); ?></span><br>
-									<i class="fa fa-ticket" aria-hidden="true"></i><?php echo '&pound;' . bcdiv(get_field('ticket_price'), '1', 2); ?>
+									<?php
+										$date = get_field('date', false, false);
+										$date = new DateTime($date);
+									?>
+									<label for="event-date" class="control-label">
+										<p class="text-info"><?php echo $date->format('d/m/Y'); ?></p>
+										<i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="date"></i>
+									</label>
+									<label for="event-time" class="control-label">
+										<p class="text-info"><span class="starttime"><?php echo get_field('start_time'); ?></span> - <span class="endtime"><?php echo get_field('end_time'); ?></span></p>
+										<i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="time"></i>
+									</label>
+									<label for="event-quantity" class="control-label">
+										<p class="text-info"><?php echo '&pound;' . bcdiv(get_field('ticket_price'), '1', 2); ?></p>
+										<i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="currency"></i>
+									</label>	
 								</div>
 							</div>
 							<div class="event-description">
