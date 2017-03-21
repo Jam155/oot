@@ -940,9 +940,16 @@ label[for="venue-website"] .text-info {
 
 .ui-dialog .ui-widget-header {
     border: 0px !important;
-    background: #a1be3e !important;
     border-radius: 0px !important;
     color: #ffffff !important;
+}
+
+.offerBG {
+	background: $offer-primary !important;
+}
+
+.eventBG {
+	background: $event-primary !important;
 }
 
 .ui-dialog .ui-dialog-buttonpane .ui-button {

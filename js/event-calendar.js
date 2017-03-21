@@ -307,16 +307,27 @@ $(document).ready(function() {
 
 	$('.remove').click(function() {
 		var elem = $(this);
+		var path = '';
+		if(elem.attr('data-offer-id') ) {
+			path = 'offer';	
+		} else if( elem.attr('data-event-id') ) {
+			path = 'event';	
+		}
+	
 		function deleteOffer(elem) {
 			var useElem = elem;
 			var post_id;
 			if( !!useElem.attr('data-offer-id') ) {
 				post_id = useElem.attr('data-offer-id');
 				path = 'offer';
+				console.log(path);
 			} else if( !!useElem.attr('data-event-id') ) {
 				post_id = useElem.attr('data-event-id');
 				path = 'event';
+				console.log(path);
 			}
+			
+			console.log(path);
 			
 			useElem.closest('.'+ path + '-item').remove();
 			$.ajax({
@@ -345,6 +356,7 @@ $(document).ready(function() {
 		});
 		$('#dialog').dialog('open');
 		$('#dialog').find('ul').empty();
+		$('.ui-dialog').find('.ui-dialog-titlebar').addClass( path + 'BG' );
 		$('#dialog').find('p').text('You are about to delete an offer.');		
 	});
 	
@@ -445,10 +457,10 @@ $(document).ready(function() {
 			$('.new-offer-error').dialog('open');
 			$('#dialog').find('p').text('Unable to save offer. The following information is still missing:');
 			$('#dialog').find('ul').empty();
+			$('.ui-dialog').find('.ui-dialog-titlebar').addClass('offerBG');
 			$.each(errors, function( index, value ) {
 				$('#dialog ul').append('<li>' + value + '</li>');
 			});
-			$('.new-offer-error').find('p ul').append('Errors lol?');
 		}
 	});
 		
@@ -462,32 +474,89 @@ $(document).ready(function() {
 		var event_quantity = newEvent.find('label[for="event-quantity"]').text();
 		var event_description = newEvent.find('.event-description .text-info').text();
 		var event_repeat = newEvent.find('.event-description input[type="radio"]:checked').attr('data-value');
-		var event_random_id = Date.now();
-		var acf_date = new Date(event_date);
-		var acf_date = acf_date.toString('yyyy-MM-dd 00:00:00');
+		var featured_media = newEvent.find('.left img').attr('data-image-id');
+				
+		if(event_title != 'Event Title' && event_date != 'Select event date' && event_starttime != null && event_endtime != null && event_quantity != 'Enter redeem amount' && event_description != 'Full Description + T&C' && featured_media ) {				
+			var cleanDate = event_date.replace(/\s+/g, '');
+			cleanDate = cleanDate.split('/');
+			cleanDate = cleanDate[2] + '-' + cleanDate[1] + '-' + cleanDate[0];
+
+			var start = ConvertTimeformat("24", event_starttime);
+			var end = ConvertTimeformat("24", event_endtime);
+			
+			var data = {
+				event_title: event_title,
+				event_thumbnail: event_thumbnail,
+				event_date: event_date,
+				event_starttime: event_starttime,
+				event_endtime: event_endtime,
+				event_quantity: event_quantity,
+				event_description: event_description
+			}
+			
+			newEvent.find('label[for="event-title"] .text-info').text('Event Title');
+			newEvent.find('label[for="event-date"] .text-info').text('Select event date');
+			newEvent.find('label[for="event-time"] .text-info').text('Select event time');
+			newEvent.find('label[for="event-quantity"] .text-info').text('Enter redeem amount');
+			newEvent.find('.event-description .text-info').text('Full Description + T&C');
+			
+			newEvent.closest('.accordion-content').toggle();
+			
+			var post_template = wp.template( 'oot-event' );
+			$('.current-events .col-content').append( post_template( data ) );
+			
+			var eventData = {
+				status: 'publish',
+				featured_media: featured_media,
+				title: event_title,
+				content: event_description,
+				acf_fields: {
+					date: cleanDate,
+					start_time: start,
+					end_time: end,
+					maximum_redeemable: event_quantity,
+					venue: '57'
+				}
+			};
+			
+			$.ajax({
+				method: "POST",
+				url: POST_SUBMITTER.root + 'wp/v2/event/',
+				data: eventData,
+				beforeSend: function ( xhr ) {
+					xhr.setRequestHeader( 'X-WP-Nonce', POST_SUBMITTER.nonce );
+				}
+			});
+		} else {
+			var errors = [];
+			if( event_title && event_title.indexOf('Event Title') > -1) { errors.push('Title') }
+			if( event_date && event_date.indexOf('Select event date') > -1) { errors.push('Date') }
+			if( !event_starttime && !event_endtime) { errors.push('Start & End Time') }
+			if( event_quantity && event_quantity.indexOf('Enter redeem amount') > -1) { errors.push('Quantity Redeemable') }
+			if( event_description && event_description.indexOf('Full Description + T&C') > -1) { errors.push('An Event Description') }
+			if( !featured_media ) { errors.push('An Image') }
+			
+			$('#dialog').dialog({
+				title: 'Error',
+				buttons: {
+					Ok: function() {
+						$( this ).dialog( "close" );
+					}
+				}
+			});
+			$('.new-event-error').dialog('open');
+			$('#dialog').find('p').text('Unable to save event. The following information is still missing:');
+			$('.ui-dialog').find('.ui-dialog-titlebar').addClass('eventBG');
+			$('#dialog').find('ul').empty();
+			$.each(errors, function( index, value ) {
+				$('#dialog ul').append('<li>' + value + '</li>');
+			});
+		}	
+
+
+
+
 		
-		var data = {
-			event_title: event_title,
-			event_thumbnail: event_thumbnail,
-			event_date: acf_date,
-			event_starttime: event_starttime,
-			event_endtime: event_endtime,
-			event_quantity: event_quantity,
-			event_description: event_description,
-			event_random_id: event_random_id
-		}
-		
-		newEvent.find('label[for="event-title"] .text-info').text('Event Title');
-		newEvent.find('label[for="event-date"] .text-info').text('Select event date');
-		newEvent.find('label[for="event-time"] .text-info').text('Select event time');
-		newEvent.find('label[for="event-quantity"] .text-info').text('Enter ticket price');
-		newEvent.find('.event-description .text-info').text('Full Description + T&C');
-		
-		newEvent.closest('.accordion-content').toggle();
-		
-		var post_template = wp.template( 'oot-event' );
-		$( '.upcoming-events .col-content' ).append( post_template( data ) );
-		$( '#event-' + event_random_id ).find('#' + event_random_id + event_repeat).prop('checked', true);
 	});
 	
 	$('.current-offers').on('click', '.offer-item .editoffer', function() {
