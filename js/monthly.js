@@ -202,7 +202,7 @@ Monthly 2.2.0 by Kevin Thornbloom is licensed under a Creative Commons Attributi
 
 		function addEvent(event, setMonth, setYear) {
 			// Year [0]   Month [1]   Day [2]
-			var fullStartDate = _getEventDetail(event, "startdate"),
+			var fullStartDate = _getEventDetail(event, "date"),
 				fullEndDate = _getEventDetail(event, "enddate"),
 				startArr = fullStartDate.split("-"),
 				startYear = parseInt(startArr[0], 10),
@@ -240,7 +240,7 @@ Monthly 2.2.0 by Kevin Thornbloom is licensed under a Creative Commons Attributi
 				eventTitle = _getEventDetail(event, "name"),
 				eventClass = _getEventDetail(event, "class"),
 				eventColor = _getEventDetail(event, "color"),
-				eventId = _getEventDetail(event, "id"),
+				eventId = _getEventDetail(event, "post_id"),
 				customClass = eventClass ? " " + eventClass : "",
 				dayStartTag = "<div",
 				dayEndTags = "</span></div>";
@@ -304,7 +304,7 @@ Monthly 2.2.0 by Kevin Thornbloom is licensed under a Creative Commons Attributi
 					addEvent(event, setMonth, setYear);
 				});
 			} else if (options.dataType === "json") {
-				$.each(events.monthly, function(index, event) {
+				$.each(events, function(index, event) {
 					addEvent(event, setMonth, setYear);
 				});
 			}

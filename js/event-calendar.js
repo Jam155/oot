@@ -1,14 +1,18 @@
 $(document).ready(function() {
-	
-	$('#monthly-calendar').monthly({
-		weekStart: 'Mon',
-		mode: 'event',
-		stylePast: true,
-		jsonUrl: site_url + '/wp-content/themes/oot/events.json',
-		dataType: 'json',
-		monthNameFormat: 'long',
-		dayNames: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-	});
+
+	var venueID = $('.venue-details').attr('data-venue-id');		
+	function drawCalendar(venueID, calendarID) {
+		$('#' + calendarID ).monthly({
+			weekStart: 'Mon',
+			mode: 'event',
+			stylePast: true,
+			jsonUrl: site_url + '/wp-json/wp/v2/venue/' + venueID + '/event',
+			dataType: 'json',
+			monthNameFormat: 'long',
+			dayNames: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+		});
+	}
+	drawCalendar(venueID, 'monthly-calendar');
 	
 	$( function() {
 		$('#dialog').dialog({
@@ -319,6 +323,7 @@ $(document).ready(function() {
 	});
 
 	$('.remove').click(function() {
+		var currentVenue = $('.venue-details').attr('data-venue-id');
 		var elem = $(this);
 		var path = '';
 		if(elem.attr('data-offer-id') ) {
@@ -352,7 +357,9 @@ $(document).ready(function() {
 					xhr.setRequestHeader( 'X-WP-Nonce', POST_SUBMITTER.nonce );
 				},
 				success: function() {
-					$("#datepicker").datepicker("refresh");
+					var newid = 'cal' + Date.now();
+					$('.monthly').empty().replaceWith('<div class="monthly" id="' + newid + '"></div>');
+					drawCalendar(currentVenue, newid);
 				}
 			});
 		}
@@ -391,6 +398,7 @@ $(document).ready(function() {
 		return sHours + ':' + sMinutes + ':00'
 	}
 	
+	// CREATE NEW Offer
 	$('.new-offer-save').on('click', function() {
 		var currentVenue = $('.venue-details').attr('data-venue-id');
 		var newOffer = $(this).closest('.offer-item');
@@ -485,24 +493,29 @@ $(document).ready(function() {
 			});
 		}
 	});
-		
+	
+	// CREATE NEW Event
 	$('.new-event-save').on('click', function() {
 		var currentVenue = $('.venue-details').attr('data-venue-id');
 		var newEvent = $(this).closest('.event-item');
 		var event_title = newEvent.find('label[for="event-title"]').text();
 		var event_thumbnail = newEvent.find('img').attr('src');
-		var event_date = newEvent.find('label[for="event-date"]').text();
+		var event_date = $.trim( newEvent.find('label[for="event-date"]').text() );
 		var event_starttime = newEvent.find('label[for="event-time"] .starttime').text();
 		var event_endtime = newEvent.find('label[for="event-time"] .endtime').text();
-		var event_quantity = newEvent.find('label[for="event-quantity"]').text();
+		var event_price = newEvent.find('label[for="event-quantity"]').text();
+		var event_price_num = event_price.replace(/[^\d\.]/g, '');
 		var event_description = newEvent.find('.event-description .text-info').text();
 		var event_repeat = newEvent.find('.event-description input[type="radio"]:checked').attr('data-value');
 		var featured_media = newEvent.find('.left img').attr('data-image-id');
 		var event_random_id = Date.now();
-		var acf_date = new Date(event_date);
-		var acf_date = acf_date.toString('yyyy-MM-dd 00:00:00');
+		var genDate = event_date.split('/');
+		genDate = genDate[2] + '-' + genDate[1] + '-' + genDate[0];
+		var acf_date = new Date(genDate);
+		acf_date = acf_date.toString('yyyy-MM-dd 00:00:00');
+		
 				
-		if(event_title != 'Event Title' && event_date != 'Select event date' && event_starttime != null && event_endtime != null && event_quantity != 'Enter redeem amount' && event_description != 'Full Description + T&C' && featured_media ) {				
+		if(event_title != 'Event Title' && event_date != 'Select event date' && event_starttime != null && event_endtime != null && event_price != 'Enter redeem amount' && event_description != 'Full Description + T&C' && featured_media ) {				
 			var cleanDate = event_date.replace(/\s+/g, '');
 			cleanDate = cleanDate.split('/');
 			cleanDate = cleanDate[2] + '-' + cleanDate[1] + '-' + cleanDate[0];
@@ -513,10 +526,10 @@ $(document).ready(function() {
 			var data = {
 				event_title: event_title,
 				event_thumbnail: event_thumbnail,
-				event_date: acf_date,
+				event_date: event_date,
 				event_starttime: event_starttime,
 				event_endtime: event_endtime,
-				event_quantity: event_quantity,
+				event_price: event_price_num,
 				event_description: event_description,
 				event_random_id: event_random_id
 			}
@@ -543,7 +556,7 @@ $(document).ready(function() {
 					date: cleanDate,
 					start_time: start,
 					end_time: end,
-					maximum_redeemable: event_quantity,
+					ticket_price: event_price_num,
 					repeat_event: event_repeat,
 					venue: currentVenue
 				}
@@ -555,14 +568,20 @@ $(document).ready(function() {
 				data: eventData,
 				beforeSend: function ( xhr ) {
 					xhr.setRequestHeader( 'X-WP-Nonce', POST_SUBMITTER.nonce );
+				},
+				success: function() {
+					var newid = 'cal' + Date.now();
+					$('.monthly').empty().replaceWith('<div class="monthly" id="' + newid + '"></div>');
+					drawCalendar(currentVenue, newid);
 				}
-			});
+			});			
+
 		} else {
 			var errors = [];
 			if( event_title && event_title.indexOf('Event Title') > -1) { errors.push('Title') }
 			if( event_date && event_date.indexOf('Select event date') > -1) { errors.push('Date') }
 			if( !event_starttime && !event_endtime) { errors.push('Start & End Time') }
-			if( event_quantity && event_quantity.indexOf('Enter redeem amount') > -1) { errors.push('Quantity Redeemable') }
+			if( event_price && event_price.indexOf('Enter redeem amount') > -1) { errors.push('Quantity Redeemable') }
 			if( event_description && event_description.indexOf('Full Description + T&C') > -1) { errors.push('An Event Description') }
 			if( !featured_media ) { errors.push('An Image') }
 			
@@ -582,7 +601,7 @@ $(document).ready(function() {
 			$.each(errors, function( index, value ) {
 				$('#dialog ul').append('<li>' + value + '</li>');
 			});
-		}		
+		}
 	});
 	
 	$('.left .opening-hours .list-hours').on('click', '.fa-plus-circle', function() {
@@ -783,6 +802,11 @@ $(document).ready(function() {
 				data: eventData,
 				beforeSend: function ( xhr ) {
 					xhr.setRequestHeader( 'X-WP-Nonce', POST_SUBMITTER.nonce );
+				},
+				success: function() {
+					var newid = 'cal' + Date.now();
+					$('.monthly').empty().replaceWith('<div class="monthly" id="' + newid + '"></div>');
+					drawCalendar(currentVenue, newid);
 				}
 			});
 		} else {

@@ -345,7 +345,7 @@ function oot_underscore_event() { ?>
 						<i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="time"></i>
 					</label>
 					<label for="event-quantity" class="control-label">
-						<p class="text-info">{{{ data.event_quantity }}}</p>
+						<p class="text-info">{{{ data.event_price }}}</p>
 						<i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="currency"></i>
 					</label>	
 				</div>
@@ -360,7 +360,6 @@ function oot_underscore_event() { ?>
 				<div class="repeat-event-wrapper">
 						<p class="venue-desc-title">Repeat Event?</p>
 						<?php
-							//$test = {{{ data.event_quantity }}};
 							$key = 'field_58ac60bee9d5c';
 							$field = get_field_object($key);
 							if ($field) {
