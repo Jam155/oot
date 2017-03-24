@@ -99,6 +99,11 @@ footer {
 		}
 }
 
+.col-content .event-item .left .frontend-button,
+.col-content .offer-item .left .frontend-button {
+	display: none;
+}
+
 @mixin datepicker-calendar-day() {
 	border: 0px;
 	background: transparent;
@@ -521,7 +526,7 @@ ul.list-hours {
 		color: #a1be3e;
 	}
 	.fa-minus-circle {
-		color: #be1f41;
+		color: $event-primary;
 	}
 }
 
@@ -968,8 +973,181 @@ label[for="venue-website"] .text-info {
     background: #a1be3e !important;
 }
 
-.ui-dialog .ui-dialog-titlebar-close {
+.monthly-day-event {
+    padding-top: 0em !important;
+}
 
+.monthly-day-title-wrap {
+	border: 0px !important;
+    padding-bottom: 20px;
+}
+
+.monthly-day, .monthly-day-blank {
+	box-shadow: none !important;
+}
+
+.monthly-past-day:after {
+	display: none;
+}
+
+.monthly-day-number {
+    text-align: center !important;
+    color: #9a98a7;
+    font-size: 12px;
+    position: relative !important;
+    top: 0 !important;
+    left: 0 !important;
+	margin: 0 auto;
+    line-height: 25px !important;
+}
+
+.monthly-day-title-wrap div {
+    color: #d5d5d5;
+    font-size: 12px;
+    font-size: 12px;
+}
+
+.monthly-reset:after {
+	display: none !important;
+}
+
+.monthly-day-blank {
+	background: #ffffff !important;
+}
+
+.monthly-day-blank > .monthly-day-number:before,
+.monthly-day-blank > .monthly-day-number:after {
+    display: block;
+    padding-top: calc(50% - 0.8em);
+    width: 0;
+    height: 0;
+}
+
+.monthly-day .day-with-event {
+    background: $event-primary;
+    max-width: 20px;
+    height: 20px;
+    color: #ffffff;
+    border-radius: 100px;
+    padding: 4px;
+    line-height: 19px !important;
+}
+
+.monthly-header-title {
+	text-transform: capitalize !important;
+}
+
+.monthly-header-title a:link, .monthly-header-title a:visited {
+    line-height: normal !important;
+    padding: 0 !important;
+	border: 0 !important;
+}
+
+.monthly-header-title a:hover {
+    background: transparent !important;
+    border: 0 !important;
+    color: inherit !important;
+}
+
+.monthly-header-title .monthly-reset {
+    height: auto !important;
+	margin-left: 10px !important;
+}
+
+.monthly-day-pick > .monthly-day-number:after {
+    padding-top: calc(50% - 1.1em);	
+}
+
+.monthly-header-title-date, .monthly-header-title-date:hover {
+    background: #ffffff !important;
+    border: 0px !important;
+    color: #55545c !important;
+    font-weight: 300;
+    font-size: 25px;
+}
+
+.monthly-today .monthly-day-number {
+    background: #ffffff !important;
+    font-weight: bold !important;
+    color: $event-primary !important;
+    line-height: 25px !important;
+    font-size: 17px !important;
+}
+
+.monthly-today .monthly-day-number.day-with-event {
+    background: $event-primary !important;
+    max-width: 20px;
+    height: 20px;
+    color: #ffffff !important;
+    border-radius: 100px;
+    padding: 4px;
+    line-height: 19px !important;
+}
+
+.monthly-event-list {
+    background: rgb(190, 31, 65) !important;
+}
+
+.monthly-event-list-date {
+	top: 0.2em !important;
+}
+
+.monthly-event-list-date {
+    color: #ffffff !important;
+    font-weight: normal !important;
+}
+
+.monthly-event-list .monthly-today .monthly-event-list-date {
+    color: #ffffff !important;
+	font-weight: bold !important;
+}
+
+.monthly-event-list::-webkit-scrollbar-thumb {
+    border-radius: 0 !important;
+}
+
+.monthly-list-item {
+	display: none !important;
+}
+
+.item-has-event {
+    display: block !important;
+}
+
+.monthly-prev:after, .monthly-next:after {
+	margin: 0 !important;
+	top: 35% !important;
+	border-color: #d5d5d5 !important;
+}
+
+.monthly-prev:after {
+	right: inherit !important;
+	left: 0 !important;
+	margin-left: 10px !important;
+}
+
+.monthly-next:after {
+	left: inherit !important;
+	right: 0 !important;
+	margin-right: 10px !important;
+}
+
+.monthly-prev, .monthly-next {
+    width: 6em !important;
+	opacity: 1 !important;
+	color: #d5d5d5;
+	text-decoration: none;
+    line-height: 3.6em;
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+.monthly-prev {
+    padding-left: 10px;
+}
+
+.monthly-next {
+    padding-right: 10px;
 }
 
 @media (max-width: 1293px) {

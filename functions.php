@@ -27,12 +27,14 @@ function oot_load_scripts(){
 	wp_enqueue_script( 'glDatePicker-script', get_template_directory_uri() . '/js/glDatePicker.min.js', array());
 	wp_enqueue_script( 'he-script', get_template_directory_uri() . '/js/he.js', array());
 	wp_enqueue_script( 'moment-script', get_template_directory_uri() . '/js/moment.js', array());
+	wp_enqueue_script( 'monthly-script', get_template_directory_uri() . '/js/monthly.js', array());
 
 	//load styles
 	wp_enqueue_style('oot-style', get_template_directory_uri() . '/css/oot-style.css');
 	wp_enqueue_style('jquery-ui-style', 'https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css');
 	wp_enqueue_style('wickedpicker-style', get_template_directory_uri() . '/css/wickedpicker.min.css');
 	wp_enqueue_style('glDatePicker-style', get_template_directory_uri() . '/css/glDatePicker.flatwhite.css');
+	wp_enqueue_style('monthly-style', get_template_directory_uri() . '/css/monthly.css');
 
 	//Oot Scripts
 	wp_enqueue_script( 'oot-header-script', get_template_directory_uri() . '/js/header.js', array(), null, '');	
@@ -367,7 +369,7 @@ function oot_underscore_event() { ?>
 									<input type="radio" data-value="<?php echo $value; ?>" id="{{{ data.event_random_id }}}<?php echo $value; ?>" name="event" />
 									<label for="{{{ data.event_random_id }}}<?php echo $value; ?>"><span></span><?php echo $value; ?></label>
 							<?php
-								}   
+								}
 							}
 						?>
 					</div>
@@ -377,3 +379,29 @@ function oot_underscore_event() { ?>
 		</div>
     </script>
 <?php }
+
+function my_page_columns($columns)
+{
+    $columns = array(
+        'cb'         => '<input type="checkbox" />',
+        'title'     => 'Last Name',
+        'first'     => 'First Name',
+        'date'        =>    'Date',
+    );
+    return $columns;
+}
+
+function my_custom_columns($column)
+{
+    global $post;
+    
+    if ($column == 'first') {
+        echo 'test';
+    }
+    else {
+         echo '';
+    }
+}
+
+add_action("manage_offer_posts_custom_column", "my_custom_columns");
+add_filter("manage_offer_posts_columns", "my_page_columns");

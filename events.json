@@ -1,0 +1,64 @@
+{
+  "monthly": [
+    {
+      "id": 1,
+      "name": "This is a JSON event",
+      "startdate": "2017-3-23",
+      "enddate": "",
+      "starttime": "",
+      "endtime": "",
+      "color": "",
+      "url": ""
+    },
+    {
+      "id": 2,
+      "name": "This is a JSON event",
+      "startdate": "2017-3-29",
+      "enddate": "",
+      "starttime": "",
+      "endtime": "",
+      "color": "",
+      "url": ""
+    },
+	{
+      "id": 3,
+      "name": "Same day event",
+      "startdate": "2017-3-29",
+      "enddate": "",
+      "starttime": "",
+      "endtime": "",
+      "color": "",
+      "url": ""
+    },
+    {
+      "id": 4,
+      "name": "This is a JSON event",
+      "startdate": "2017-3-23",
+      "enddate": "",
+      "starttime": "",
+      "endtime": "",
+      "color": "",
+      "url": ""
+    },
+    {
+      "id": 5,
+      "name": "This is a JSON event",
+      "startdate": "2017-3-29",
+      "enddate": "",
+      "starttime": "",
+      "endtime": "",
+      "color": "",
+      "url": ""
+    },
+	{
+      "id": 6,
+      "name": "Same day event",
+      "startdate": "2017-3-29",
+      "enddate": "",
+      "starttime": "",
+      "endtime": "",
+      "color": "",
+      "url": ""
+    }
+  ]
+}

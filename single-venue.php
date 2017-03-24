@@ -4,7 +4,7 @@
 	<a href="<?php echo site_url(); ?>" class="dashboard-logo"><img src="<?php echo get_template_directory_uri(); ?>/images/dashboard-logo.png" /></a>
 	<?php if(is_user_logged_in()) { ?>
 		<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
-		<section class="venue-details">
+		<section class="venue-details" data-venue-id="<?php echo get_the_ID(); ?>">
 			<h3 class="col-title">Venue Details</h3>
 			<div class="col-content">
 				<div class="top-box">
@@ -201,11 +201,12 @@
 				if ( $currentoffers ) {
 					foreach ( $currentoffers as $post ) :
 						setup_postdata( $post ); ?>
-						<div class="offer-item">
+						<div class="offer-item" data-offer-id="<?php echo $post->ID; ?>">
 							<div class="left">
-								<?php if (has_post_thumbnail( $post->ID ) ) {
-									echo get_the_post_thumbnail(get_the_ID(), 'full');
-								} else { ?>
+								<button class="frontend-button"><i class="fa fa-camera-retro" aria-hidden="true"></i></button>
+								<?php if (has_post_thumbnail( $post->ID ) ) { ?>
+									<img src="<?php echo the_post_thumbnail_url(); ?>" data-image-id="<?php echo get_post_thumbnail_id( $post_id ); ?>" >
+								<?php } else { ?>
 									<img src="http://localhost/oot/wp-content/themes/oot/images/oot-placeholder-img.png" class="blank-img" data-image-id="">
 								<?php } ?>
 							</div>
@@ -348,23 +349,25 @@
 		<section class="upcoming-events">
 			<h3 class="col-title">Upcoming Events</h3>
 			<div class="col-content">
-				<div id="calendar"></div>
+				<!-- <div id="calendar"></div> -->
+				<div class="monthly" id="monthly-calendar"></div>
 				<?php
-				$currentoffers = get_posts( array(
+				$currentevents = get_posts( array(
 					'posts_per_page' => -1,
 					'post_type' => 'event',
 					'meta_key' => 'venue',
 					'meta_value' => get_the_ID()
 				) );
 				 
-				if ( $currentoffers ) {
-					foreach ( $currentoffers as $post ) :
+				if ( $currentevents ) {
+					foreach ( $currentevents as $post ) :
 						setup_postdata( $post ); ?>
-						<div class="event-item">
+						<div class="event-item" data-event-id="<?php echo $post->ID; ?>">
 							<div class="left">
-								<?php if (has_post_thumbnail( $post->ID ) ) {
-									echo get_the_post_thumbnail(get_the_ID(), 'full');
-								} else { ?>
+								<button class="frontend-button"><i class="fa fa-camera-retro" aria-hidden="true"></i></button>
+								<?php if (has_post_thumbnail( $post->ID ) ) { ?>
+									<img src="<?php echo the_post_thumbnail_url(); ?>" data-image-id="<?php echo get_post_thumbnail_id( $post_id ); ?>" >
+								<?php } else { ?>
 									<img src="http://localhost/oot/wp-content/themes/oot/images/oot-placeholder-img.png" class="blank-img" data-image-id="">
 								<?php } ?>
 							</div>
@@ -410,7 +413,7 @@
 										if ($field) {
 											foreach ($field['choices'] as $key => $value) {
 										?>
-												<input type="radio" id="<?php echo get_the_ID() . $value; ?>" name="event<?php echo get_the_ID(); ?>" <?php if( get_field('repeat_event') == $value ) { echo 'checked'; } ?>/>
+												<input type="radio" id="<?php echo get_the_ID() . $value; ?>" data-value="<?php echo $value; ?>" name="event<?php echo get_the_ID(); ?>" <?php if( get_field('repeat_event') == $value ) { echo 'checked'; } ?>/>
 												<label for="<?php echo get_the_ID() . $value; ?>"><span></span><?php echo $value; ?></label>
 										<?php
 											}                             

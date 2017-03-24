@@ -1,5 +1,15 @@
 $(document).ready(function() {
-
+	
+	$('#monthly-calendar').monthly({
+		weekStart: 'Mon',
+		mode: 'event',
+		stylePast: true,
+		jsonUrl: site_url + '/wp-content/themes/oot/events.json',
+		dataType: 'json',
+		monthNameFormat: 'long',
+		dayNames: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+	});
+	
 	$( function() {
 		$('#dialog').dialog({
 			modal: true,
@@ -7,6 +17,7 @@ $(document).ready(function() {
 		});
 	});
 	
+	/*
 	function drawCalendar() {
 		var events = [];
 		$.getJSON(site_url + '/wp-json/wp/v2/event', function(data) {
@@ -88,6 +99,8 @@ $(document).ready(function() {
 		});
 	}
 	drawCalendar();
+	
+	*/
 
 	$('.venue-description-editor-wrapper').hide();
 	
@@ -157,7 +170,7 @@ $(document).ready(function() {
 						};						
 						$('#attribute').parent().html(amount);
 					}
-					$('#currency-field').remove();
+					$('#attribute').remove();
 				});
 				break;
 			case 'currency':
@@ -309,9 +322,11 @@ $(document).ready(function() {
 		var elem = $(this);
 		var path = '';
 		if(elem.attr('data-offer-id') ) {
-			path = 'offer';	
+			path = 'offer';
+			notpath = 'event';
 		} else if( elem.attr('data-event-id') ) {
-			path = 'event';	
+			path = 'event';
+			notpath = 'offer';
 		}
 	
 		function deleteOffer(elem) {
@@ -356,6 +371,7 @@ $(document).ready(function() {
 		});
 		$('#dialog').dialog('open');
 		$('#dialog').find('ul').empty();
+		$('.ui-dialog').find('.ui-dialog-titlebar').removeClass( 'eventBG offerBG' );
 		$('.ui-dialog').find('.ui-dialog-titlebar').addClass( path + 'BG' );
 		$('#dialog').find('p').text('You are about to delete an offer.');		
 	});
@@ -376,6 +392,7 @@ $(document).ready(function() {
 	}
 	
 	$('.new-offer-save').on('click', function() {
+		var currentVenue = $('.venue-details').attr('data-venue-id');
 		var newOffer = $(this).closest('.offer-item');
 		var offer_title = newOffer.find('label[for="offer-title"]').text();
 		var offer_thumbnail = newOffer.find('img').attr('src');
@@ -409,6 +426,7 @@ $(document).ready(function() {
 			newOffer.find('label[for="offer-time"] .text-info').text('Select offer time');
 			newOffer.find('label[for="offer-quantity"] .text-info').text('Enter redeem amount');
 			newOffer.find('.offer-description .text-info').text('Full Description + T&C');
+			newOffer.find('.left img').attr('src','http://localhost/oot/wp-content/themes/oot/images/oot-placeholder-img.png');
 			
 			newOffer.closest('.accordion-content').toggle();
 			
@@ -425,7 +443,7 @@ $(document).ready(function() {
 					start_time: start,
 					end_time: end,
 					maximum_redeemable: offer_quantity,
-					venue: '57'
+					venue: currentVenue
 				}
 			};
 			
@@ -435,6 +453,9 @@ $(document).ready(function() {
 				data: offerData,
 				beforeSend: function ( xhr ) {
 					xhr.setRequestHeader( 'X-WP-Nonce', POST_SUBMITTER.nonce );
+				},
+				success : function(){
+					console.log(this);
 				}
 			});
 		} else {
@@ -457,6 +478,7 @@ $(document).ready(function() {
 			$('.new-offer-error').dialog('open');
 			$('#dialog').find('p').text('Unable to save offer. The following information is still missing:');
 			$('#dialog').find('ul').empty();
+			$('.ui-dialog').find('.ui-dialog-titlebar').removeClass( 'eventBG' );
 			$('.ui-dialog').find('.ui-dialog-titlebar').addClass('offerBG');
 			$.each(errors, function( index, value ) {
 				$('#dialog ul').append('<li>' + value + '</li>');
@@ -465,6 +487,7 @@ $(document).ready(function() {
 	});
 		
 	$('.new-event-save').on('click', function() {
+		var currentVenue = $('.venue-details').attr('data-venue-id');
 		var newEvent = $(this).closest('.event-item');
 		var event_title = newEvent.find('label[for="event-title"]').text();
 		var event_thumbnail = newEvent.find('img').attr('src');
@@ -475,6 +498,9 @@ $(document).ready(function() {
 		var event_description = newEvent.find('.event-description .text-info').text();
 		var event_repeat = newEvent.find('.event-description input[type="radio"]:checked').attr('data-value');
 		var featured_media = newEvent.find('.left img').attr('data-image-id');
+		var event_random_id = Date.now();
+		var acf_date = new Date(event_date);
+		var acf_date = acf_date.toString('yyyy-MM-dd 00:00:00');
 				
 		if(event_title != 'Event Title' && event_date != 'Select event date' && event_starttime != null && event_endtime != null && event_quantity != 'Enter redeem amount' && event_description != 'Full Description + T&C' && featured_media ) {				
 			var cleanDate = event_date.replace(/\s+/g, '');
@@ -487,11 +513,12 @@ $(document).ready(function() {
 			var data = {
 				event_title: event_title,
 				event_thumbnail: event_thumbnail,
-				event_date: event_date,
+				event_date: acf_date,
 				event_starttime: event_starttime,
 				event_endtime: event_endtime,
 				event_quantity: event_quantity,
-				event_description: event_description
+				event_description: event_description,
+				event_random_id: event_random_id
 			}
 			
 			newEvent.find('label[for="event-title"] .text-info').text('Event Title');
@@ -499,11 +526,13 @@ $(document).ready(function() {
 			newEvent.find('label[for="event-time"] .text-info').text('Select event time');
 			newEvent.find('label[for="event-quantity"] .text-info').text('Enter redeem amount');
 			newEvent.find('.event-description .text-info').text('Full Description + T&C');
+			newEvent.find('.left img').attr('src','http://localhost/oot/wp-content/themes/oot/images/oot-placeholder-img.png');
 			
 			newEvent.closest('.accordion-content').toggle();
-			
+						
 			var post_template = wp.template( 'oot-event' );
-			$('.current-events .col-content').append( post_template( data ) );
+			$('.upcoming-events .col-content').append( post_template( data ) );
+			$( '#event-' + event_random_id ).find('#' + event_random_id + event_repeat).prop('checked', true);
 			
 			var eventData = {
 				status: 'publish',
@@ -515,7 +544,8 @@ $(document).ready(function() {
 					start_time: start,
 					end_time: end,
 					maximum_redeemable: event_quantity,
-					venue: '57'
+					repeat_event: event_repeat,
+					venue: currentVenue
 				}
 			};
 			
@@ -546,143 +576,13 @@ $(document).ready(function() {
 			});
 			$('.new-event-error').dialog('open');
 			$('#dialog').find('p').text('Unable to save event. The following information is still missing:');
+			$('.ui-dialog').find('.ui-dialog-titlebar').removeClass( 'offerBG' );
 			$('.ui-dialog').find('.ui-dialog-titlebar').addClass('eventBG');
 			$('#dialog').find('ul').empty();
 			$.each(errors, function( index, value ) {
 				$('#dialog ul').append('<li>' + value + '</li>');
 			});
-		}	
-
-
-
-
-		
-	});
-	
-	$('.current-offers').on('click', '.offer-item .editoffer', function() {
-		$(this).hide();
-		var thisOffer = $(this).closest('.offer-item');
-		thisOffer.find('.offer-details .edit').show();
-		thisOffer.find('label[for="offer-title"] .edit').show();
-		if( thisOffer.find('.offer-description').hasClass('visible') ) {
-			thisOffer.find('.offer-description').removeClass('visible');
-		} else {
-			thisOffer.find('.offer-description').removeClass('visible');
-			thisOffer.find('.offer-description').addClass('visible');
-		}
-	});
-	
-	// UPDATE Existing offer Post
-	$('.current-offers').on('click', '.offer-item .offer-description .save', function() {
-		var thisOffer = $(this).closest('.offer-item');
-		var newOffer = $(this).closest('.offer-item');
-		var offerID = $(this).closest('.offer-item').attr('data-offer-id');
-		var offer_title = thisOffer.find('label[for="offer-title"]').text();
-		var offer_thumbnail = thisOffer.find('img').attr('src');
-		var offer_date = thisOffer.find('label[for="offer-date"]').text();
-		var offer_starttime = thisOffer.find('label[for="offer-time"] .starttime').text();
-		var offer_endtime = thisOffer.find('label[for="offer-time"] .endtime').text();
-		var offer_quantity = thisOffer.find('label[for="offer-quantity"]').text();
-		var offer_description = thisOffer.find('.offer-description .text-info').text();
-		var featured_media = thisOffer.find('.left img').attr('data-image-id');
-		
-		if(offer_title != 'Offer Title' && offer_date != 'Select offer date' && offer_starttime != null && offer_endtime != null && offer_quantity != 'Enter redeem amount' && offer_description != 'Full Description + T&C' && featured_media ) {				
-			var cleanDate = offer_date.replace(/\s+/g, '');
-			cleanDate = cleanDate.split('/');
-			cleanDate = cleanDate[2] + '-' + cleanDate[1] + '-' + cleanDate[0];
-
-			var start = ConvertTimeformat("24", offer_starttime);
-			var end = ConvertTimeformat("24", offer_endtime);
-			
-			var data = {
-				offer_title: offer_title,
-				offer_thumbnail: offer_thumbnail,
-				offer_date: offer_date,
-				offer_starttime: offer_starttime,
-				offer_endtime: offer_endtime,
-				offer_quantity: offer_quantity,
-				offer_description: offer_description
-			}
-			
-			thisOffer.find('label[for="offer-title"] .text-info').text('Offer Title');
-			thisOffer.find('label[for="offer-date"] .text-info').text('Select offer date');
-			thisOffer.find('label[for="offer-time"] .text-info').text('Select offer time');
-			thisOffer.find('label[for="offer-quantity"] .text-info').text('Enter redeem amount');
-			thisOffer.find('.offer-description .text-info').text('Full Description + T&C');
-			
-			thisOffer.closest('.accordion-content').toggle();
-			
-			var post_template = wp.template( 'oot-offer' );
-			$('.current-offers .col-content').append( post_template( data ) );
-			
-			var offerData = {
-				status: 'publish',
-				featured_media: featured_media,
-				title: offer_title,
-				content: offer_description,
-				acf_fields: {
-					date: cleanDate,
-					start_time: start,
-					end_time: end,
-					maximum_redeemable: offer_quantity,
-					venue: '57'
-				}
-			};
-			
-			$.ajax({
-				method: "PUT",
-				url: POST_SUBMITTER.root + 'wp/v2/offer/',
-				data: offerData,
-				beforeSend: function ( xhr ) {
-					xhr.setRequestHeader( 'X-WP-Nonce', POST_SUBMITTER.nonce );
-				}
-			});
-		} else {
-			var errors = [];
-			if( offer_title && offer_title.indexOf('Offer Title') > -1) { errors.push('Title') }
-			if( offer_date && offer_date.indexOf('Select offer date') > -1) { errors.push('Date') }
-			if( !offer_starttime && !offer_endtime) { errors.push('Start & End Time') }
-			if( offer_quantity && offer_quantity.indexOf('Enter redeem amount') > -1) { errors.push('Quantity Redeemable') }
-			if( offer_description && offer_description.indexOf('Full Description + T&C') > -1) { errors.push('An Offer Description') }
-			if( !featured_media ) { errors.push('An Image') }
-			
-			$('#dialog').dialog({
-				title: 'Error',
-				buttons: {
-					Ok: function() {
-						$( this ).dialog( "close" );
-					}
-				}
-			});
-			$('.new-offer-error').dialog('open');
-			$('#dialog').find('p').text('Unable to save offer. The following information is still missing:');
-			$('#dialog').find('ul').empty();
-			$.each(errors, function( index, value ) {
-				$('#dialog ul').append('<li>' + value + '</li>');
-			});
-			$('.new-offer-error').find('p ul').append('Errors lol?');
 		}		
-		
-		thisOffer.find('.editoffer').show();
-		thisOffer.find('.offer-details .edit').hide();
-		$('.current-offers .col-content label[for="offer-title"] .edit').hide();
-		if( thisOffer.find('.offer-description').hasClass('visible') ) {
-			thisOffer.find('.offer-description').removeClass('visible');
-		} else {
-			thisOffer.find('.offer-description').removeClass('visible');
-			thisOffer.find('.offer-description').addClass('visible');
-		}
-	});
-	
-	$('.left .opening-hours .list-hours').on('click', '.fa-minus-circle', function() {
-		$(this).parent().children('li').last().remove();
-		if( $(this).parent().children('li').length == 1 ) {
-			$(this).hide();
-		}
-		
-		$('.timepickerstart, .timepickerend').focus(function() {
-			$('.wickedpicker').css({'display': 'none'});
-		});
 	});
 	
 	$('.left .opening-hours .list-hours').on('click', '.fa-plus-circle', function() {
@@ -715,10 +615,117 @@ $(document).ready(function() {
 		$('.left .opening-hours .list-hours .fa-plus-circle').hide();
 	});
 	
+	$('.current-offers').on('click', '.offer-item .editoffer', function() {
+		$(this).hide();
+		var thisOffer = $(this).closest('.offer-item');
+		thisOffer.find('.left .frontend-button').show();
+		thisOffer.find('.offer-details .edit').show();
+		thisOffer.find('label[for="offer-title"] .edit').show();
+		if( thisOffer.find('.offer-description').hasClass('visible') ) {
+			thisOffer.find('.offer-description').removeClass('visible');
+		} else {
+			thisOffer.find('.offer-description').removeClass('visible');
+			thisOffer.find('.offer-description').addClass('visible');
+		}
+	});
+	
+	// UPDATE Existing Offer
+	$('.col-content').on('click', '.offer-item .offer-description .save', function() {
+		var currentVenue = $('.venue-details').attr('data-venue-id');
+		var thisOffer = $(this).closest('.offer-item');
+		var offerID = $(this).closest('.offer-item').attr('data-offer-id');
+		var offer_title = thisOffer.find('label[for="offer-title"]').text();
+		var offer_thumbnail = thisOffer.find('img').attr('src');
+		var offer_date = thisOffer.find('label[for="offer-date"]').text();
+		var offer_starttime = thisOffer.find('label[for="offer-time"] .starttime').text();
+		var offer_endtime = thisOffer.find('label[for="offer-time"] .endtime').text();
+		var offer_quantity = thisOffer.find('label[for="offer-quantity"]').text();
+		var offer_description = thisOffer.find('.offer-description .text-info').text();
+		var featured_media = thisOffer.find('.left img').attr('data-image-id');
+		
+		if(offer_title != 'Offer Title' && offer_date != 'Select offer date' && offer_starttime != null && offer_endtime != null && offer_quantity != 'Enter redeem amount' && offer_description != 'Full Description + T&C' && featured_media ) {				
+			var cleanDate = offer_date.replace(/\s+/g, '');
+			cleanDate = cleanDate.split('/');
+			cleanDate = cleanDate[2] + '-' + cleanDate[1] + '-' + cleanDate[0];
+
+			var start = ConvertTimeformat("24", offer_starttime);
+			var end = ConvertTimeformat("24", offer_endtime);
+
+			var offerData = {
+				status: 'publish',
+				featured_media: featured_media,
+				title: offer_title,
+				content: offer_description,
+				acf_fields: {
+					date: cleanDate,
+					start_time: start,
+					end_time: end,
+					maximum_redeemable: offer_quantity,
+					venue: currentVenue
+				}
+			};
+			
+			$.ajax({
+				method: "PUT",
+				url: POST_SUBMITTER.root + 'wp/v2/offer/' + offerID,
+				data: offerData,
+				beforeSend: function ( xhr ) {
+					xhr.setRequestHeader( 'X-WP-Nonce', POST_SUBMITTER.nonce );
+				}
+			});
+		} else {
+			var errors = [];
+			if( offer_title && offer_title.indexOf('Offer Title') > -1) { errors.push('Title') }
+			if( offer_date && offer_date.indexOf('Select offer date') > -1) { errors.push('Date') }
+			if( !offer_starttime && !offer_endtime) { errors.push('Start & End Time') }
+			if( offer_quantity && offer_quantity.indexOf('Enter redeem amount') > -1) { errors.push('Quantity Redeemable') }
+			if( offer_description && offer_description.indexOf('Full Description + T&C') > -1) { errors.push('An Offer Description') }
+			if( !featured_media ) { errors.push('An Image') }
+			
+			$('#dialog').dialog({
+				title: 'Error',
+				buttons: {
+					Ok: function() {
+						$( this ).dialog( "close" );
+					}
+				}
+			});
+			$('.new-offer-error').dialog('open');
+			$('#dialog').find('p').text('Unable to save offer. The following information is still missing:');
+			$('#dialog').find('ul').empty();
+			$.each(errors, function( index, value ) {
+				$('#dialog ul').append('<li>' + value + '</li>');
+			});
+		}		
+		
+		thisOffer.find('.left .frontend-button').hide();
+		thisOffer.find('.editoffer').show();
+		thisOffer.find('.offer-details .edit').hide();
+		$('.current-offers .col-content label[for="offer-title"] .edit').hide();
+		if( thisOffer.find('.offer-description').hasClass('visible') ) {
+			thisOffer.find('.offer-description').removeClass('visible');
+		} else {
+			thisOffer.find('.offer-description').removeClass('visible');
+			thisOffer.find('.offer-description').addClass('visible');
+		}
+	});
+	
+	$('.left .opening-hours .list-hours').on('click', '.fa-minus-circle', function() {
+		$(this).parent().children('li').last().remove();
+		if( $(this).parent().children('li').length == 1 ) {
+			$(this).hide();
+		}
+		
+		$('.timepickerstart, .timepickerend').focus(function() {
+			$('.wickedpicker').css({'display': 'none'});
+		});
+	});	
+	
 	$('.upcoming-events').on('click', '.event-item .editevent', function() {
 		$(this).hide();
 		var thisEvent = $(this).closest('.event-item');
 		thisEvent.find('.event-details .edit').show();
+		thisEvent.find('.left .frontend-button').show();
 		thisEvent.find('label[for="event-title"] .edit').show();
 		if( thisEvent.find('.event-description').hasClass('visible') ) {
 			thisEvent.find('.event-description').removeClass('visible');
@@ -728,11 +735,85 @@ $(document).ready(function() {
 		}
 	});
 	
-	$('.upcoming-events').on('click', '.event-item .event-description .save', function() {
+	// UPDATE Existing Event
+	$('.col-content').on('click', '.event-item .event-description .save', function() {
+		var currentVenue = $('.venue-details').attr('data-venue-id');
 		var thisEvent = $(this).closest('.event-item');
+		var eventID = $(this).closest('.event-item').attr('data-event-id');
+		var event_title = thisEvent.find('label[for="event-title"]').text();
+		var event_thumbnail = thisEvent.find('img').attr('src');
+		var event_date = thisEvent.find('label[for="event-date"]').text();
+		var event_starttime = thisEvent.find('label[for="event-time"] .starttime').text();
+		var event_endtime = thisEvent.find('label[for="event-time"] .endtime').text();
+		var event_price = thisEvent.find('label[for="event-quantity"]').text();
+		var event_price_num = event_price.replace(/[^\d\.]/g, '');
+		var event_description = thisEvent.find('.event-description .text-info').text();
+		var event_repeat = thisEvent.find('.event-description input[type="radio"]:checked').attr('data-value');
+		console.log(event_repeat);
+		//event_repeat = event_repeat.toLowerCase();
+		console.log(event_repeat);
+		var featured_media = thisEvent.find('.left img').attr('data-image-id');
+		
+		if(event_title != 'Event Title' && event_date != 'Select event date' && event_starttime != null && event_endtime != null && event_price != 'Enter redeem amount' && event_description != 'Full Description + T&C' && featured_media ) {				
+			var cleanDate = event_date.replace(/\s+/g, '');
+			cleanDate = cleanDate.split('/');
+			cleanDate = cleanDate[2] + '-' + cleanDate[1] + '-' + cleanDate[0];
+
+			var start = ConvertTimeformat("24", event_starttime);
+			var end = ConvertTimeformat("24", event_endtime);
+
+			var eventData = {
+				status: 'publish',
+				featured_media: featured_media,
+				title: event_title,
+				content: event_description,
+				acf_fields: {
+					date: cleanDate,
+					start_time: start,
+					end_time: end,
+					ticket_price: event_price_num,
+					repeat_event: event_repeat,
+					venue: currentVenue
+				}
+			};
+			
+			$.ajax({
+				method: "PUT",
+				url: POST_SUBMITTER.root + 'wp/v2/event/' + eventID,
+				data: eventData,
+				beforeSend: function ( xhr ) {
+					xhr.setRequestHeader( 'X-WP-Nonce', POST_SUBMITTER.nonce );
+				}
+			});
+		} else {
+			var errors = [];
+			if( event_title && event_title.indexOf('Event Title') > -1) { errors.push('Title') }
+			if( event_date && event_date.indexOf('Select event date') > -1) { errors.push('Date') }
+			if( !event_starttime && !event_endtime) { errors.push('Start & End Time') }
+			if( event_price && event_price.indexOf('Enter redeem amount') > -1) { errors.push('Quantity Redeemable') }
+			if( event_description && event_description.indexOf('Full Description + T&C') > -1) { errors.push('An Event Description') }
+			if( !featured_media ) { errors.push('An Image') }
+			
+			$('#dialog').dialog({
+				title: 'Error',
+				buttons: {
+					Ok: function() {
+						$( this ).dialog( "close" );
+					}
+				}
+			});
+			$('.new-event-error').dialog('open');
+			$('#dialog').find('p').text('Unable to save event. The following information is still missing:');
+			$('#dialog').find('ul').empty();
+			$.each(errors, function( index, value ) {
+				$('#dialog ul').append('<li>' + value + '</li>');
+			});
+		}		
+		
+		thisEvent.find('.left .frontend-button').hide();
 		thisEvent.find('.editevent').show();
 		thisEvent.find('.event-details .edit').hide();
-		thisEvent.find('label[for="event-title"] .edit').hide();
+		$('.upcoming-events .col-content label[for="event-title"] .edit').hide();
 		if( thisEvent.find('.event-description').hasClass('visible') ) {
 			thisEvent.find('.event-description').removeClass('visible');
 		} else {
