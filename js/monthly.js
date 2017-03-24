@@ -262,13 +262,12 @@ Monthly 2.2.0 by Kevin Thornbloom is licensed under a Creative Commons Attributi
 					+ attr("title", eventTitle)
 					// BG and FG colors must match for left box shadow to create seamless link between dates
 					+ (eventColor ? attr("style", "background:" + eventColor + ";color:" + eventColor) : ""),
-				markupListEvent = "<a"
-					+ attr("href", eventURL)
+				markupListEvent = "<div"
 					+ attr("class", "listed-event" + customClass)
 					+ attr("data-eventid", eventId)
 					+ (eventColor ? attr("style", "background:" + eventColor) : "")
 					+ attr("title", eventTitle)
-					+ ">" + eventTitle + " " + timeHtml + "</a>";
+					+ ">" + eventTitle + " " + timeHtml + "</div>";
 			for(var index = startDayNumber; index <= endDayNumber; index++) {
 				var doShowTitle = index === showEventTitleOnDay;
 				// Add to calendar view
@@ -435,7 +434,7 @@ Monthly 2.2.0 by Kevin Thornbloom is licensed under a Creative Commons Attributi
 				$(parent + " .monthly-cal").remove();
 			}
 		}
-
+		
 		// Advance months
 		$(document.body).on("click", parent + " .monthly-next", function (event) {
 			$(parent + " .monthly-cal").remove();
@@ -480,7 +479,6 @@ Monthly 2.2.0 by Kevin Thornbloom is licensed under a Creative Commons Attributi
 		// Click A Day
 		$(document.body).on("click touchstart", parent + " .monthly-day", function (event) {
 			if($(this).find('.day-with-event').length > 0 ) {
-				console.log('has event');
 			// If events, show events list
 			var whichDay = $(this).data("number");
 			if(options.mode === "event" && options.eventList) {

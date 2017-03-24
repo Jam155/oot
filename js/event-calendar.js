@@ -238,8 +238,6 @@ $(document).ready(function() {
 			case 'time':
 				var startTime = $(this).siblings('.text-info').find('.starttime').text();
 				var endTime = $(this).siblings('.text-info').find('.endtime').text();
-				console.log(startTime);
-				console.log(endTime);
 				var thisFieldWrapper = $(this).closest('.control-label');
 				var fieldMod;
 				var randID = Date.now();
@@ -264,7 +262,6 @@ $(document).ready(function() {
 								text = '<span class="starttime">' + startTime + '</span> - <span class="endtime">' + endTime + '</span>';
 								$('#' + fieldMod + '-submission-start' + randID).closest('.text-info').html(text);
 							} else {
-								console.log('time new');
 								$('#' + fieldMod + '-submission-start' + randID).closest('.text-info').text('Select ' + fieldMod + ' time');
 							}
 						} else {
@@ -340,15 +337,10 @@ $(document).ready(function() {
 			if( !!useElem.attr('data-offer-id') ) {
 				post_id = useElem.attr('data-offer-id');
 				path = 'offer';
-				console.log(path);
 			} else if( !!useElem.attr('data-event-id') ) {
 				post_id = useElem.attr('data-event-id');
 				path = 'event';
-				console.log(path);
-			}
-			
-			console.log(path);
-			
+			}			
 			useElem.closest('.'+ path + '-item').remove();
 			$.ajax({
 				method: "DELETE",
@@ -768,9 +760,6 @@ $(document).ready(function() {
 		var event_price_num = event_price.replace(/[^\d\.]/g, '');
 		var event_description = thisEvent.find('.event-description .text-info').text();
 		var event_repeat = thisEvent.find('.event-description input[type="radio"]:checked').attr('data-value');
-		console.log(event_repeat);
-		//event_repeat = event_repeat.toLowerCase();
-		console.log(event_repeat);
 		var featured_media = thisEvent.find('.left img').attr('data-image-id');
 		
 		if(event_title != 'Event Title' && event_date != 'Select event date' && event_starttime != null && event_endtime != null && event_price != 'Enter redeem amount' && event_description != 'Full Description + T&C' && featured_media ) {				
@@ -946,6 +935,24 @@ $(document).ready(function() {
 		}
 		
 		var finalVenuData = {
+			status: 'publish',
+			featured_media: featured_media,
+			title: name,
+			content: description,
+			acf_fields: {
+				website: website,
+				phone: phone,
+				address_1: end,
+				address_2: offer_quantity,
+				city: currentVenue,
+				post_code: post_code,
+				twitter: twitter,
+				facebook: facebook
+			}
+		};
+		
+		/* DATA TO MATCH REST API ENDPOINT
+		var finalVenuData = {
 			post_id: post_id,
 			name: name,
 			description: description,
@@ -969,6 +976,7 @@ $(document).ready(function() {
 				facebook: facebook
 			}
 		};
+		*/
 		
 		console.log(finalVenuData);
 
