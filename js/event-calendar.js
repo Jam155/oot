@@ -279,13 +279,13 @@ $(document).ready(function() {
 				input.select();
 				break;
 			case 'hours':
-				$('.savehours').show();	
+				$('.savehours').show();
 				$('.left .opening-hours li span.opentime').each(function() {
-					$(this).replaceWith( '<input name="acf_fields[start_time]" id="venu-open" class="timepickerstart">' );
+					$(this).replaceWith( '<input name="acf_fields[opening_hours][' + i + '][open]" id="venu-open" class="timepickerstart">' );
 					startTimePicker('timepickerstart', moment($(this).text(), ["h:mm A"]).format("HH:mm") );
 				});
 				$('.left .opening-hours li span.closetime').each(function() {
-					$(this).replaceWith( '<input name="acf_fields[end_time]" id="venu-close" class="timepickerend">' );
+					$(this).replaceWith( '<input name="acf_fields[opening_hours][' + j + '][open]" id="venu-close" class="timepickerend">' );
 					startTimePicker('timepickerend', moment($(this).text(), ["h:mm A"]).format("HH:mm") );
 				});
 				$('.left .opening-hours .list-hours').each(function() {
@@ -370,7 +370,7 @@ $(document).ready(function() {
 		});
 		$('#dialog').dialog('open');
 		$('#dialog').find('ul').empty();
-		$('.ui-dialog').find('.ui-dialog-titlebar').removeClass( 'eventBG offerBG' );
+		$('.ui-dialog').find('.ui-dialog-titlebar').removeClass( 'eventBG offerBG, venueBG' );
 		$('.ui-dialog').find('.ui-dialog-titlebar').addClass( path + 'BG' );
 		$('#dialog').find('p').text('You are about to delete an offer.');		
 	});
@@ -478,7 +478,7 @@ $(document).ready(function() {
 			$('.new-offer-error').dialog('open');
 			$('#dialog').find('p').text('Unable to save offer. The following information is still missing:');
 			$('#dialog').find('ul').empty();
-			$('.ui-dialog').find('.ui-dialog-titlebar').removeClass( 'eventBG' );
+			$('.ui-dialog').find('.ui-dialog-titlebar').removeClass( 'eventBG offerBG, venueBG' );
 			$('.ui-dialog').find('.ui-dialog-titlebar').addClass('offerBG');
 			$.each(errors, function( index, value ) {
 				$('#dialog ul').append('<li>' + value + '</li>');
@@ -587,7 +587,7 @@ $(document).ready(function() {
 			});
 			$('.new-event-error').dialog('open');
 			$('#dialog').find('p').text('Unable to save event. The following information is still missing:');
-			$('.ui-dialog').find('.ui-dialog-titlebar').removeClass( 'offerBG' );
+			$('.ui-dialog').find('.ui-dialog-titlebar').removeClass( 'eventBG offerBG, venueBG' );
 			$('.ui-dialog').find('.ui-dialog-titlebar').addClass('eventBG');
 			$('#dialog').find('ul').empty();
 			$.each(errors, function( index, value ) {
@@ -597,7 +597,7 @@ $(document).ready(function() {
 	});
 	
 	$('.left .opening-hours .list-hours').on('click', '.fa-plus-circle', function() {
-		$('<li><input name="acf_fields[start_time]" id="venu-open" class="timepickerstart"> - <input name="acf_fields[start_time]" id="venu-close" class="timepickerend"></li>').insertAfter($(this).parent().children('li').last());
+		$('<li><input name="acf_fields[open]" id="venu-open" class="timepickerstart"> - <input name="acf_fields[close]" id="venu-close" class="timepickerend"></li>').insertAfter($(this).parent().children('li').last());
 		startTimePicker('timepickerstart', '00:00' );
 		startTimePicker('timepickerend', '00:00' );
 		if( $(this).parent().children('li').length > 1 ) {
@@ -840,8 +840,11 @@ $(document).ready(function() {
 	});
 	
 	$('.tag-result').on('click', '.result-tag', function() {
+		$.getJSON(site_url + '/wp-json/wp/v2/tags', function(data) {
+			console.log( data );
+		});
 		$('.tag-search-field').val("");
-		$('.venue-active-tags').append( '<span class="venue-tag" data-tag="' + $(this).text() + '">' + $(this).text() + '<i class="fa fa-close del" aria-hidden="true"></i></span>' );
+		$('.venue-active-tags').append( '<span class="venue-tag" data-tag-id="" data-tag="' + $(this).text() + '">' + $(this).text() + '<i class="fa fa-close del" aria-hidden="true"></i></span>' );
 		$(this).remove();
 	});
 	
@@ -882,7 +885,7 @@ $(document).ready(function() {
 		var post_code = $("label[for='venue-post-code'] .text-info").text();
 		var city = $("label[for='venue-city'] .text-info").text();
 		var phone = $("label[for='venue-phone'] .text-info").text();
-		var website = $("label[for='venue-website'] .text-info").text();
+		var website = $("label[for='venue-website'] .text-info").attr('data-orig-url');
 		var twitter = $("label[for='venue-twitter'] .text-info").text();
 		var facebook = $("label[for='venue-facebook'] .text-info").text();
 		var description = $(".venue-details .text-info-wrapper .text-info").text();
@@ -890,6 +893,8 @@ $(document).ready(function() {
 		var catname = $(".cat-select select").find(":selected").text();
 		var openinghours = getOpeningHours();
 		var tags = getTags();
+		var tagIDs = getTagIDs();
+		console.log(tagIDs);
 		
 		if(venue_image.indexOf("150x150") > -1) {
 		   //console.log( "image hasn't changed" );
@@ -905,6 +910,14 @@ $(document).ready(function() {
 			return tagsArray;
 		}
 		
+		function getTagIDs() {
+			var tagsArray = [];
+			$( ".venue-active-tags .venue-tag" ).each(function() {
+				tagsArray.push( $(this).attr('data-tag-id') );
+			});
+			return tagsArray;
+		}
+		
 		function makeSlug(str) {
 			var makeSlug = '';
 			var trimmed = $.trim(str);
@@ -915,6 +928,7 @@ $(document).ready(function() {
 		}
 		var slug = makeSlug(name);
 		
+		// Generate opening hours
 		function getOpeningHours() {
 			var weekDays = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday'];
 			var dayObject = [];
@@ -925,6 +939,8 @@ $(document).ready(function() {
 				$(this).children('td').children('ul').children('li').each(function() {
 					var open_t = $(this).children('span.opentime').text();
 					var close_t = $(this).children('span.closetime').text();
+					//open_t = moment(open_t, ["h:mm A"]).format("HH:mm:ss");
+					//close_t = moment(close_t, ["h:mm A"]).format("HH:mm:ss");
 					times.push({ open: open_t, close: close_t });
 				});
 				dayObject[weekDays[index]] = times;
@@ -936,21 +952,25 @@ $(document).ready(function() {
 		
 		var finalVenuData = {
 			status: 'publish',
-			featured_media: featured_media,
 			title: name,
 			content: description,
+			categories: term_id,
+			tags: '6',
 			acf_fields: {
 				website: website,
 				phone: phone,
-				address_1: end,
-				address_2: offer_quantity,
-				city: currentVenue,
+				address_1: address_1,
+				address_2: address_2,
+				city: city,
 				post_code: post_code,
 				twitter: twitter,
-				facebook: facebook
-			}
+				facebook: facebook,
+				opening_hours: openinghours
+			}			
 		};
 		
+		console.log(finalVenuData);
+				
 		/* DATA TO MATCH REST API ENDPOINT
 		var finalVenuData = {
 			post_id: post_id,
@@ -983,7 +1003,6 @@ $(document).ready(function() {
 		var valid = 'true';
 		
 		if(valid) {
-			/*
 			$.ajax({
 				method: "PUT",
 				url: POST_SUBMITTER.root + 'wp/v2/venue/' + post_id,
@@ -993,16 +1012,25 @@ $(document).ready(function() {
 				},
 				success : function( response ) {
 					console.log( response );
-					alert( POST_SUBMITTER.success );
+					$('#dialog').dialog({
+						title: 'Venue Saved',
+						buttons: {
+							ok: function() {
+								$( this ).dialog( "close" );
+							}
+						}
+					});
+					$('#dialog').find('p').text(name + ' has been saved. Click ok to continue editing.');
+					$('#dialog').find('ul').empty();
+					$('.ui-dialog').find('.ui-dialog-titlebar').removeClass( 'eventBG, offerBG, venueBG' );
+					$('.ui-dialog').find('.ui-dialog-titlebar').addClass('venueBG');
+					//alert( POST_SUBMITTER.success );
 				},
 				fail : function( response ) {
 					console.log( response );
 					alert( POST_SUBMITTER.failure );
 				}
-			});
-			
-			*/
-			
+			});			
 		}
 	});
 });

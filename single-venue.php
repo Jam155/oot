@@ -176,7 +176,7 @@
 						$posttags = get_the_tags();
 						if ($posttags) {
 							foreach($posttags as $tag) {
-								echo '<span class="venue-tag" data-tag="' . $tag->name. '">' . $tag->name . '<i class="fa fa-close del" aria-hidden="true"></i></span>'; 
+								echo '<span class="venue-tag" data-tag-id="' . $tag->term_id . '" data-tag="' . $tag->name. '">' . $tag->name . '<i class="fa fa-close del" aria-hidden="true"></i></span>'; 
 							}
 						}
 					?>
