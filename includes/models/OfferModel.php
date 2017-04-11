@@ -12,6 +12,7 @@
 				"end_time" => "end_time",
 				"date" => "date",
 				"maximum_redeemable" => "redeemable",
+				"venue_search" => "venue_search"
 
 			);
 
@@ -23,6 +24,7 @@
 				"meta.end_time" => "end_time",
 				"meta.date" => "date",
 				"meta.redeemable" => "redeemable",
+				"meta.venue_search" => "in_search",
 
 			);
 
