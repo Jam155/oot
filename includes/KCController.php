@@ -25,11 +25,17 @@
 
 		}
 
+		protected function hav($delta) {
+
+			return (1 - cos($delta)) / 2;
+
+		}
+
 		public function get_item($request) {
 
 			$id = $request['id'];
-			$item = $this->model->getItem($id);
 
+			$item = $this->model->getItem($id);
 			$item = $this->restructure($item);
 
 			$response = rest_ensure_response($item);
@@ -40,6 +46,9 @@
 		public function get_items($request) {
 
 			$items = $this->model->getItems();
+
+			$longitude = $request->get_param("longitude");
+			$latitude = $request->get_param("latitude");
 
 			foreach($items as $item) {
 
