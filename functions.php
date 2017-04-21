@@ -238,6 +238,28 @@ function create_post_type() {
 	);
 }
 
+add_action('init', 'create_custom_taxonomies');
+function create_custom_taxonomies() {
+
+	register_taxonomy('venue_type', 'venue', array(
+
+		'hierarchical' => false,
+		'labels' => array(
+
+			'name' => 'Venue Types',
+			'singular_name' => 'Venue Type',
+			'search_items' => 'Search Venue Types',
+			'all_items' => 'All Venue Types',
+			'edit_item' => 'Edit Type',
+
+		),
+		'rewrite' => array(
+			'slug' => 'venue_type',
+		),
+	));
+
+}
+
 function oot_dashicons() {
    echo "<style type='text/css' media='screen'>
 			.menu-icon-event div.wp-menu-image:before {

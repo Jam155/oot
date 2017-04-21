@@ -10,6 +10,42 @@
 
 		}
 
+		public function register_routes() {
+
+			parent::register_routes();
+
+			register_rest_route($this->namespace, '/' . $this->rest_base . '/(?P<id>[\d]+)/redeem', array(
+
+				'args' => array(
+
+					'id' => array(
+
+						'description' => __('The Offer ID'),
+						'type' => 'integer',
+
+					),
+
+				),
+				array(
+
+					'methods'		=> WP_REST_Server::READABLE,
+					'callback'		=> array($this, 'redeem_offer'),
+					'permission_callback'	=> array($this, 'get_item_permissions_check'),
+					'args'			=> $get_item_args,
+				),
+
+			));
+
+		}
+
+		public function redeem_offer($request) {
+
+			$response = $this->model->redeem($request['id']);
+			$response = rest_ensure_response($response);
+			return $response;
+
+		}
+
 	}
 
 	require_once('models/OfferModel.php');
