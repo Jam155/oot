@@ -11,7 +11,12 @@
 					<div class="left">
 						<div class="venue-img">
 							<button class="frontend-button"><i class="fa fa-camera-retro" aria-hidden="true"></i></button>
-							<?php echo get_the_post_thumbnail(get_the_ID(), 'thumbnail', array( 'data-image-id' => '' )); ?>
+							<?php if ( has_post_thumbnail() ) {
+								echo get_the_post_thumbnail(get_the_ID(), 'thumbnail', array( 'data-image-id' => $post->ID ));
+							} else { ?>						
+								<img width="104" height="104" src="http://localhost/oot/wp-content/themes/oot/images/oot-placeholder-img.png" class="blank-img" data-image-id="">
+							<?php } ?>
+							
 						</div>
 					</div>
 					<div class="right">					
@@ -40,7 +45,13 @@
 											<th>M</th>
 											<td>
 												<ul class="list-hours">
-													<?php while( have_rows('monday') ): the_row(); ?><li><span class="opentime"><?php the_sub_field('open'); ?></span> - <span class="closetime"><?php the_sub_field('close'); ?></li><?php endwhile; ?></span>
+													<?php while( have_rows('monday') ): the_row(); ?>
+														<?php if( get_sub_field('open') && get_sub_field('close') ) { ?>
+															<li><span class="opentime"><?php the_sub_field('open'); ?></span> - <span class="closetime"><?php the_sub_field('close'); ?></li>
+														<?php } else { ?>
+															<li class="closed-day">Closed</li>
+														<?php } ?>
+													<?php endwhile; ?></span>
 													<i class="fa fa-minus-circle" aria-hidden="true"></i></a><i class="fa fa-plus-circle" aria-hidden="true"></i>
 												</ul>
 											</td>
@@ -49,7 +60,13 @@
 											<th>T</th>
 											<td>
 												<ul class="list-hours">
-													<?php while( have_rows('tuesday') ): the_row(); ?><li><span class="opentime"><?php the_sub_field('open'); ?></span> - <span class="closetime"><?php the_sub_field('close'); ?></li><?php endwhile; ?></span>
+													<?php while( have_rows('tuesday') ): the_row(); ?>
+														<?php if( get_sub_field('open') && get_sub_field('close') ) { ?>
+															<li><span class="opentime"><?php the_sub_field('open'); ?></span> - <span class="closetime"><?php the_sub_field('close'); ?></li>
+														<?php } else { ?>
+															<li class="closed-day">Closed</li>
+														<?php } ?>
+													<?php endwhile; ?></span>
 													<i class="fa fa-minus-circle" aria-hidden="true"></i><i class="fa fa-plus-circle" aria-hidden="true"></i>
 												</ul>
 											</td>
@@ -58,7 +75,13 @@
 											<th>W</th>
 											<td>
 												<ul class="list-hours">
-													<?php while( have_rows('wednesday') ): the_row(); ?><li><span class="opentime"><?php the_sub_field('open'); ?></span> - <span class="closetime"><?php the_sub_field('close'); ?></li><?php endwhile; ?></span>
+													<?php while( have_rows('wednesday') ): the_row(); ?>
+														<?php if( get_sub_field('open') && get_sub_field('close') ) { ?>
+															<li><span class="opentime"><?php the_sub_field('open'); ?></span> - <span class="closetime"><?php the_sub_field('close'); ?></li>
+														<?php } else { ?>
+															<li class="closed-day">Closed</li>
+														<?php } ?>
+													<?php endwhile; ?></span>
 													<i class="fa fa-minus-circle" aria-hidden="true"></i><i class="fa fa-plus-circle" aria-hidden="true"></i>
 												</ul>
 											</td>
@@ -67,7 +90,13 @@
 											<th>T</th>
 											<td>
 												<ul class="list-hours">
-													<?php while( have_rows('thursday') ): the_row(); ?><li><span class="opentime"><?php the_sub_field('open'); ?></span> - <span class="closetime"><?php the_sub_field('close'); ?></li><?php endwhile; ?></span>
+													<?php while( have_rows('thursday') ): the_row(); ?>
+														<?php if( get_sub_field('open') && get_sub_field('close') ) { ?>
+															<li><span class="opentime"><?php the_sub_field('open'); ?></span> - <span class="closetime"><?php the_sub_field('close'); ?></li>
+														<?php } else { ?>
+															<li class="closed-day">Closed</li>
+														<?php } ?>
+													<?php endwhile; ?></span>
 													<i class="fa fa-minus-circle" aria-hidden="true"></i><i class="fa fa-plus-circle" aria-hidden="true"></i>
 												</ul>
 											</td>
@@ -76,7 +105,13 @@
 											<th>F</th>
 											<td>
 												<ul class="list-hours">
-													<?php while( have_rows('friday') ): the_row(); ?><li><span class="opentime"><?php the_sub_field('open'); ?></span> - <span class="closetime"><?php the_sub_field('close'); ?></li><?php endwhile; ?></span>
+													<?php while( have_rows('friday') ): the_row(); ?>
+														<?php if( get_sub_field('open') && get_sub_field('close') ) { ?>
+															<li><span class="opentime"><?php the_sub_field('open'); ?></span> - <span class="closetime"><?php the_sub_field('close'); ?></li>
+														<?php } else { ?>
+															<li class="closed-day">Closed</li>
+														<?php } ?>
+													<?php endwhile; ?></span>
 													<i class="fa fa-minus-circle" aria-hidden="true"></i><i class="fa fa-plus-circle" aria-hidden="true"></i>
 												</ul>
 											</td>
@@ -85,7 +120,13 @@
 											<th>S</th>
 											<td>
 												<ul class="list-hours">
-													<?php while( have_rows('saturday') ): the_row(); ?><li><span class="opentime"><?php the_sub_field('open'); ?></span> - <span class="closetime"><?php the_sub_field('close'); ?></li><?php endwhile; ?></span>
+													<?php while( have_rows('saturday') ): the_row(); ?>
+														<?php if( get_sub_field('open') && get_sub_field('close') ) { ?>
+															<li><span class="opentime"><?php the_sub_field('open'); ?></span> - <span class="closetime"><?php the_sub_field('close'); ?></li>
+														<?php } else { ?>
+															<li class="closed-day">Closed</li>
+														<?php } ?>
+													<?php endwhile; ?></span>
 													<i class="fa fa-minus-circle" aria-hidden="true"></i><i class="fa fa-plus-circle" aria-hidden="true"></i>
 												</ul>
 											</td>
@@ -94,13 +135,19 @@
 											<th>S</th>
 											<td>
 												<ul class="list-hours">
-													<?php while( have_rows('sunday') ): the_row(); ?><li><span class="opentime"><?php the_sub_field('open'); ?></span> - <span class="closetime"><?php the_sub_field('close'); ?></li><?php endwhile; ?></span>
+													<?php while( have_rows('sunday') ): the_row(); ?>
+														<?php if( get_sub_field('open') && get_sub_field('close') ) { ?>
+															<li><span class="opentime"><?php the_sub_field('open'); ?></span> - <span class="closetime"><?php the_sub_field('close'); ?></li>
+														<?php } else { ?>
+															<li class="closed-day">Closed</li>
+														<?php } ?>
+													<?php endwhile; ?></span>
 													<i class="fa fa-minus-circle" aria-hidden="true"></i><i class="fa fa-plus-circle" aria-hidden="true"></i>
 												</ul>
 											</td>
 										</tr>
 									</table>
-									<a href="#" class="savehours btn">Update Hours <i class="fa fa-check" aria-hidden="true"></i></a>
+									<a href="#" class="savehours btn">Finish Editing <i class="fa fa-check" aria-hidden="true"></i></a>
 								</div>
 							<?php endwhile;?>
 						<?php endif;?>
@@ -119,14 +166,12 @@
 									<i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="text"></i>
 								</label>
 							</li>
-							<?php if(get_field('address_2')) { ?>
 							<li>
 								<label for="venue-address-2" class="control-label no-icon">
 									<p class="text-info"><?php echo get_field('address_2'); ?></p>
 									<i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="text"></i>
 								</label>
 							</li>
-							<?php } ?>
 							<li>
 								<label for="venue-city" class="control-label no-icon">
 									<p class="text-info"><?php echo get_field('city'); ?></p>
@@ -141,14 +186,16 @@
 							</li>
 							<li>
 								<label for="venue-twitter" class="control-label">
-									<p class="text-info"><?php echo get_field('twitter'); ?></p>
-									<i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="text"></i>
+									<?php $twitter_display = parse_url( get_field('twitter') ); ?>
+									<p class="text-info" data-orig-twitter="<?php echo get_field('twitter'); ?>"><?php echo trim($twitter_display['path'], '/'); ?></p>
+									<i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="twitter"></i>
 								</label>
 							</li>
 							<li>
 								<label for="venue-facebook" class="control-label">
-									<p class="text-info"><?php echo get_field('facebook'); ?></p>
-									<i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="text"></i>
+									<?php $facebook_display = parse_url( get_field('facebook') ); ?>
+									<p class="text-info" data-orig-facebook="<?php echo get_field('facebook'); ?>"><?php echo trim($facebook_display['path'], '/'); ?></p>
+									<i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="facebook"></i>
 								</label>
 							</li>
 						</ul>
@@ -176,7 +223,7 @@
 						$posttags = get_the_tags();
 						if ($posttags) {
 							foreach($posttags as $tag) {
-								echo '<span class="venue-tag" data-tag-id="' . $tag->term_id . '" data-tag="' . $tag->name. '">' . $tag->name . '<i class="fa fa-close del" aria-hidden="true"></i></span>'; 
+								echo '<span class="venue-tag" data-tag-id="' . $tag->term_id . '" data-tag="' . $tag->name. '">' . htmlentities($tag->name) . '<i class="fa fa-close del" aria-hidden="true"></i></span>'; 
 							}
 						}
 					?>
@@ -194,8 +241,16 @@
 				$currentoffers = get_posts( array(
 					'posts_per_page' => -1,
 					'post_type' => 'offer',
-					'meta_key' => 'venue',
-					'meta_value' => get_the_ID()
+					'meta_key' => 'date',
+					'orderby' => 'meta_value',
+					'order' => 'ASC',
+					'meta_query' => array(
+						array(
+							'key'     => 'venue',
+							'value'   => get_the_ID(),
+							'compare' => '='
+						)
+					)
 				) );
 				 
 				if ( $currentoffers ) {
@@ -205,7 +260,7 @@
 							<div class="left">
 								<button class="frontend-button"><i class="fa fa-camera-retro" aria-hidden="true"></i></button>
 								<?php if (has_post_thumbnail( $post->ID ) ) { ?>
-									<img src="<?php echo the_post_thumbnail_url(); ?>" data-image-id="<?php echo get_post_thumbnail_id( $post_id ); ?>" >
+									<img src="<?php echo the_post_thumbnail_url(); ?>" data-image-id="<?php echo get_post_thumbnail_id( $post->ID ); ?>" >
 								<?php } else { ?>
 									<img src="http://localhost/oot/wp-content/themes/oot/images/oot-placeholder-img.png" class="blank-img" data-image-id="">
 								<?php } ?>
@@ -244,6 +299,27 @@
 										<p class="text-info"><?php echo get_the_content(); ?></p>
 									</div>
 								</label>
+								<div class="venue-cat-wrapper">
+									<p class="venue-desc-title">Category</p>
+									<p class="cat-select"><?php $category = get_the_category(); ?>
+									<?php wp_dropdown_categories(array('hide_empty' => 0, 'exclude' => '1', 'selected' => $category[0]->term_id )); ?></p>
+								</div>
+								
+								<div class="venue-tag-wrapper">
+									<p class="venue-desc-title">Tags</p>
+									<div class="venue-active-tags">
+									<?php
+										$posttags = get_the_tags();
+										if ($posttags) {
+											foreach($posttags as $tag) {
+												echo '<span class="venue-tag" data-tag-id="' . $tag->term_id . '" data-tag="' . $tag->name. '">' . $tag->name . '<i class="fa fa-close del" aria-hidden="true"></i></span>'; 
+											}
+										}
+									?>
+									</div>
+									<input class="tag-search-field" name="tag_search_field" type="text" autocomplete="off" placeholder="&#xf067; TYPE TO SEARCH FOR TAG" style="" />
+									<div class="tag-result"></div>
+								</div>
 								<span class="remove" data-offer-id="<?php echo get_the_ID(); ?>">Remove Offer<i class="fa fa-trash" aria-hidden="true"></i></span>
 								<span class="save">Save Offer<i class="fa fa-check" aria-hidden="true"></i></span>
 							</div>
@@ -290,52 +366,23 @@
 									<p class="text-info">Full Description &plus; T&amp;C</p>
 								</div>
 							</label>
+							<div class="venue-cat-wrapper">
+									<p class="venue-desc-title">Category</p>
+									<p class="cat-select"><?php $category = get_the_category(); ?>
+									<?php wp_dropdown_categories(array('hide_empty' => 0, 'exclude' => '1', 'selected' => $category[0]->term_id )); ?></p>
+								</div>
+								
+								<div class="venue-tag-wrapper">
+									<p class="venue-desc-title">Tags</p>
+									<div class="venue-active-tags"></div>
+									<input class="tag-search-field" name="tag_search_field" type="text" autocomplete="off" placeholder="&#xf067; TYPE TO SEARCH FOR TAG" style="" />
+									<div class="tag-result"></div>
+								</div>
 							<span class="save new-offer-save">Save Offer<i class="fa fa-check" aria-hidden="true"></i></span>
 							
 							<div class="clearfix"></div>
 						</div>
 					</div>
-					<?php /*
-					<form id="offer-submission-form">
-						<div>
-							<label for="offer-submission-title">
-								<?php _e( 'Title', 'oot' ); ?>
-							</label>
-							<input type="text" name="offer-submission-title" id="offer-submission-title" required aria-required="true">
-						</div>
-						<div>
-							<label for="offer-submission-content">
-								<?php _e( 'Content', 'oot' ); ?>
-							</label>
-							<textarea rows="10" cols="20" name="offer-submission-content" id="offer-submission-content"></textarea>
-						</div>
-						<div>
-							<label for="offer-submission-date">
-								<?php _e( 'Date', 'oot' ); ?>
-							</label>
-							<input name="acf_fields[date]" id="offer-submission-date" class="datepicker">
-						</div>
-						<div>
-							<label for="offer-submission-start">
-								<?php _e( 'Start Time', 'oot' ); ?>
-							</label>
-							<input name="acf_fields[start_time]" id="offer-submission-start" class="timepicker">
-						</div>
-						<div>
-							<label for="offer-submission-end">
-								<?php _e( 'End Time', 'oot' ); ?>
-							</label>
-							<input name="acf_fields[end_time]" id="offer-submission-end" class="timepicker">
-						</div>
-						<div>
-							<label for="offer-submission-redeemable">
-								<?php _e( 'Maximum Redeemable', 'oot' ); ?>
-							</label>
-							<input type="number" name="acf_fields[maximum_redeemable]" id="offer-submission-redeemable">
-						</div>
-						<input type="submit" value="<?php esc_attr_e( 'Submit', 'oot'); ?>">
-					</form>
-					*/ ?>
 				</div>
 				<h3 class="col-title">Add New Offer <i class="fa fa-plus" aria-hidden="true"></i></h3>
 			</div>
@@ -355,8 +402,16 @@
 				$currentevents = get_posts( array(
 					'posts_per_page' => -1,
 					'post_type' => 'event',
-					'meta_key' => 'venue',
-					'meta_value' => get_the_ID()
+					'meta_key' => 'date',
+					'orderby' => 'meta_value',
+					'order' => 'ASC',
+					'meta_query' => array(
+						array(
+							'key'     => 'venue',
+							'value'   => get_the_ID(),
+							'compare' => '='
+						)
+					)
 				) );
 				 
 				if ( $currentevents ) {
@@ -393,8 +448,12 @@
 										<i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="time"></i>
 									</label>
 									<label for="event-quantity" class="control-label">
-										<p class="text-info"><?php echo '&pound;' . bcdiv(get_field('ticket_price'), '1', 2); ?></p>
-										<i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="currency"></i>
+										<?php if( get_field('ticket_price_string') ) { ?>
+											<p class="text-info"><?php echo get_field('ticket_price_string'); ?></p>
+										<?php } else { ?>
+											<p class="text-info"><?php echo '&pound;' . bcdiv(get_field('ticket_price'), '1', 2); ?></p>
+										<?php } ?>
+										<i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="text"></i>
 									</label>	
 								</div>
 							</div>
@@ -419,6 +478,27 @@
 											}                             
 										}
 									?>
+								</div>
+								<div class="venue-cat-wrapper">
+									<p class="venue-desc-title">Category</p>
+									<p class="cat-select"><?php $category = get_the_category(); ?>
+									<?php wp_dropdown_categories(array('hide_empty' => 0, 'exclude' => '1', 'selected' => $category[0]->term_id )); ?></p>
+								</div>
+								
+								<div class="venue-tag-wrapper">
+									<p class="venue-desc-title">Tags</p>
+									<div class="venue-active-tags">
+									<?php
+										$posttags = get_the_tags();
+										if ($posttags) {
+											foreach($posttags as $tag) {
+												echo '<span class="venue-tag" data-tag-id="' . $tag->term_id . '" data-tag="' . $tag->name. '">' . htmlentities($tag->name) . '<i class="fa fa-close del" aria-hidden="true"></i></span>'; 
+											}
+										}
+									?>
+									</div>
+									<input class="tag-search-field" name="tag_search_field" type="text" autocomplete="off" placeholder="&#xf067; TYPE TO SEARCH FOR TAG" style="" />
+									<div class="tag-result"></div>
 								</div>
 
 								<span class="remove" data-event-id="<?php echo get_the_ID(); ?>">Remove Event<i class="fa fa-trash" aria-hidden="true"></i></span>
@@ -456,7 +536,7 @@
 								</label>
 								<label for="event-quantity" class="control-label">
 									<p class="text-info">Enter ticket price</p>
-									<i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="currency"></i>
+									<i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="text"></i>
 								</label>
 							</div>
 						</div>
@@ -482,51 +562,22 @@
 									}
 								?>
 							</div>
+							<div class="venue-cat-wrapper">
+									<p class="venue-desc-title">Category</p>
+									<p class="cat-select"><?php $category = get_the_category(); ?>
+									<?php wp_dropdown_categories(array('hide_empty' => 0, 'exclude' => '1', 'selected' => $category[0]->term_id )); ?></p>
+								</div>
+								
+								<div class="venue-tag-wrapper">
+									<p class="venue-desc-title">Tags</p>
+									<div class="venue-active-tags"></div>
+									<input class="tag-search-field" name="tag_search_field" type="text" autocomplete="off" placeholder="&#xf067; TYPE TO SEARCH FOR TAG" style="" />
+									<div class="tag-result"></div>
+								</div>
 							<span class="save new-event-save">Save Event<i class="fa fa-check" aria-hidden="true"></i></span>
 							<div class="clearfix"></div> 
 						</div>
 					</div>
-					<?php /*
-					<form id="offer-submission-form">
-						<div>
-							<label for="offer-submission-title">
-								<?php _e( 'Title', 'oot' ); ?>
-							</label>
-							<input type="text" name="offer-submission-title" id="offer-submission-title" required aria-required="true">
-						</div>
-						<div>
-							<label for="offer-submission-content">
-								<?php _e( 'Content', 'oot' ); ?>
-							</label>
-							<textarea rows="10" cols="20" name="offer-submission-content" id="offer-submission-content"></textarea>
-						</div>
-						<div>
-							<label for="offer-submission-date">
-								<?php _e( 'Date', 'oot' ); ?>
-							</label>
-							<input name="acf_fields[date]" id="offer-submission-date" class="datepicker">
-						</div>
-						<div>
-							<label for="offer-submission-start">
-								<?php _e( 'Start Time', 'oot' ); ?>
-							</label>
-							<input name="acf_fields[start_time]" id="offer-submission-start" class="timepicker">
-						</div>
-						<div>
-							<label for="offer-submission-end">
-								<?php _e( 'End Time', 'oot' ); ?>
-							</label>
-							<input name="acf_fields[end_time]" id="offer-submission-end" class="timepicker">
-						</div>
-						<div>
-							<label for="offer-submission-redeemable">
-								<?php _e( 'Maximum Redeemable', 'oot' ); ?>
-							</label>
-							<input type="number" name="acf_fields[maximum_redeemable]" id="offer-submission-redeemable">
-						</div>
-						<input type="submit" value="<?php esc_attr_e( 'Submit', 'oot'); ?>">
-					</form>
-					*/ ?>
 				</div>
 				<h3 class="col-title">Add New Event <i class="fa fa-plus" aria-hidden="true"></i></h3>
 			</div>

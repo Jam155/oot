@@ -15,7 +15,7 @@
 		$posts_array = get_posts( $args ); ?>
 		<?php if( $posts_array ): ?>
 			<p>Admins can view all venues:</p>
-			<ul>
+			<ul class="home-venue-list">
 			<?php foreach( $posts_array as $post): ?>
 				<?php setup_postdata($post); ?>
 				<li>
@@ -30,7 +30,7 @@
 	<?php $userVenues = get_field('users_venues', 'user_'.$current_user->ID); ?>
 		<?php if( $userVenues ): ?>
 			<p>You can edit the following venues:</p>
-			<ul>
+			<ul class="home-venue-list">
 			<?php foreach( $userVenues as $post):?>
 				<?php setup_postdata($post); ?>
 				<li>

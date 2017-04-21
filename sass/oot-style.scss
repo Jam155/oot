@@ -89,6 +89,7 @@ footer {
 .venue-img {
 	position: relative;
     display: inline-block;
+    display: inline-block;
 		img {
 			border-radius: 100px;
 			border: 3px solid #e5e5e5;
@@ -260,6 +261,16 @@ footer {
 	.event-description,
 	.offer-description {
 		display: block;
+		
+		.venue-desc-title {
+			margin-top: 0;
+		}
+		.cat-select {
+			margin: 0;
+		}
+		.result-tag {
+			margin-top: 0;	
+		}
 	}
 }
 
@@ -413,6 +424,8 @@ footer {
 	float: right;	
 }
 
+label[for="venue-twitter"] #url-field,
+label[for="venue-facebook"] #url-field,
 #currency-field,
 #attribute {
 	width: 83%;
@@ -703,6 +716,8 @@ label[for="venue-website"] .text-info {
     margin-bottom: 22px;
 }
 
+.offer-tag,
+.event-tag,
 .venue-tag {
 	background: $mid-grey-light;
 	color: $dark-grey;
@@ -1152,6 +1167,30 @@ label[for="venue-website"] .text-info {
 
 .monthly-next {
     padding-right: 10px;
+}
+
+label[for="venue-post-code"] p {
+	text-transform: uppercase;
+}
+
+.home-venue-list {
+    -webkit-column-count: 3;
+    -moz-column-count: 3;
+    column-count: 3;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+	
+	li {
+		a {
+			text-decoration: none;
+			color: #000;
+		}
+		a:hover {
+			color: blue;
+			font-weight: bold;
+		}
+	}
 }
 
 @media (max-width: 1293px) {

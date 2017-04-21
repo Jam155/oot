@@ -3,7 +3,7 @@
     {
       "id": 1,
       "name": "This is a JSON event",
-      "startdate": "2017-3-23",
+      "date": "2017-4-23",
       "enddate": "",
       "starttime": "",
       "endtime": "",
@@ -13,7 +13,7 @@
     {
       "id": 2,
       "name": "This is a JSON event",
-      "startdate": "2017-3-29",
+      "date": "2017-4-29",
       "enddate": "",
       "starttime": "",
       "endtime": "",
@@ -23,7 +23,7 @@
 	{
       "id": 3,
       "name": "Same day event",
-      "startdate": "2017-3-29",
+      "date": "2017-4-29",
       "enddate": "",
       "starttime": "",
       "endtime": "",
@@ -33,7 +33,7 @@
     {
       "id": 4,
       "name": "This is a JSON event",
-      "startdate": "2017-3-23",
+      "date": "2017-4-23",
       "enddate": "",
       "starttime": "",
       "endtime": "",
@@ -43,7 +43,7 @@
     {
       "id": 5,
       "name": "This is a JSON event",
-      "startdate": "2017-3-29",
+      "date": "2017-4-29",
       "enddate": "",
       "starttime": "",
       "endtime": "",
@@ -53,7 +53,7 @@
 	{
       "id": 6,
       "name": "Same day event",
-      "startdate": "2017-3-29",
+      "date": "2017-4-29",
       "enddate": "",
       "starttime": "",
       "endtime": "",

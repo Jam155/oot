@@ -262,6 +262,32 @@ require_once('includes/Venues_Controller.php');
 require_once('includes/Offers_Controller.php');
 require_once('includes/Events_Controller.php');
 
+function set_times() {
+	
+	$opening_field_key = 'field_58a6ff3a57aaa';
+	$opening_times = $_POST['openinghours'];
+	$acf_opening_hours = array();
+	
+	foreach($opening_times as $i => $opening) {
+		foreach($opening_times[$i] as $j => $hours) {
+			$open = $opening_times[$i][$j]['open'];
+			$close = $opening_times[$i][$j]['close'];
+			$acf_opening_hours[$i][$j] = array('open' => $open, 'close' => $close );
+		}
+	}
+	
+	$acf_opening_hours = array($acf_opening_hours);
+	update_field($opening_field_key, $acf_opening_hours, '57');
+	
+	echo json_encode('Hours saved to venue');
+	wp_die();
+	
+}
+
+add_action("wp_ajax_set_times", "set_times");
+add_action("wp_ajax_nopriv_set_times", "set_times");
+
+
 function oot_mime_types($mime_types){
     //Creating a new array will reset the allowed filetypes
     $mime_types = array(
@@ -378,29 +404,3 @@ function oot_underscore_event() { ?>
 		</div>
     </script>
 <?php }
-
-function my_page_columns($columns)
-{
-    $columns = array(
-        'cb'         => '<input type="checkbox" />',
-        'title'     => 'Last Name',
-        'first'     => 'First Name',
-        'date'        =>    'Date',
-    );
-    return $columns;
-}
-
-function my_custom_columns($column)
-{
-    global $post;
-    
-    if ($column == 'first') {
-        echo 'test';
-    }
-    else {
-         echo '';
-    }
-}
-
-add_action("manage_offer_posts_custom_column", "my_custom_columns");
-add_filter("manage_offer_posts_columns", "my_page_columns");

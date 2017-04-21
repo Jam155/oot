@@ -202,7 +202,9 @@ Monthly 2.2.0 by Kevin Thornbloom is licensed under a Creative Commons Attributi
 
 		function addEvent(event, setMonth, setYear) {
 			// Year [0]   Month [1]   Day [2]
-			var fullStartDate = _getEventDetail(event, "date"),
+			
+			
+			var fullStartDate = moment(_getEventDetail(event, "date"), ["YYYYMMDD"]).format("YYYY-MM-DD"),
 				fullEndDate = _getEventDetail(event, "enddate"),
 				startArr = fullStartDate.split("-"),
 				startYear = parseInt(startArr[0], 10),
@@ -358,9 +360,6 @@ Monthly 2.2.0 by Kevin Thornbloom is licensed under a Creative Commons Attributi
 		}
 
 		function formatDate(year, month, day) {
-			if(options.useIsoDateFormat) {
-				return new Date(year, month - 1, day, 0, 0, 0).toISOString().substring(0, 10);
-			}
 			if(typeof Intl === "undefined") {
 				return month + "/" + day + "/" + year;
 			}
