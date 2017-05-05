@@ -1,6 +1,7 @@
 <?php
 
 $postTags = $_REQUEST['post_tags'];
+$venue_name = $_REQUEST['item_id'];
 
 $link = mysqli_connect("localhost", "root", "", "ootdatabase");
 
@@ -20,7 +21,8 @@ if(isset($term)){
             }
             mysqli_free_result($result);
         } else{
-            echo '<p class="no-match-tag">' . $term . '</p>';
+            //echo '<p class="no-match-tag">' . $term . '</p>';
+            echo '<p class="no-match-tag">No tags found. To suggest <span class="highlight">' . $term . '</span> as a new tag, please <a href="mailto:jamescastelow@kinocreative.co.uk?subject=New%20Oot%20Tag%20Suggestion&body=' . $term . '%20on%20'. $venue_name .'">email us</a></p>';
         }
     } else{
         echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);

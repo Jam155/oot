@@ -377,8 +377,10 @@ $(document).ready(function() {
 		var offer_quantity = newOffer.find('label[for="offer-quantity"]').text();
 		var offer_description = newOffer.find('.offer-description .text-info').text();
 		var featured_media = newOffer.find('.left img').attr('data-image-id');
-		var term_id = newOffer.find(".cat-select select").val();
+		//var term_id = newOffer.find(".cat-select select").val();
 		var tagIDs = getTagIDs(newOffer);
+		var catIDs = getCatIDs(newOffer);
+		var offer_random_id = Date.now();
 		
 		function getTagIDs(elem) {
 			var tagsArray = [];
@@ -388,10 +390,18 @@ $(document).ready(function() {
 			return tagsArray;
 		}
 		
+		function getCatIDs(elem) {
+			var catArray = [];
+			elem.find('.venue-cat-wrapper input:checked').each(function() {
+				catArray.push( $(this).val() );
+			});
+			return catArray;
+		}
+		
 		if(offer_title != 'Offer Title' && offer_date != 'Select offer date' && offer_starttime != null && offer_endtime != null && offer_quantity != 'Enter redeem amount' && offer_description != 'Full Description + T&C' && featured_media ) {				
 			var cleanDate = offer_date.replace(/\s+/g, '');
 			cleanDate = cleanDate.split('/');
-			cleanDate = cleanDate[2] + '-' + cleanDate[1] + '-' + cleanDate[0];
+			cleanDate = cleanDate[2] + cleanDate[1] + cleanDate[0];
 
 			var start = ConvertTimeformat("24", offer_starttime);
 			var end = ConvertTimeformat("24", offer_endtime);
@@ -403,7 +413,10 @@ $(document).ready(function() {
 				offer_starttime: offer_starttime,
 				offer_endtime: offer_endtime,
 				offer_quantity: offer_quantity,
-				offer_description: offer_description
+				offer_description: offer_description,
+				offer_category_id: catIDs,
+				offer_tags: tagIDs,
+				offer_random_id: offer_random_id
 			}
 			
 			newOffer.find('label[for="offer-title"] .text-info').text('Offer Title');
@@ -418,12 +431,16 @@ $(document).ready(function() {
 			var post_template = wp.template( 'oot-offer' );
 			$('.current-offers .col-content').append( post_template( data ) );
 			
+			$.each(catIDs, function( i, val ) {
+				$( '#offer-' + offer_random_id ).find('.venue-cat-wrapper input[type=checkbox][value=' + val + ']').prop("checked",true);
+			});
+			
 			var offerData = {
 				status: 'publish',
 				featured_media: featured_media,
 				title: offer_title,
 				content: offer_description,
-				categories: term_id,
+				categories: catIDs,
 				tags: tagIDs,
 				acf_fields: {
 					date: cleanDate,
@@ -443,6 +460,7 @@ $(document).ready(function() {
 				},
 				success : function(){
 					console.log(this);
+					location.reload();
 				}
 			});
 		} else {
@@ -483,7 +501,9 @@ $(document).ready(function() {
 		var event_starttime = newEvent.find('label[for="event-time"] .starttime').text();
 		var event_endtime = newEvent.find('label[for="event-time"] .endtime').text();
 		var event_price = newEvent.find('label[for="event-quantity"]').text();
-		var event_price_num = event_price.replace(/[^\d\.]/g, '');
+		event_price = $.trim(event_price);
+		console.log(event_price);
+		// var event_price_num = event_price.replace(/[^\d\.]/g, '');
 		var event_description = newEvent.find('.event-description .text-info').text();
 		var event_repeat = newEvent.find('.event-description input[type="radio"]:checked').attr('data-value');
 		var featured_media = newEvent.find('.left img').attr('data-image-id');
@@ -494,6 +514,7 @@ $(document).ready(function() {
 		acf_date = acf_date.toString('yyyy-MM-dd 00:00:00');
 		var term_id = newEvent.find(".cat-select select").val();
 		var tagIDs = getTagIDs(newEvent);
+		var catIDs = getCatIDs(newEvent);
 		
 		function getTagIDs(elem) {
 			var tagsArray = [];
@@ -503,11 +524,19 @@ $(document).ready(function() {
 			return tagsArray;
 		}
 		
+		function getCatIDs(elem) {
+			var catArray = [];
+			elem.find('.venue-cat-wrapper input:checked').each(function() {
+				catArray.push( $(this).val() );
+			});
+			return catArray;
+		}
+		
 				
 		if(event_title != 'Event Title' && event_date != 'Select event date' && event_starttime != null && event_endtime != null && event_price != 'Enter redeem amount' && event_description != 'Full Description + T&C' && featured_media ) {				
 			var cleanDate = event_date.replace(/\s+/g, '');
 			cleanDate = cleanDate.split('/');
-			cleanDate = cleanDate[2] + '-' + cleanDate[1] + '-' + cleanDate[0];
+			cleanDate = cleanDate[2] + cleanDate[1] + cleanDate[0];
 
 			var start = ConvertTimeformat("24", event_starttime);
 			var end = ConvertTimeformat("24", event_endtime);
@@ -536,18 +565,23 @@ $(document).ready(function() {
 			$('.upcoming-events .col-content').append( post_template( data ) );
 			$( '#event-' + event_random_id ).find('#' + event_random_id + event_repeat).prop('checked', true);
 			
+			$.each(catIDs, function( i, val ) {
+				$( '#event-' + event_random_id ).find('.venue-cat-wrapper input[type=checkbox][value=' + val + ']').prop("checked",true);
+			});
+			$( '#event-' + event_random_id ).find('.venue-cat-wrapper').prop('checked', true);
+			
 			var eventData = {
 				status: 'publish',
 				featured_media: featured_media,
 				title: event_title,
 				content: event_description,
-				categories: term_id,
+				categories: catIDs,
 				tags: tagIDs,
 				acf_fields: {
 					date: cleanDate,
 					start_time: start,
 					end_time: end,
-					ticket_price_string: event_price_num,
+					ticket_price_string: event_price,
 					repeat_event: event_repeat,
 					venue: currentVenue
 				}
@@ -564,6 +598,7 @@ $(document).ready(function() {
 					var newid = 'cal' + Date.now();
 					$('.monthly').empty().replaceWith('<div class="monthly" id="' + newid + '"></div>');
 					drawCalendar(currentVenue, newid);
+					location.reload();
 				}
 			});			
 
@@ -675,6 +710,7 @@ $(document).ready(function() {
 		var featured_media = thisOffer.find('.left img').attr('data-image-id');
 		var term_id = thisOffer.find(".cat-select select").val();
 		var tagIDs = getTagIDs(thisOffer);
+		var catIDs = getCatIDs(thisOffer);
 		
 		function getTagIDs(elem) {
 			var tagsArray = [];
@@ -682,6 +718,14 @@ $(document).ready(function() {
 				tagsArray.push( $(this).attr('data-tag-id') );
 			});
 			return tagsArray;
+		}
+		
+		function getCatIDs(elem) {
+			var catArray = [];
+			elem.find('.venue-cat-wrapper input:checked').each(function() {
+				catArray.push( $(this).val() );
+			});
+			return catArray;
 		}
 		
 		if(offer_title != 'Offer Title' && offer_date != 'Select offer date' && offer_starttime != null && offer_endtime != null && offer_quantity != 'Enter redeem amount' && offer_description != 'Full Description + T&C' && featured_media ) {				
@@ -697,7 +741,7 @@ $(document).ready(function() {
 				featured_media: featured_media,
 				title: offer_title,
 				content: offer_description,
-				categories: term_id,
+				categories: catIDs,
 				tags: tagIDs,
 				acf_fields: {
 					date: cleanDate,
@@ -784,6 +828,7 @@ $(document).ready(function() {
 		var featured_media = thisEvent.find('.left img').attr('data-image-id');
 		var term_id = thisEvent.find(".cat-select select").val();
 		var tagIDs = getTagIDs(thisEvent);
+		var catIDs = getCatIDs(thisEvent);
 		
 		function getTagIDs(elem) {
 			var tagsArray = [];
@@ -791,6 +836,14 @@ $(document).ready(function() {
 				tagsArray.push( $(this).attr('data-tag-id') );
 			});
 			return tagsArray;
+		}
+		
+		function getCatIDs(elem) {
+			var catArray = [];
+			elem.find('.venue-cat-wrapper input:checked').each(function() {
+				catArray.push( $(this).val() );
+			});
+			return catArray;
 		}
 		
 		if(event_title != 'Event Title' && event_date != 'Select event date' && event_starttime != null && event_endtime != null && event_price != 'Enter redeem amount' && event_description != 'Full Description + T&C' && featured_media ) {				
@@ -806,7 +859,7 @@ $(document).ready(function() {
 				featured_media: featured_media,
 				title: event_title,
 				content: event_description,
-				categories: term_id,
+				categories: catIDs,
 				tags: tagIDs,
 				acf_fields: {
 					date: cleanDate,
@@ -884,7 +937,7 @@ $(document).ready(function() {
 	});
 	
 	$('.tag-result').on('click', '.no-match-tag', function() {
-		$(this).parent().siblings('.venue-active-tags').append( '<span class="venue-tag" data-tag="' + $(this).parent().siblings('.tag-search-field').val() + '">' + $(this).parent().siblings('.tag-search-field').val() + '<i class="fa fa-close del" aria-hidden="true"></i></span>' );
+		//$(this).parent().siblings('.venue-active-tags').append( '<span class="venue-tag" data-tag="' + $(this).parent().siblings('.tag-search-field').val() + '">' + $(this).parent().siblings('.tag-search-field').val() + '<i class="fa fa-close del" aria-hidden="true"></i></span>' );
 		$('.tag-search-field').val("");
 		$(this).remove();
 	});
@@ -911,7 +964,6 @@ $(document).ready(function() {
 	$('.save-venue-btn').click(function() {
 		console.log('Saving...');
 		
-		
 		var post_id = $(this).attr('data-post-id');
 		var venue_image = $(".venue-img img").attr('src');
 		var name = $("label[for='venue-title'] .text-info").text();
@@ -926,6 +978,7 @@ $(document).ready(function() {
 		var description = $(".venue-details .text-info-wrapper .text-info").text();
 		var term_id = $('.venue-details').find(".cat-select select").val();
 		var catname = $(".cat-select select").find(":selected").text();
+		var catIDs = getCatIDs();
 		var openinghours = getOpeningHours();
 		var tags = getTags();
 		var tagIDs = getTagIDs();
@@ -951,6 +1004,14 @@ $(document).ready(function() {
 				tagsArray.push( $(this).attr('data-tag-id') );
 			});
 			return tagsArray;
+		}
+		
+		function getCatIDs() {
+			var catArray = [];
+			$('.venue-details').find('.venue-cat-wrapper input:checked').each(function() {
+				catArray.push( $(this).val() );
+			});
+			return catArray;
 		}
 		
 		function makeSlug(str) {
@@ -1014,7 +1075,7 @@ $(document).ready(function() {
 			title: name,
 			content: description,
 			featured_media: featured_media,
-			categories: term_id,
+			categories: catIDs,
 			tags: tagIDs,
 			acf_fields: {
 				website: website,

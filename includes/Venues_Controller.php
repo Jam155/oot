@@ -39,6 +39,7 @@
 				'schema' => array( $this, 'get_public_item_schema'),
 
 			));
+			
 
 			register_rest_route($this->namespace, '/' . $this->rest_base . '/(?P<id>[\d]+)/categories', array(
 
@@ -111,7 +112,9 @@
 		}
 
 		public function get_times($request) {
-
+			
+			var_dump($this->model);
+			
 			$id = $request['id'];
 			$times = $this->model->getTimes($id);
 

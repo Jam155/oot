@@ -1,4 +1,5 @@
 <?php get_header(); ?>
+<?php require_once( ABSPATH . '/wp-admin/includes/template.php' ); ?>
 <div id="container">
 <section id="content" class="venue-wrapper" role="main">
 	<a href="<?php echo site_url(); ?>" class="dashboard-logo"><img src="<?php echo get_template_directory_uri(); ?>/images/dashboard-logo.png" /></a>
@@ -211,9 +212,16 @@
 				</label>
 				
 				<div class="venue-cat-wrapper">
-					<p class="venue-desc-title">Category</p>
+					<p class="venue-desc-title">Categories</p>
+					<?php /*
 					<p class="cat-select"><?php $category = get_the_category(); ?>
 					<?php wp_dropdown_categories(array('hide_empty' => 0, 'exclude' => '1', 'selected' => $category[0]->term_id )); ?></p>
+					*/ ?>
+
+					
+					<?php
+					wp_category_checklist(get_the_ID());
+					?>
 				</div>
 				
 				<div class="venue-tag-wrapper">
@@ -228,7 +236,7 @@
 						}
 					?>
 					</div>
-					<input class="tag-search-field" name="tag_search_field" type="text" autocomplete="off" placeholder="&#xf067; TYPE TO SEARCH FOR TAG" style="" />
+					<input class="tag-search-field" name="tag_search_field" type="text" autocomplete="off" placeholder="&#xf067; TYPE TO SEARCH FOR TAG" style="" data-item-id="Venue <?php echo get_the_ID(); ?>"/>
 					<div class="tag-result"></div>
 				</div>
 				<button class="save-venue-btn" type="button" data-post-id="<?php echo get_the_ID(); ?>">Save Details</button>
@@ -300,9 +308,14 @@
 									</div>
 								</label>
 								<div class="venue-cat-wrapper">
-									<p class="venue-desc-title">Category</p>
+									<p class="venue-desc-title">Categories</p>
+									<?php /*
 									<p class="cat-select"><?php $category = get_the_category(); ?>
 									<?php wp_dropdown_categories(array('hide_empty' => 0, 'exclude' => '1', 'selected' => $category[0]->term_id )); ?></p>
+									*/ ?>
+									<?php
+									wp_category_checklist(get_the_ID());
+									?>
 								</div>
 								
 								<div class="venue-tag-wrapper">
@@ -317,7 +330,7 @@
 										}
 									?>
 									</div>
-									<input class="tag-search-field" name="tag_search_field" type="text" autocomplete="off" placeholder="&#xf067; TYPE TO SEARCH FOR TAG" style="" />
+									<input class="tag-search-field" name="tag_search_field" type="text" autocomplete="off" placeholder="&#xf067; TYPE TO SEARCH FOR TAG" style="" data-item-id="Offer <?php echo $post->ID; ?>"/>
 									<div class="tag-result"></div>
 								</div>
 								<span class="remove" data-offer-id="<?php echo get_the_ID(); ?>">Remove Offer<i class="fa fa-trash" aria-hidden="true"></i></span>
@@ -367,9 +380,14 @@
 								</div>
 							</label>
 							<div class="venue-cat-wrapper">
-									<p class="venue-desc-title">Category</p>
+									<p class="venue-desc-title">Categories</p>
+									<?php /*
 									<p class="cat-select"><?php $category = get_the_category(); ?>
 									<?php wp_dropdown_categories(array('hide_empty' => 0, 'exclude' => '1', 'selected' => $category[0]->term_id )); ?></p>
+									*/ ?>
+									<?php
+									wp_category_checklist();
+									?>
 								</div>
 								
 								<div class="venue-tag-wrapper">
@@ -480,9 +498,14 @@
 									?>
 								</div>
 								<div class="venue-cat-wrapper">
-									<p class="venue-desc-title">Category</p>
+									<p class="venue-desc-title">Categories</p>
+									<?php /*
 									<p class="cat-select"><?php $category = get_the_category(); ?>
 									<?php wp_dropdown_categories(array('hide_empty' => 0, 'exclude' => '1', 'selected' => $category[0]->term_id )); ?></p>
+									*/ ?>
+									<?php
+									wp_category_checklist(get_the_ID());
+									?>
 								</div>
 								
 								<div class="venue-tag-wrapper">
@@ -497,7 +520,7 @@
 										}
 									?>
 									</div>
-									<input class="tag-search-field" name="tag_search_field" type="text" autocomplete="off" placeholder="&#xf067; TYPE TO SEARCH FOR TAG" style="" />
+									<input class="tag-search-field" name="tag_search_field" type="text" autocomplete="off" placeholder="&#xf067; TYPE TO SEARCH FOR TAG" style="" data-item-id="Event <?php echo $post->ID; ?>"/>
 									<div class="tag-result"></div>
 								</div>
 
@@ -563,9 +586,14 @@
 								?>
 							</div>
 							<div class="venue-cat-wrapper">
-									<p class="venue-desc-title">Category</p>
+									<p class="venue-desc-title">Categories</p>
+									<?php /*
 									<p class="cat-select"><?php $category = get_the_category(); ?>
 									<?php wp_dropdown_categories(array('hide_empty' => 0, 'exclude' => '1', 'selected' => $category[0]->term_id )); ?></p>
+									*/ ?>
+									<?php
+									wp_category_checklist();
+									?>
 								</div>
 								
 								<div class="venue-tag-wrapper">

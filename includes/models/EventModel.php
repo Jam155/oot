@@ -12,7 +12,7 @@
 				"start_time" => "start_time",
 				"end_time" => "end_time",
 				"date" => "date",
-				"ticket_price" => "price",
+				"ticket_price_string" => "price",
 				"repeat_event" => "repeatable",
 
 			);

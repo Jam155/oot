@@ -23,10 +23,11 @@ $(document).ready(function(){
 	
 	$('.tag-search-field').on("keyup input", function(){
 		var inputVal = $(this).val();
+		var itemID = $(this).attr('data-item-id');
 		var resultDropdown = $(this).siblings(".tag-result");
 		var currentPostTags = getActiveTags();
 		if(inputVal.length){
-			$.get(template_url + '/ajax-search-tag.php', {term: inputVal, post_tags: currentPostTags }).done(function(data){
+			$.get(template_url + '/ajax-search-tag.php', {term: inputVal, post_tags: currentPostTags, item_id: itemID }).done(function(data){
 				resultDropdown.html(data);
 			});
 		} else{

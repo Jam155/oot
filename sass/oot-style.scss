@@ -714,6 +714,20 @@ label[for="venue-website"] .text-info {
 .venue-cat-wrapper {
     margin-top: 15px;
     margin-bottom: 22px;
+	
+	#category-1 {
+		display: none;
+	}
+	
+	li {
+		list-style: none;
+		color: #9a98a7;
+		text-transform: uppercase;
+		font-size: 12px;
+		margin-right: 10px;
+		width: 46%;
+		display: inline-block;
+	}
 }
 
 .offer-tag,
@@ -793,9 +807,23 @@ label[for="venue-website"] .text-info {
 	margin-bottom: 3px;
 }
 
+.tag-result .no-match-tag:after {
+	display: none !important;
+}
+
 .no-match-tag {
     background: $event-primary !important;
     color: #ffffff !important;
+	text-align: left !important;
+	
+	.highlight {
+		color: #ffc200 !important;
+		font-weight: bold !important;
+	}
+	a {
+		color: #ffc200 !important;
+		font-weight: bold !important;
+	}
 }
 
 .event-details .text-info,

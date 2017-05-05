@@ -283,6 +283,8 @@ add_filter( 'rest_api_allowed_post_types', 'oot_allow_post_types');
 require_once('includes/Venues_Controller.php');
 require_once('includes/Offers_Controller.php');
 require_once('includes/Events_Controller.php');
+require_once('includes/Categories_Controller.php');
+require_once('includes/Tags_Controller.php');
 
 function set_times() {
 	
@@ -326,7 +328,7 @@ add_filter('upload_mimes', 'oot_mime_types', 1, 1);
 add_action( 'wp_footer', 'oot_underscore_offer', 25 );
 function oot_underscore_offer() { ?>
     <script type="text/html" id="tmpl-oot-offer">
-		<div class="offer-item">
+		<div class="offer-item" id="offer-{{{ data.offer_random_id }}}">
 			<div class="left">
 				<img width="140" height="110" src="{{{ data.offer_thumbnail }}}" class="attachment-full size-full wp-post-image" alt="">
 			</div>
@@ -361,6 +363,22 @@ function oot_underscore_offer() { ?>
 						<p class="text-info">{{{ data.offer_description }}}</p>
 					</div>
 				</label>
+				
+				<div class="venue-cat-wrapper">
+					<p class="venue-desc-title">Categories</p>
+					<?php /* <p class="cat-select"><?php wp_dropdown_categories(array('hide_empty' => 0, 'exclude' => '1' )); ?></p> */ ?>
+					<?php
+					wp_category_checklist();
+					?>
+				</div>
+				
+				<div class="venue-tag-wrapper">
+					<p class="venue-desc-title">Tags</p>
+					<div class="venue-active-tags"></div>
+					<input class="tag-search-field" name="tag_search_field" type="text" autocomplete="off" placeholder="&#xf067; TYPE TO SEARCH FOR TAG" style="" />
+					<div class="tag-result"></div>
+				</div>
+								
 				<span class="remove">Remove Offer<i class="fa fa-trash" aria-hidden="true"></i></span>
 				<span class="save">Save Offer<i class="fa fa-check" aria-hidden="true"></i></span>
 			</div>
@@ -393,7 +411,7 @@ function oot_underscore_event() { ?>
 						<i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="time"></i>
 					</label>
 					<label for="event-quantity" class="control-label">
-						<p class="text-info">{{{ data.event_price }}}</p>
+						<p class="text-info">{{{ data.event_price_string }}}</p>
 						<i class="edit fa fa-pencil" aria-hidden="true" data-edit-type="currency"></i>
 					</label>	
 				</div>
@@ -406,20 +424,34 @@ function oot_underscore_event() { ?>
 					</div>
 				</label>
 				<div class="repeat-event-wrapper">
-						<p class="venue-desc-title">Repeat Event?</p>
-						<?php
-							$key = 'field_58ac60bee9d5c';
-							$field = get_field_object($key);
-							if ($field) {
-								foreach ($field['choices'] as $key => $value) {
-							?>
-									<input type="radio" data-value="<?php echo $value; ?>" id="{{{ data.event_random_id }}}<?php echo $value; ?>" name="event" />
-									<label for="{{{ data.event_random_id }}}<?php echo $value; ?>"><span></span><?php echo $value; ?></label>
-							<?php
-								}
-							}
+					<p class="venue-desc-title">Repeat Event?</p>
+					<?php
+						$key = 'field_58ac60bee9d5c';
+						$field = get_field_object($key);
+						if ($field) {
+							foreach ($field['choices'] as $key => $value) {
 						?>
-					</div>
+								<input type="radio" data-value="<?php echo $value; ?>" id="{{{ data.event_random_id }}}<?php echo $value; ?>" name="event" />
+								<label for="{{{ data.event_random_id }}}<?php echo $value; ?>"><span></span><?php echo $value; ?></label>
+						<?php
+							}
+						}
+					?>
+				</div>
+				<div class="venue-cat-wrapper">
+					<p class="venue-desc-title">Categories</p>
+					<?php /* <p class="cat-select"><?php wp_dropdown_categories(array('hide_empty' => 0, 'exclude' => '1' )); ?></p> */ ?>
+					<?php
+					wp_category_checklist();
+					?>
+				</div>
+				
+				<div class="venue-tag-wrapper">
+					<p class="venue-desc-title">Tags</p>
+					<div class="venue-active-tags"></div>
+					<input class="tag-search-field" name="tag_search_field" type="text" autocomplete="off" placeholder="&#xf067; TYPE TO SEARCH FOR TAG" style="" />
+					<div class="tag-result"></div>
+				</div>
 				<span class="remove">Remove Event<i class="fa fa-trash" aria-hidden="true"></i></span>
 				<span class="save">Save Event<i class="fa fa-check" aria-hidden="true"></i></span>
 			</div>
